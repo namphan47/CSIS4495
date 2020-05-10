@@ -1,0 +1,13 @@
+<ul>
+  <li class="text" *ngFor="let item of items | async">
+    {{item.name}}
+  </li>
+</ul>
+
+<ul>
+  <li *ngFor="let item of itemsRT | async">
+    {{ item | json }}
+  </li>
+</ul>
+
+<h1>{{ (item | async)?.name }}</h1>
