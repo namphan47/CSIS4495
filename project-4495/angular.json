@@ -149,6 +149,7 @@
               "projects/simulator-app/src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "projects/simulator-app/src/styles.scss"
             ],
             "scripts": []
@@ -244,6 +245,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "main-app"
 }
