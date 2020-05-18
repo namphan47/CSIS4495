@@ -1,8 +1,80 @@
 [
   {
-    "name": "",
-    "address": "",
-    "phone_no": "",
-    "email": "",
+    "name": "Courtnay",
+    "address": "4194 Dominion St,Burnaby,BC,V5G 1C6",
+    "lat": "49.256128",
+    "long": "-123.012232",
+    "phone_no": "817-681-0289",
+    "email": "chawkeswood0@vkontakte.ru"
+  },
+  {
+    "name": "Carlen",
+    "address": "4360 Beresford St,Burnaby,BC,V5H 0G2",
+    "lat": "49.226981",
+    "long": "-123.007774",
+    "phone_no": "778-727-2099",
+    "email": "cdomenichelli1@economist.com"
+  },
+  {
+    "name": "Kylen",
+    "address": "2133 Douglas Rd,Burnaby,BC,V5C 0E9, 49.264296,-122.991842",
+    "phone_no": "604-505-4586",
+    "email": "kbentson2@mysql.com"
+  },
+  {
+    "name": "Herbie",
+    "address": "6688 Arcola St,Burnaby,BC,V5E 0B4",
+    "lat": " 49.219039",
+    "long": "-122.965729",
+    "phone_no": "369-253-5221",
+    "email": "hgough3@bbb.org"
+  },
+  {
+    "name": "Issy",
+    "address": "8066 18th Avenue,Burnaby,BC,V3N 1J8",
+    "lat": "49.227500",
+    "long": "-122.930111",
+    "phone_no": "373-711-2168",
+    "email": "ihegarty4@psu.edu"
+  },
+  {
+    "name": "Michaelina",
+    "address": "7007 Marlborough Avenue,Burnaby,BC,V5J 4G6",
+    "lat": "49.219436",
+    "long": "-122.991558",
+    "phone_no": "921-117-8066",
+    "email": "mmutlow5@cdc.gov"
+  },
+  {
+    "name": "Kerry",
+    "address": "7111 18th Avenue, Burnaby,BC,V3N 1H2,, -122.955665",
+    "lat": " 49.214635",
+    "long": "-122.991558",
+    "phone_no": "746-507-2664",
+    "email": "kmarval6@phoca.cz"
+  },
+  {
+    "name": "Jeannie",
+    "address": "7656 17th Ave, Burnaby,BC,V3N 1L7",
+    "lat": "49.221472",
+    "long": "-122.939420",
+    "phone_no": "729-320-3289",
+    "email": "jorneblow7@hibu.com"
+  },
+  {
+    "name": "Tobe",
+    "address": "9835 King George Blvd, Surrey,BC,T1J 4E1",
+    "lat": "49.181111",
+    "long": "-122.846641",
+    "phone_no": "544-822-6534",
+    "email": "thume8@paginegialle.it"
+  },
+  {
+    "name": "Cecilio",
+    "address": "12905 111 Ave,Surrey,BC,V3T 2R5",
+    "lat": "49.204931",
+    "long": "-122.864619",
+    "phone_no": "321-437-1039",
+    "email": "cstow9@google.pl"
   }
 ]
