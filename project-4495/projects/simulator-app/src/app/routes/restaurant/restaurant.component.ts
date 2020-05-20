@@ -25,9 +25,10 @@ export class RestaurantComponent implements OnInit {
     // this.itemsRT = db.list('items').valueChanges();
     this._DummyDataService.convertDummyDataToModel(DummyDataService.TABLES.customer, Customer)
       .then((rs) => {
-        let itemsCollection = _AngularFirestore.collection('items');
-        console.log(itemsCollection.valueChanges());
-        itemsCollection.add(rs[0]);
+        console.log(rs);
+        // let itemsCollection = _AngularFirestore.collection('items');
+        // console.log(itemsCollection.valueChanges());
+        // itemsCollection.add(rs[0]);
       });
     // let itemDoc = _AngularFirestore.doc<Customer>('items');
     let itemsCollection = _AngularFirestore.collection('items');

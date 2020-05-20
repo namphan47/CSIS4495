@@ -3,11 +3,7 @@ import {UtilsService} from '@app/services/mics/utils.service';
 import {IDefaultModelConstructor} from '@app/constant/models/i-default-model';
 import _ from 'lodash';
 import {first, tap} from 'rxjs/operators';
-
-enum ENUM_TABLES {
-  customer = 'customer',
-  restaurant = 'restaurant'
-}
+import {ENUM_TABLES} from "@app/constant/const-value";
 
 @Injectable({
   providedIn: 'root'
@@ -18,31 +14,28 @@ export class DummyDataService {
   readonly JSONS = {
     [ENUM_TABLES.restaurant]: 'restaurant.json',
     [ENUM_TABLES.customer]: 'customer.json',
+    [ENUM_TABLES.meal]: 'meal.json',
+    [ENUM_TABLES.courier]: 'courier.json',
   };
 
   constructor(private _UtilsService: UtilsService) {
-    // this._UtilsService.getJSON(this.CONSTANT_PATH + this.JSONS.restaurant)
-    //   .subscribe(data => {
-    //     console.log(data);
-    //   }, error => console.log(error));
   }
 
   convertDummyDataToModel(table: ENUM_TABLES, modelClass: IDefaultModelConstructor) {
     return this._UtilsService.getJSON(this.CONSTANT_PATH + this.JSONS[table])
       .pipe(
-        tap(data => {
-          console.log(data);
-          const array = [];
-          _.map(data, (x) => {
-            const model = new modelClass(x);
-            array.push(model);
-
-          });
-          console.log(array);
-          return array;
-        }),
+        tap(),
         first()
-      ).toPromise();
+      )
+      .toPromise()
+      .then(data => {
+        const array = [];
+        _.map(data, (x) => {
+          const model = new modelClass(x);
+          array.push(model);
+        });
+        return array;
+      });
   }
 
 }

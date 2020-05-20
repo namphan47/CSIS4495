@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FirebaseDataService} from "@app/services/firebase/firebase-data.service";
 
 @Component({
   selector: 'app-nav',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _FirebaseDataService: FirebaseDataService) {
+  }
 
   ngOnInit(): void {
   }
 
+  resetDB() {
+    this._FirebaseDataService.resetDB();
+  }
 }
