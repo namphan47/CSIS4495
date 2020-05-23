@@ -1,3 +1,11 @@
-<div class="d-flex flex-column p-3">
-  <button type="button" class="btn btn-primary" (click)="resetDB()">Reset DB</button>
+<div class="d-flex flex-column p-3 vh-100">
+  <div [routerLink]="['admin','map']">Maps</div>
+  <div [routerLink]="['admin','restaurant']">Restaurant</div>
+  <div [routerLink]="['admin','customer']">Customer</div>
+  <div [routerLink]="['admin','order']">Order</div>
+  <div [routerLink]="['admin','courier']">Courier</div>
+  <div class="flex-grow-1"></div>
+  <div>
+    <button type="button" class="btn btn-primary" (click)="resetDB()">Reset DB</button>
+  </div>
 </div>
