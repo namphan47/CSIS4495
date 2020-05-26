@@ -7,6 +7,7 @@ import {RouterModule} from "@angular/router";
 import {RoutesModule} from "./routes/routes.module";
 import {HttpClientModule} from "@angular/common/http";
 import {CoreModule} from "@app/core/core.module";
+import {SharedModule} from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {CoreModule} from "@app/core/core.module";
     HttpClientModule,
     AppRoutingModule,
     RoutesModule,
-    CoreModule
+    CoreModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

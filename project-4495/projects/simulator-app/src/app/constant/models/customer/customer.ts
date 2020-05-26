@@ -1,6 +1,7 @@
 import {DefaultModel} from '@app/constant/models/default-model';
 
 export class Customer extends DefaultModel {
+  id: string = '';
   name: string = '';
   address: string = '';
   lat: string = '';

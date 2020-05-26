@@ -3,12 +3,13 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import {Customer} from "@app/constant/models/customer/customer";
 import _ from 'lodash';
 import {DummyDataService} from "@app/services/data/dummy-data.service";
-import {first, tap} from "rxjs/operators";
+import {first, map, tap} from "rxjs/operators";
 import {IDefaultModelConstructor} from "@app/constant/models/i-default-model";
 import {Restaurant} from "@app/constant/models/restaurant/restaurant";
 import {Courier} from "@app/constant/models/courier/courier";
 import {Meal} from "@app/constant/models/meal/meal";
 import {ENUM_TABLES} from "@app/constant/const-value";
+import {NotificationService} from "@app/services/mics/notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,8 @@ export class FirebaseDataService {
   };
 
   constructor(private _AngularFirestore: AngularFirestore,
-              private _DummyDataService: DummyDataService) {
+              private _DummyDataService: DummyDataService,
+              private _NotificationService: NotificationService) {
 
   }
 
@@ -53,9 +55,34 @@ export class FirebaseDataService {
       await this.addDB(x);
     }));
 
-    await this.getCustomer()
-      .then((rs) => {
-        console.log(rs);
+    // converseMeal
+    await this.linkRestaurantMealDB();
+
+    this._NotificationService.pushMessage('All data is reset!!');
+  }
+
+  /**
+   * link restaurant and meals data
+   * @returns {Promise<void>}
+   */
+  async linkRestaurantMealDB() {
+    this._NotificationService.pushMessage('Link Restaurant & Meal data');
+    await this.getRestaurant()
+      .then((restaurants) => {
+        // console.log(restaurants);
+        this.getMeals()
+          .then((meals) => {
+            // console.log(meals);
+            _.map(restaurants, (restaurant: Restaurant) => {
+              // console.log(restaurant);
+              restaurant.meal_ids = _.map(_.filter(meals, (meal: Meal) => {
+                return restaurant.name === meal.restaurant_name;
+              }), x => x.id);
+
+              this._AngularFirestore.collection(this.TABLES[ENUM_TABLES.restaurant].name)
+                .doc(restaurant.id).set(restaurant.getData());
+            });
+          });
       });
   }
 
@@ -70,6 +97,7 @@ export class FirebaseDataService {
         return res.forEach(async element => {
           await element.ref.delete();
           console.log(`delete ${name}`);
+          this._NotificationService.pushMessage(`delete ${name}`);
         });
       });
   }
@@ -87,6 +115,7 @@ export class FirebaseDataService {
         return await Promise.all(_.map(rs, async (x) => {
           await itemsCollection.add(x.getData());
           console.log(`add ${object.name}`);
+          this._NotificationService.pushMessage(`add ${object.name}`);
         }));
       });
   }
@@ -96,7 +125,34 @@ export class FirebaseDataService {
    * @returns {Promise<IDefaultModelConstructor[]>}
    */
   getCustomer(): Promise<IDefaultModelConstructor[]> {
-    return this.getDB(this.TABLES.customer);
+    return this.getDB(this.TABLES[ENUM_TABLES.customer]);
+  }
+
+  /**
+   * get restaurant data
+   * @returns {Promise<IDefaultModelConstructor[]>}
+   */
+  getRestaurant(): Promise<IDefaultModelConstructor[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.restaurant])
+      .then((restaurants) => {
+        return this.getMeals()
+          .then((meals) => {
+            _.map(restaurants, (restaurant: Restaurant) => {
+              restaurant.meals = _.filter(meals, (meal: Meal) => {
+                return restaurant.meal_ids.indexOf(meal.id) >= 0;
+              });
+            });
+            return restaurants;
+          });
+      });
+  }
+
+  /**
+   * get meals data
+   * @returns {Promise<IDefaultModelConstructor[]>}
+   */
+  getMeals(): Promise<IDefaultModelConstructor[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.meal]);
   }
 
   /**
@@ -105,8 +161,17 @@ export class FirebaseDataService {
    * @returns {Promise<IDefaultModelConstructor[]>}
    */
   private getDB(object): Promise<IDefaultModelConstructor[]> {
-    return this._AngularFirestore.collection('customer')
-      .valueChanges().pipe(tap(), first()).toPromise()
+    return this._AngularFirestore.collection(object.name)
+      .snapshotChanges()
+      .pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          data['id'] = id;
+          return data;
+        }))
+      )
+      .pipe(tap(), first()).toPromise()
       .then((rs) => {
         return this.convertToClassObject(rs, object.class);
       });
@@ -124,6 +189,7 @@ export class FirebaseDataService {
       const model = new modelClass(x);
       array.push(model);
     });
+    // console.log(array);
     return array;
   }
 

@@ -1,5 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+$cl_topbar: #F4F5F7;
+$cl_body: #E3E5E8;
 body {
-  background-color: #E3E5E8;
+  background-color: $cl_body;
   min-height: 100vh;
+}
+
+.left-bar {
+  background-color: $cl_topbar;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: $cl_topbar;
+  width: 50vw;
+  height: 40px;
+  padding: 10px;
+  left: calc(50% - 25vw);
 }
