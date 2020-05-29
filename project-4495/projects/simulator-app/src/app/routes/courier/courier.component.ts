@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FirebaseDataService} from "@app/services/firebase/firebase-data.service";
+import {Courier} from "@app/constant/models/courier/courier";
 
 @Component({
   selector: 'app-courier',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./courier.component.scss']
 })
 export class CourierComponent implements OnInit {
+  couriers: Courier[];
 
-  constructor() { }
+  constructor(private _FirebaseDataService: FirebaseDataService) {
 
-  ngOnInit(): void {
   }
 
+  ngOnInit(): void {
+    this._FirebaseDataService.getCourier()
+      .then((rs) => {
+        this.couriers = rs;
+        console.log(rs);
+      });
+  }
 }

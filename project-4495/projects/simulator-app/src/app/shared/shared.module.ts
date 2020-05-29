@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FooterNotificationComponent} from './footer-notification/footer-notification.component';
+import {PipeModule} from "@app/shared/pipe/pipe.module";
 
 
 @NgModule({
@@ -9,7 +10,8 @@ import {FooterNotificationComponent} from './footer-notification/footer-notifica
     CommonModule
   ],
   exports: [
-    FooterNotificationComponent
+    FooterNotificationComponent,
+    PipeModule
   ]
 })
 export class SharedModule {

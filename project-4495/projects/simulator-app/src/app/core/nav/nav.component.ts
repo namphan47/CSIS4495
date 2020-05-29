@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FirebaseDataService} from "@app/services/firebase/firebase-data.service";
+import {SimulatorDataService} from "@app/services/data/simulator-data.service";
 
 @Component({
   selector: 'app-nav',
@@ -8,7 +9,8 @@ import {FirebaseDataService} from "@app/services/firebase/firebase-data.service"
 })
 export class NavComponent implements OnInit {
 
-  constructor(private _FirebaseDataService: FirebaseDataService) {
+  constructor(private _FirebaseDataService: FirebaseDataService,
+              private _SimulatorDataService: SimulatorDataService) {
   }
 
   ngOnInit(): void {
@@ -16,5 +18,13 @@ export class NavComponent implements OnInit {
 
   resetDB() {
     this._FirebaseDataService.resetDB();
+  }
+
+  startSimulator() {
+    this._SimulatorDataService.start();
+  }
+
+  stopSimulator() {
+    this._SimulatorDataService.stop();
   }
 }
