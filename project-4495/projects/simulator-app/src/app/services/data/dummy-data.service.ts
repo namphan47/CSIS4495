@@ -21,7 +21,10 @@ export class DummyDataService {
   constructor(private _UtilsService: UtilsService) {
   }
 
-  convertDummyDataToModel(table: ENUM_TABLES, modelClass: IDefaultModelConstructor) {
+  convertDummyDataToModel(table: ENUM_TABLES, modelClass: IDefaultModelConstructor): Promise<any[]> {
+    if (!this.JSONS[table]) {
+      return Promise.resolve([]);
+    }
     return this._UtilsService.getJSON(this.CONSTANT_PATH + this.JSONS[table])
       .pipe(
         tap(),

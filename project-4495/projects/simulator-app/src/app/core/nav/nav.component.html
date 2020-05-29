@@ -1,3 +1,35 @@
-<div class="d-flex flex-column p-3">
-  <button type="button" class="btn btn-primary" (click)="resetDB()">Reset DB</button>
+<div class="d-flex flex-column  vh-100 left-bar">
+  <div [routerLink]="['admin','map']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">Maps
+  </div>
+  <div [routerLink]="['admin','order']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">Order
+  </div>
+  <div [routerLink]="['admin','restaurant']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">
+    Restaurant
+  </div>
+  <div [routerLink]="['admin','customer']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">Customer
+  </div>
+  <div [routerLink]="['admin','courier']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">Courier
+  </div>
+  <div class="flex-grow-1"></div>
+  <div class="p-3">
+    <div class="mt-3">
+      <button type="button" class="btn btn-primary" (click)="startSimulator()">Start Simulator</button>
+    </div>
+    <div class="mt-3">
+      <button type="button" class="btn btn-danger" (click)="stopSimulator()">Stop Simulator</button>
+    </div>
+    <div class="mt-3">
+      <button type="button" class="btn btn-primary" (click)="resetDB()">Reset DB</button>
+    </div>
+  </div>
 </div>

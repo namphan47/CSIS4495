@@ -1,5 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+
+$cl_topbar: #F4F5F7;
+$cl_body: #E3E5E8;
+$cl_border: #707070;
+$cl_active: #002F5A;
 body {
-  background-color: #E3E5E8;
+  background-color: $cl_body;
   min-height: 100vh;
+  padding-left: 200px;
+}
+
+.left-bar {
+  width: 200px;
+  background-color: $cl_topbar;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
+  .menu-item {
+    height: 50px;
+    border-bottom: 1px solid $cl_border;
+    text-transform: uppercase;
+    color: $cl_active;
+
+    &.active {
+      background-color: $cl_active;
+      color: white;
+    }
+  }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: $cl_topbar;
+  width: 50vw;
+  height: 40px;
+  padding: 10px;
+  left: calc(50% - 25vw);
 }

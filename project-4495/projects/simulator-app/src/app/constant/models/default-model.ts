@@ -19,11 +19,23 @@ export class DefaultModel implements IDefaultModel {
   }
 
   getData(): object {
+    const self = this;
     const result = {};
-    Object.keys(this).map(key => result[key] = this[key]);
-    if (result.hasOwnProperty('_raw')) {
-      delete result['_raw'];
-    }
+
+    Object.keys(this).map(key => {
+      if (this[key] instanceof DefaultModel) {
+        return;
+      }
+
+      switch (key) {
+        case '_raw':
+        case 'meals':
+        case 'items':
+          return;
+      }
+
+      result[key] = this[key];
+    });
     return result;
   }
 }
