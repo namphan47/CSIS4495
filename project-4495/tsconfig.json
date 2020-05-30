@@ -17,18 +17,13 @@
     ],
     "typeRoots": [
       "node_modules/@types"
-    ]
-    //    "paths": {
-    //      "@app/*": [
-    //        "src/app/*"
-    //      ],
-    //      "@asset/*": [
-    //        "src/asset/*"
-    //      ],
-    //      "@environment/*": [
-    //        "src/environments/*"
-    //      ]
-    //    }
+    ],
+    "paths": {
+      "library-app": [
+        "dist/library-app/library-app",
+        "dist/library-app"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

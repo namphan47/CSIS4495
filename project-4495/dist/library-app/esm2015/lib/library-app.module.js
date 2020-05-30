@@ -1,0 +1,14 @@
+import { __decorate } from "tslib";
+import { NgModule } from '@angular/core';
+import { LibraryAppComponent } from './library-app.component';
+let LibraryAppModule = class LibraryAppModule {
+};
+LibraryAppModule = __decorate([
+    NgModule({
+        declarations: [LibraryAppComponent],
+        imports: [],
+        exports: [LibraryAppComponent]
+    })
+], LibraryAppModule);
+export { LibraryAppModule };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGlicmFyeS1hcHAubW9kdWxlLmpzIiwic291cmNlUm9vdCI6Im5nOi8vbGlicmFyeS1hcHAvIiwic291cmNlcyI6WyJsaWIvbGlicmFyeS1hcHAubW9kdWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0sZUFBZSxDQUFDO0FBQ3pDLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLHlCQUF5QixDQUFDO0FBVTlELElBQWEsZ0JBQWdCLEdBQTdCLE1BQWEsZ0JBQWdCO0NBQUksQ0FBQTtBQUFwQixnQkFBZ0I7SUFONUIsUUFBUSxDQUFDO1FBQ1IsWUFBWSxFQUFFLENBQUMsbUJBQW1CLENBQUM7UUFDbkMsT0FBTyxFQUFFLEVBQ1I7UUFDRCxPQUFPLEVBQUUsQ0FBQyxtQkFBbUIsQ0FBQztLQUMvQixDQUFDO0dBQ1csZ0JBQWdCLENBQUk7U0FBcEIsZ0JBQWdCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTmdNb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IExpYnJhcnlBcHBDb21wb25lbnQgfSBmcm9tICcuL2xpYnJhcnktYXBwLmNvbXBvbmVudCc7XG5cblxuXG5ATmdNb2R1bGUoe1xuICBkZWNsYXJhdGlvbnM6IFtMaWJyYXJ5QXBwQ29tcG9uZW50XSxcbiAgaW1wb3J0czogW1xuICBdLFxuICBleHBvcnRzOiBbTGlicmFyeUFwcENvbXBvbmVudF1cbn0pXG5leHBvcnQgY2xhc3MgTGlicmFyeUFwcE1vZHVsZSB7IH1cbiJdfQ==

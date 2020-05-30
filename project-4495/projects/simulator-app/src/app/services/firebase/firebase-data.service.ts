@@ -12,7 +12,6 @@ import {ENUM_TABLES} from '@app/constant/const-value';
 import {NotificationService} from '@app/services/mics/notification.service';
 import {OrderItem} from '@app/constant/models/order_item/order-item';
 import {Order} from '@app/constant/models/order/order';
-import {DefaultModel} from '@app/constant/models/default-model';
 import {QueryParamModel} from "@app/constant/models/query-param-model";
 
 @Injectable({
