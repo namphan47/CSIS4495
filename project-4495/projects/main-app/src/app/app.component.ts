@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TestAppService} from "library-app";
+import {DummyDataService, TestAppService} from 'library-app';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,8 @@ import {TestAppService} from "library-app";
 export class AppComponent implements OnInit {
   title = 'main-app';
 
-  constructor(private _TestAppService: TestAppService) {
+  constructor(private _TestAppService: TestAppService,
+              private _DummyDataService: DummyDataService) {
 
   }
 
