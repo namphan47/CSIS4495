@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FirebaseDataService} from "@app/services/firebase/firebase-data.service";
-import {Customer} from "@app/constant/models/customer/customer";
+import {FirebaseDataService} from '@app/services/firebase/firebase-data.service';
+import {Customer} from '@app/constant/models/customer/customer';
 
 @Component({
   selector: 'app-customer',
