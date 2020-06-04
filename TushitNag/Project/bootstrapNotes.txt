@@ -1,0 +1,2 @@
+text-center, right, left : can adjust your text or image in the page
+div-col we can adjust the page in grid view
