@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {RestaurantComponent} from './routes/restaurant/restaurant.component';
-import {MapComponent} from "@app/routes/map/map.component";
-import {CustomerComponent} from "@app/routes/customer/customer.component";
-import {OrderComponent} from "@app/routes/order/order.component";
-import {CourierComponent} from "@app/routes/courier/courier.component";
+import {MapComponent} from '@app/routes/map/map.component';
+import {CustomerComponent} from '@app/routes/customer/customer.component';
+import {OrderComponent} from '@app/routes/order/order.component';
+import {CourierComponent} from '@app/routes/courier/courier.component';
 
 const routes: Routes = [
   {
