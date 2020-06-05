@@ -14,6 +14,10 @@ export class CourierComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.onRefresh();
+  }
+
+  onRefresh() {
     this._FirebaseDataService.getCourier()
       .then((rs) => {
         this.couriers = rs;

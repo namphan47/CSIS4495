@@ -14,6 +14,10 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.onRefresh();
+  }
+
+  onRefresh() {
     this._FirebaseDataService.getCustomer()
       .then((rs) => {
         this.customers = rs;

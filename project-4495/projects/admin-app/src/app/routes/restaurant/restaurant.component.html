@@ -1,4 +1,9 @@
 <div class="p-5">
+  <div>
+    <button type="button" class="btn btn-outline-primary" (click)="onRefresh()">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
   <table class="table" *ngIf="!!restaurants && restaurants.length">
     <thead>
     <tr>

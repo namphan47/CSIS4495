@@ -7,6 +7,16 @@ import {FirebaseDataService} from "library-app";
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
+  options: any = {
+    styles: [
+      {
+        featureType: "poi",
+        stylers: [
+          {visibility: "off"}
+        ]
+      }
+    ]
+  };
 
   constructor(private _FirebaseDataService: FirebaseDataService) {
     this._FirebaseDataService.getCustomer()
