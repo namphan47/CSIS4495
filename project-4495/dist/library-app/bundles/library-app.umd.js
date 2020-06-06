@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('lodash'), require('rxjs/operators'), require('@angular/common/http'), require('@angular/fire/firestore')) :
-    typeof define === 'function' && define.amd ? define('library-app', ['exports', '@angular/core', 'rxjs', 'lodash', 'rxjs/operators', '@angular/common/http', '@angular/fire/firestore'], factory) :
-    (global = global || self, factory(global['library-app'] = {}, global.ng.core, global.rxjs, global._, global.rxjs.operators, global.ng.common.http, global.ng.fire.firestore));
-}(this, (function (exports, core, rxjs, _, operators, http, firestore) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('@angular/core'), require('lodash'), require('rxjs/operators'), require('@angular/common/http'), require('@angular/fire/firestore')) :
+    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', '@angular/core', 'lodash', 'rxjs/operators', '@angular/common/http', '@angular/fire/firestore'], factory) :
+    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.ng.core, global.lodash, global.rxjs.operators, global.ng.common.http, global.ng.fire.firestore));
+}(this, (function (exports, rxjs, core, _, operators, http, firestore) { 'use strict';
 
     _ = _ && Object.prototype.hasOwnProperty.call(_, 'default') ? _['default'] : _;
 
@@ -220,80 +220,6 @@
         return value;
     }
 
-    var LibraryAppService = /** @class */ (function () {
-        function LibraryAppService() {
-        }
-        LibraryAppService.prototype.testString = function () {
-            return 'Hello';
-        };
-        LibraryAppService.ɵfac = function LibraryAppService_Factory(t) { return new (t || LibraryAppService)(); };
-        LibraryAppService.ɵprov = core.ɵɵdefineInjectable({ token: LibraryAppService, factory: LibraryAppService.ɵfac, providedIn: 'root' });
-        return LibraryAppService;
-    }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(LibraryAppService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return []; }, null); })();
-
-    var LibraryAppComponent = /** @class */ (function () {
-        function LibraryAppComponent() {
-        }
-        LibraryAppComponent.prototype.ngOnInit = function () {
-        };
-        LibraryAppComponent.ɵfac = function LibraryAppComponent_Factory(t) { return new (t || LibraryAppComponent)(); };
-        LibraryAppComponent.ɵcmp = core.ɵɵdefineComponent({ type: LibraryAppComponent, selectors: [["lib-library-app"]], decls: 2, vars: 0, template: function LibraryAppComponent_Template(rf, ctx) { if (rf & 1) {
-                core.ɵɵelementStart(0, "p");
-                core.ɵɵtext(1, " library-app works! ");
-                core.ɵɵelementEnd();
-            } }, encapsulation: 2 });
-        return LibraryAppComponent;
-    }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(LibraryAppComponent, [{
-            type: core.Component,
-            args: [{
-                    selector: 'lib-library-app',
-                    template: "\n    <p>\n      library-app works!\n    </p>\n  ",
-                    styles: []
-                }]
-        }], function () { return []; }, null); })();
-
-    var LibraryAppModule = /** @class */ (function () {
-        function LibraryAppModule() {
-        }
-        LibraryAppModule.ɵmod = core.ɵɵdefineNgModule({ type: LibraryAppModule });
-        LibraryAppModule.ɵinj = core.ɵɵdefineInjector({ factory: function LibraryAppModule_Factory(t) { return new (t || LibraryAppModule)(); }, imports: [[]] });
-        return LibraryAppModule;
-    }());
-    (function () { (typeof ngJitMode === "undefined" || ngJitMode) && core.ɵɵsetNgModuleScope(LibraryAppModule, { declarations: [LibraryAppComponent], exports: [LibraryAppComponent] }); })();
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(LibraryAppModule, [{
-            type: core.NgModule,
-            args: [{
-                    declarations: [LibraryAppComponent],
-                    imports: [],
-                    exports: [LibraryAppComponent]
-                }]
-        }], null, null); })();
-
-    var TestAppService = /** @class */ (function () {
-        function TestAppService() {
-        }
-        TestAppService.prototype.testString = function () {
-            return 'Hello Test App';
-        };
-        TestAppService.ɵfac = function TestAppService_Factory(t) { return new (t || TestAppService)(); };
-        TestAppService.ɵprov = core.ɵɵdefineInjectable({ token: TestAppService, factory: TestAppService.ɵfac, providedIn: 'root' });
-        return TestAppService;
-    }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(TestAppService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return []; }, null); })();
-
-
     (function (ENUM_TABLES) {
         ENUM_TABLES["customer"] = "customer";
         ENUM_TABLES["restaurant"] = "restaurant";
@@ -334,8 +260,6 @@
                 _this._subscriptionList.add(el);
             });
         };
-        DefaultComponent.ɵfac = function DefaultComponent_Factory(t) { return new (t || DefaultComponent)(); };
-        DefaultComponent.ɵdir = core.ɵɵdefineDirective({ type: DefaultComponent });
         return DefaultComponent;
     }());
 
@@ -519,16 +443,17 @@
         UtilsService.prototype.getJSON = function (url) {
             return this._HttpClient.get(url);
         };
-        UtilsService.ɵfac = function UtilsService_Factory(t) { return new (t || UtilsService)(core.ɵɵinject(http.HttpClient)); };
-        UtilsService.ɵprov = core.ɵɵdefineInjectable({ token: UtilsService, factory: UtilsService.ɵfac, providedIn: 'root' });
+        UtilsService.ctorParameters = function () { return [
+            { type: http.HttpClient }
+        ]; };
+        UtilsService.ɵprov = core.ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(core.ɵɵinject(http.HttpClient)); }, token: UtilsService, providedIn: "root" });
+        UtilsService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], UtilsService);
         return UtilsService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(UtilsService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return [{ type: http.HttpClient }]; }, null); })();
 
     var DummyDataService = /** @class */ (function () {
         function DummyDataService(_UtilsService) {
@@ -559,16 +484,17 @@
             });
         };
         DummyDataService.TABLES = exports.ENUM_TABLES;
-        DummyDataService.ɵfac = function DummyDataService_Factory(t) { return new (t || DummyDataService)(core.ɵɵinject(UtilsService)); };
-        DummyDataService.ɵprov = core.ɵɵdefineInjectable({ token: DummyDataService, factory: DummyDataService.ɵfac, providedIn: 'root' });
+        DummyDataService.ctorParameters = function () { return [
+            { type: UtilsService }
+        ]; };
+        DummyDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function DummyDataService_Factory() { return new DummyDataService(core.ɵɵinject(UtilsService)); }, token: DummyDataService, providedIn: "root" });
+        DummyDataService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], DummyDataService);
         return DummyDataService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(DummyDataService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return [{ type: UtilsService }]; }, null); })();
 
     var NotificationService = /** @class */ (function () {
         function NotificationService() {
@@ -583,16 +509,14 @@
         NotificationService.prototype.getMessageOservable = function () {
             return this._Observable_Message;
         };
-        NotificationService.ɵfac = function NotificationService_Factory(t) { return new (t || NotificationService)(); };
-        NotificationService.ɵprov = core.ɵɵdefineInjectable({ token: NotificationService, factory: NotificationService.ɵfac, providedIn: 'root' });
+        NotificationService.ɵprov = core.ɵɵdefineInjectable({ factory: function NotificationService_Factory() { return new NotificationService(); }, token: NotificationService, providedIn: "root" });
+        NotificationService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], NotificationService);
         return NotificationService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(NotificationService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return []; }, null); })();
 
     var FirebaseDataService = /** @class */ (function () {
         function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService) {
@@ -998,16 +922,19 @@
                 return table.class.name === className;
             }).name;
         };
-        FirebaseDataService.ɵfac = function FirebaseDataService_Factory(t) { return new (t || FirebaseDataService)(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService)); };
-        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ token: FirebaseDataService, factory: FirebaseDataService.ɵfac, providedIn: 'root' });
+        FirebaseDataService.ctorParameters = function () { return [
+            { type: firestore.AngularFirestore },
+            { type: DummyDataService },
+            { type: NotificationService }
+        ]; };
+        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
+        FirebaseDataService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], FirebaseDataService);
         return FirebaseDataService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(FirebaseDataService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return [{ type: firestore.AngularFirestore }, { type: DummyDataService }, { type: NotificationService }]; }, null); })();
 
     var SimulatorDataService = /** @class */ (function () {
         function SimulatorDataService(_FirebaseDataService) {
@@ -1082,16 +1009,74 @@
             }
             return null;
         };
-        SimulatorDataService.ɵfac = function SimulatorDataService_Factory(t) { return new (t || SimulatorDataService)(core.ɵɵinject(FirebaseDataService)); };
-        SimulatorDataService.ɵprov = core.ɵɵdefineInjectable({ token: SimulatorDataService, factory: SimulatorDataService.ɵfac, providedIn: 'root' });
+        SimulatorDataService.ctorParameters = function () { return [
+            { type: FirebaseDataService }
+        ]; };
+        SimulatorDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(core.ɵɵinject(FirebaseDataService)); }, token: SimulatorDataService, providedIn: "root" });
+        SimulatorDataService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], SimulatorDataService);
         return SimulatorDataService;
     }());
-    /*@__PURE__*/ (function () { core.ɵsetClassMetadata(SimulatorDataService, [{
-            type: core.Injectable,
-            args: [{
-                    providedIn: 'root'
-                }]
-        }], function () { return [{ type: FirebaseDataService }]; }, null); })();
+
+    var LibraryAppService = /** @class */ (function () {
+        function LibraryAppService() {
+        }
+        LibraryAppService.prototype.testString = function () {
+            return 'Hello';
+        };
+        LibraryAppService.ɵprov = core.ɵɵdefineInjectable({ factory: function LibraryAppService_Factory() { return new LibraryAppService(); }, token: LibraryAppService, providedIn: "root" });
+        LibraryAppService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], LibraryAppService);
+        return LibraryAppService;
+    }());
+
+    var LibraryAppComponent = /** @class */ (function () {
+        function LibraryAppComponent() {
+        }
+        LibraryAppComponent.prototype.ngOnInit = function () {
+        };
+        LibraryAppComponent = __decorate([
+            core.Component({
+                selector: 'lib-library-app',
+                template: "\n    <p>\n      library-app works!\n    </p>\n  "
+            })
+        ], LibraryAppComponent);
+        return LibraryAppComponent;
+    }());
+
+    var LibraryAppModule = /** @class */ (function () {
+        function LibraryAppModule() {
+        }
+        LibraryAppModule = __decorate([
+            core.NgModule({
+                declarations: [LibraryAppComponent],
+                imports: [],
+                exports: [LibraryAppComponent]
+            })
+        ], LibraryAppModule);
+        return LibraryAppModule;
+    }());
+
+    var TestAppService = /** @class */ (function () {
+        function TestAppService() {
+        }
+        TestAppService.prototype.testString = function () {
+            return 'Hello Test App';
+        };
+        TestAppService.ɵprov = core.ɵɵdefineInjectable({ factory: function TestAppService_Factory() { return new TestAppService(); }, token: TestAppService, providedIn: "root" });
+        TestAppService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], TestAppService);
+        return TestAppService;
+    }());
 
     exports.Courier = Courier;
     exports.Customer = Customer;

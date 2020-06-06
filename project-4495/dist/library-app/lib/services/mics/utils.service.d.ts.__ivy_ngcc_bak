@@ -1,0 +1,7 @@
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+export declare class UtilsService {
+    private _HttpClient;
+    constructor(_HttpClient: HttpClient);
+    getJSON(url: string): Observable<any>;
+}

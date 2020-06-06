@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import _ from 'lodash';
 import {first, tap} from 'rxjs/operators';
-import {ENUM_TABLES} from '../../constant/const-value';
-import {UtilsService} from "../mics/utils.service";
+import {ENUM_TABLES} from "../../constant/const-value";
 import {IDefaultModelConstructor} from "../../constant/models/i-default-model";
+import {UtilsService} from "../mics/utils.service";
 
 @Injectable({
   providedIn: 'root'
