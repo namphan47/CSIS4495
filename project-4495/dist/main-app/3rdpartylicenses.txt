@@ -35,6 +35,9 @@ MIT
 @angular/platform-browser
 MIT
 
+@angular/router
+MIT
+
 @firebase/app
 Apache-2.0
 
