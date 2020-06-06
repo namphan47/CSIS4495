@@ -7,6 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {MainrouteModule} from './mainroute/mainroute.module';
 import {AppRoutingModule} from "./app-routing.module";
 import {RouterModule} from "@angular/router";
+import {NguiMapModule} from "@ngui/map";
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {RouterModule} from "@angular/router";
     HttpClientModule,
     MainrouteModule,
     AppRoutingModule,
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=MY_GOOGLE_API_KEY'}),
   ],
   providers: [],
   bootstrap: [AppComponent]
