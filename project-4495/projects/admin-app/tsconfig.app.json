@@ -17,6 +17,9 @@
       "library-app": [
         "../../dist/library-app/library-app",
         "../../dist/library-app"
+      ],
+      "@libraryService/*": [
+        "../../dist/library-app/lib/services/*"
       ]
     }
   },

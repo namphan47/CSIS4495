@@ -1,19 +1,20 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "../../out-tsc/lib",
     "target": "es2015",
     "declaration": true,
     "inlineSources": true,
     "types": [],
     "paths": {
-      "@constant/*": [
-        "src/lib/constant/*"
-      ],
-      "@services/*": [
-        "src/lib/services/*"
-      ]
+      //      "@constant/*": [
+      //        "src/lib/constant/*"
+      //      ],
+//      "@libraryService/*": [
+//        "lib/services/*",
+//        "dist/library-app/*"
+//      ]
     },
     "lib": [
       "dom",

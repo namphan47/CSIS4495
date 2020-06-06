@@ -94,6 +94,9 @@ Awesome, nor vice versa. **Please do not use brand logos for any purpose except
 to represent the company, product, or service to which they refer.**
 
 
+@ngui/map
+MIT
+
 bootstrap
 MIT
 The MIT License (MIT)
@@ -170,6 +173,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 firebase/app
 
 firebase/firestore
+
+library-app
 
 lodash
 MIT
