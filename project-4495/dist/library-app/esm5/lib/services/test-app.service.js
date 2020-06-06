@@ -1,3 +1,4 @@
+import { __decorate } from "tslib";
 import { Injectable } from '@angular/core';
 import * as i0 from "@angular/core";
 var TestAppService = /** @class */ (function () {
@@ -6,15 +7,13 @@ var TestAppService = /** @class */ (function () {
     TestAppService.prototype.testString = function () {
         return 'Hello Test App';
     };
-    TestAppService.ɵfac = function TestAppService_Factory(t) { return new (t || TestAppService)(); };
-    TestAppService.ɵprov = i0.ɵɵdefineInjectable({ token: TestAppService, factory: TestAppService.ɵfac, providedIn: 'root' });
+    TestAppService.ɵprov = i0.ɵɵdefineInjectable({ factory: function TestAppService_Factory() { return new TestAppService(); }, token: TestAppService, providedIn: "root" });
+    TestAppService = __decorate([
+        Injectable({
+            providedIn: 'root'
+        })
+    ], TestAppService);
     return TestAppService;
 }());
 export { TestAppService };
-/*@__PURE__*/ (function () { i0.ɵsetClassMetadata(TestAppService, [{
-        type: Injectable,
-        args: [{
-                providedIn: 'root'
-            }]
-    }], function () { return []; }, null); })();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVzdC1hcHAuc2VydmljZS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL2xpYnJhcnktYXBwLyIsInNvdXJjZXMiOlsibGliL3NlcnZpY2VzL3Rlc3QtYXBwLnNlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFDLFVBQVUsRUFBQyxNQUFNLGVBQWUsQ0FBQzs7QUFFekM7SUFLRTtJQUNBLENBQUM7SUFFRCxtQ0FBVSxHQUFWO1FBQ0UsT0FBTyxnQkFBZ0IsQ0FBQztJQUMxQixDQUFDO2dGQVBVLGNBQWM7MERBQWQsY0FBYyxXQUFkLGNBQWMsbUJBRmIsTUFBTTt5QkFIcEI7Q0FhQyxBQVhELElBV0M7U0FSWSxjQUFjO2tEQUFkLGNBQWM7Y0FIMUIsVUFBVTtlQUFDO2dCQUNWLFVBQVUsRUFBRSxNQUFNO2FBQ25CIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtJbmplY3RhYmxlfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQEluamVjdGFibGUoe1xuICBwcm92aWRlZEluOiAncm9vdCdcbn0pXG5leHBvcnQgY2xhc3MgVGVzdEFwcFNlcnZpY2Uge1xuXG4gIGNvbnN0cnVjdG9yKCkge1xuICB9XG5cbiAgdGVzdFN0cmluZygpIHtcbiAgICByZXR1cm4gJ0hlbGxvIFRlc3QgQXBwJztcbiAgfVxufVxuIl19
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVzdC1hcHAuc2VydmljZS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL2xpYnJhcnktYXBwLyIsInNvdXJjZXMiOlsibGliL3NlcnZpY2VzL3Rlc3QtYXBwLnNlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLE9BQU8sRUFBQyxVQUFVLEVBQUMsTUFBTSxlQUFlLENBQUM7O0FBS3pDO0lBRUU7SUFDQSxDQUFDO0lBRUQsbUNBQVUsR0FBVjtRQUNFLE9BQU8sZ0JBQWdCLENBQUM7SUFDMUIsQ0FBQzs7SUFQVSxjQUFjO1FBSDFCLFVBQVUsQ0FBQztZQUNWLFVBQVUsRUFBRSxNQUFNO1NBQ25CLENBQUM7T0FDVyxjQUFjLENBUTFCO3lCQWJEO0NBYUMsQUFSRCxJQVFDO1NBUlksY0FBYyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7SW5qZWN0YWJsZX0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XHJcblxyXG5ASW5qZWN0YWJsZSh7XHJcbiAgcHJvdmlkZWRJbjogJ3Jvb3QnXHJcbn0pXHJcbmV4cG9ydCBjbGFzcyBUZXN0QXBwU2VydmljZSB7XHJcblxyXG4gIGNvbnN0cnVjdG9yKCkge1xyXG4gIH1cclxuXHJcbiAgdGVzdFN0cmluZygpIHtcclxuICAgIHJldHVybiAnSGVsbG8gVGVzdCBBcHAnO1xyXG4gIH1cclxufVxyXG4iXX0=

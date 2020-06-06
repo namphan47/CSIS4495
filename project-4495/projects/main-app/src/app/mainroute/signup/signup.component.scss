@@ -1,0 +1,77 @@
+.body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #E3E5E8;
+  margin: 0%;
+}
+
+.banner {
+  width: 100%;
+  height: 10%;
+  background-color: #F4F5F7;
+}
+.bimg1 {
+  width: 7%;
+}
+.bimg2 {
+  width: 9%;
+  height: 100%;
+  float: right;
+  padding-right: 2%;
+}
+
+.Login {
+  text-align: center;
+}
+.commit {
+  margin-left: 7%;
+}
+.commit {
+  background-color:#E91431;
+  color: white;
+  border-radius: 5px;
+  border-style: groove;
+  border-color: #E91431;
+}
+.back
+{
+
+  color:#E91431;
+  background-color: #E3E5E8;
+  border-radius: 5px;
+  border-style: groove;
+  border-color: #E91431;
+}
+
+.email {
+  padding: 5px 15px;
+  background-image: url(../../../assets/user-light.svg);
+  background-repeat: no-repeat;
+  background-size: 10px;
+  background-position-y: center;
+}
+
+.pass, .repass {
+  padding: 5px 15px;
+  background-image: url(../../../assets/key-light.svg);
+  background-repeat: no-repeat;
+  background-size: 10px;
+  background-position-y: center;
+}
+h2 {
+  color: #002F5A;
+  text-align: center;
+}
+
+.google-sign {
+  border: none;
+  color: #E3E5E8;
+  display: block;
+  margin: auto;
+  background-color: #E3E5E8;
+}
+.google-img {
+
+  width: 50%;
+
+}
+

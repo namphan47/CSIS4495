@@ -5,11 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build-lib": "ng build --prod library-app",
-    "build": "ng build --base-href /admin-app/ --prod --project=admin-app & ng build --base-href /main-app/ --prod --project=main-app",
+    "build": "ng build --prod --project=admin-app & ng build --base-href /main-app/ --prod --project=main-app",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "simulator": "ng serve --project=simulator-app",
     "admin": "ng serve --project=admin-app"
   },
   "private": true,
