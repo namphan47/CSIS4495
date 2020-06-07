@@ -11,12 +11,15 @@ import * as ɵngcc1 from '@angular/common/http';
 import * as ɵngcc2 from '@angular/fire/firestore';
 var ENUM_TABLES;
 (function (ENUM_TABLES) {
-    ENUM_TABLES["customer"] = "customer";
-    ENUM_TABLES["restaurant"] = "restaurant";
-    ENUM_TABLES["meal"] = "meal";
     ENUM_TABLES["courier"] = "courier";
-    ENUM_TABLES["order_item"] = "order_item";
+    ENUM_TABLES["customer"] = "customer";
+    ENUM_TABLES["delivery"] = "delivery";
+    ENUM_TABLES["meal"] = "meal";
     ENUM_TABLES["order"] = "order";
+    ENUM_TABLES["order_item"] = "order_item";
+    ENUM_TABLES["order_status_history"] = "order_status_history";
+    ENUM_TABLES["point"] = "point";
+    ENUM_TABLES["restaurant"] = "restaurant";
 })(ENUM_TABLES || (ENUM_TABLES = {}));
 
 class DefaultComponent {
@@ -284,7 +287,11 @@ let FirebaseDataService = class FirebaseDataService {
             [ENUM_TABLES.order_item]: {
                 name: ENUM_TABLES.order_item,
                 class: OrderItem
-            }
+            },
+            [ENUM_TABLES.order_status_history]: {
+                name: ENUM_TABLES.order_status_history,
+                class: OrderItem
+            },
         };
     }
     /**
@@ -295,7 +302,7 @@ let FirebaseDataService = class FirebaseDataService {
         return __awaiter(this, void 0, void 0, function* () {
             // delete tables
             yield Promise.all(_.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
-                yield this.deleteDB(x.name);
+                yield this.deleteTable(x.name);
             })));
             // add tables
             yield Promise.all(_.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
@@ -329,21 +336,6 @@ let FirebaseDataService = class FirebaseDataService {
                     });
                 });
             });
-        });
-    }
-    /**
-     * delete data of collection
-     * @param name
-     * @returns {Promise<void>}
-     */
-    deleteDB(name) {
-        return this._AngularFirestore.collection(name).get().toPromise()
-            .then(res => {
-            return res.forEach((element) => __awaiter(this, void 0, void 0, function* () {
-                yield element.ref.delete();
-                console.log(`delete ${name}`);
-                this._NotificationService.pushMessage(`delete ${name}`);
-            }));
         });
     }
     /**
@@ -561,6 +553,31 @@ let FirebaseDataService = class FirebaseDataService {
         return _.find(this.TABLES, (table) => {
             return table.class.name === className;
         }).name;
+    }
+    /*========delete=========*/
+    deleteOrder() {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.order].name);
+    }
+    deleteOrderItem() {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.order_item].name);
+    }
+    deleteDelivery() {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
+    }
+    /**
+     * delete data of collection
+     * @param name
+     * @returns {Promise<void>}
+     */
+    deleteTable(name) {
+        return this._AngularFirestore.collection(name).get().toPromise()
+            .then(res => {
+            return res.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                yield element.ref.delete();
+                console.log(`delete ${name}`);
+                this._NotificationService.pushMessage(`delete ${name}`);
+            }));
+        });
     }
 };
 FirebaseDataService.ɵfac = function FirebaseDataService_Factory(t) { return new (t || FirebaseDataService)(ɵngcc0.ɵɵinject(ɵngcc2.AngularFirestore), ɵngcc0.ɵɵinject(DummyDataService), ɵngcc0.ɵɵinject(NotificationService)); };

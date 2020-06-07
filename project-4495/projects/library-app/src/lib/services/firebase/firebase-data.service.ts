@@ -13,6 +13,7 @@ import {NotificationService} from '../mics/notification.service';
 import {OrderItem} from '../../constant/models/order_item/order-item';
 import {Order} from '../../constant/models/order/order';
 import {QueryParamModel} from "../../constant/models/query-param-model";
+import {Delivery, OrderStatusHistory} from "../../constant/models";
 
 @Injectable({
   providedIn: 'root'
@@ -39,16 +40,23 @@ export class FirebaseDataService {
       name: ENUM_TABLES.order,
       class: Order
     },
+    [ENUM_TABLES.delivery]: {
+      name: ENUM_TABLES.delivery,
+      class: Delivery
+    },
     [ENUM_TABLES.order_item]: {
       name: ENUM_TABLES.order_item,
       class: OrderItem
-    }
+    },
+    [ENUM_TABLES.order_status_history]: {
+      name: ENUM_TABLES.order_status_history,
+      class: OrderStatusHistory
+    },
   };
 
   constructor(private _AngularFirestore: AngularFirestore,
               private _DummyDataService: DummyDataService,
               private _NotificationService: NotificationService) {
-
   }
 
   /**
@@ -58,7 +66,7 @@ export class FirebaseDataService {
   async resetDB() {
     // delete tables
     await Promise.all(_.map(this.TABLES, async (x) => {
-      await this.deleteDB(x.name);
+      await this.deleteTable(x.name);
     }));
 
     // add tables
@@ -94,22 +102,6 @@ export class FirebaseDataService {
                 .doc(restaurant.id).set(restaurant.getData());
             });
           });
-      });
-  }
-
-  /**
-   * delete data of collection
-   * @param name
-   * @returns {Promise<void>}
-   */
-  private deleteDB(name: string) {
-    return this._AngularFirestore.collection(name).get().toPromise()
-      .then(res => {
-        return res.forEach(async element => {
-          await element.ref.delete();
-          console.log(`delete ${name}`);
-          this._NotificationService.pushMessage(`delete ${name}`);
-        });
       });
   }
 
@@ -348,4 +340,36 @@ export class FirebaseDataService {
       return table.class.name === className;
     }).name;
   }
+
+  /*========delete=========*/
+
+  deleteOrder() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.order].name);
+  }
+
+  deleteOrderItem() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.order_item].name);
+  }
+
+  deleteDelivery() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
+  }
+
+  /**
+   * delete data of collection
+   * @param name
+   * @returns {Promise<void>}
+   */
+  private deleteTable(name: string) {
+    return this._AngularFirestore.collection(name).get().toPromise()
+      .then(res => {
+        return res.forEach(async element => {
+          await element.ref.delete();
+          console.log(`delete ${name}`);
+          this._NotificationService.pushMessage(`delete ${name}`);
+        });
+      });
+  }
+
+
 }

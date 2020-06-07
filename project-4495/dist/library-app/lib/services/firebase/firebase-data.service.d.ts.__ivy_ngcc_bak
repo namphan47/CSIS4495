@@ -39,6 +39,10 @@ export declare class FirebaseDataService {
             name: ENUM_TABLES;
             class: typeof OrderItem;
         };
+        order_status_history: {
+            name: ENUM_TABLES;
+            class: typeof OrderItem;
+        };
     };
     constructor(_AngularFirestore: AngularFirestore, _DummyDataService: DummyDataService, _NotificationService: NotificationService);
     /**
@@ -51,12 +55,6 @@ export declare class FirebaseDataService {
      * @returns {Promise<void>}
      */
     linkRestaurantMealDB(): Promise<void>;
-    /**
-     * delete data of collection
-     * @param name
-     * @returns {Promise<void>}
-     */
-    private deleteDB;
     /**
      * add data of collection
      * @param object
@@ -131,4 +129,13 @@ export declare class FirebaseDataService {
      * @returns {any}
      */
     getTable(className: string): any;
+    deleteOrder(): Promise<void>;
+    deleteOrderItem(): Promise<void>;
+    deleteDelivery(): Promise<void>;
+    /**
+     * delete data of collection
+     * @param name
+     * @returns {Promise<void>}
+     */
+    private deleteTable;
 }

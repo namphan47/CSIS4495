@@ -8,12 +8,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 var ENUM_TABLES;
 (function (ENUM_TABLES) {
-    ENUM_TABLES["customer"] = "customer";
-    ENUM_TABLES["restaurant"] = "restaurant";
-    ENUM_TABLES["meal"] = "meal";
     ENUM_TABLES["courier"] = "courier";
-    ENUM_TABLES["order_item"] = "order_item";
+    ENUM_TABLES["customer"] = "customer";
+    ENUM_TABLES["delivery"] = "delivery";
+    ENUM_TABLES["meal"] = "meal";
     ENUM_TABLES["order"] = "order";
+    ENUM_TABLES["order_item"] = "order_item";
+    ENUM_TABLES["order_status_history"] = "order_status_history";
+    ENUM_TABLES["point"] = "point";
+    ENUM_TABLES["restaurant"] = "restaurant";
 })(ENUM_TABLES || (ENUM_TABLES = {}));
 
 var DefaultComponent = /** @class */ (function () {
@@ -336,6 +339,10 @@ var FirebaseDataService = /** @class */ (function () {
                 name: ENUM_TABLES.order_item,
                 class: OrderItem
             },
+            _a[ENUM_TABLES.order_status_history] = {
+                name: ENUM_TABLES.order_status_history,
+                class: OrderItem
+            },
             _a);
     }
     /**
@@ -352,7 +359,7 @@ var FirebaseDataService = /** @class */ (function () {
                     return [4 /*yield*/, Promise.all(_.map(this.TABLES, function (x) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, this.deleteDB(x.name)];
+                                    case 0: return [4 /*yield*/, this.deleteTable(x.name)];
                                     case 1:
                                         _a.sent();
                                         return [2 /*return*/];
@@ -419,29 +426,6 @@ var FirebaseDataService = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
-        });
-    };
-    /**
-     * delete data of collection
-     * @param name
-     * @returns {Promise<void>}
-     */
-    FirebaseDataService.prototype.deleteDB = function (name) {
-        var _this = this;
-        return this._AngularFirestore.collection(name).get().toPromise()
-            .then(function (res) {
-            return res.forEach(function (element) { return __awaiter(_this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, element.ref.delete()];
-                        case 1:
-                            _a.sent();
-                            console.log("delete " + name);
-                            this._NotificationService.pushMessage("delete " + name);
-                            return [2 /*return*/];
-                    }
-                });
-            }); });
         });
     };
     /**
@@ -708,6 +692,39 @@ var FirebaseDataService = /** @class */ (function () {
         return _.find(this.TABLES, function (table) {
             return table.class.name === className;
         }).name;
+    };
+    /*========delete=========*/
+    FirebaseDataService.prototype.deleteOrder = function () {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.order].name);
+    };
+    FirebaseDataService.prototype.deleteOrderItem = function () {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.order_item].name);
+    };
+    FirebaseDataService.prototype.deleteDelivery = function () {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
+    };
+    /**
+     * delete data of collection
+     * @param name
+     * @returns {Promise<void>}
+     */
+    FirebaseDataService.prototype.deleteTable = function (name) {
+        var _this = this;
+        return this._AngularFirestore.collection(name).get().toPromise()
+            .then(function (res) {
+            return res.forEach(function (element) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, element.ref.delete()];
+                        case 1:
+                            _a.sent();
+                            console.log("delete " + name);
+                            this._NotificationService.pushMessage("delete " + name);
+                            return [2 /*return*/];
+                    }
+                });
+            }); });
+        });
     };
     FirebaseDataService.ctorParameters = function () { return [
         { type: AngularFirestore },

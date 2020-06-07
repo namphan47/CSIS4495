@@ -26,4 +26,14 @@ export class NavComponent implements OnInit {
   stopSimulator() {
     this._SimulatorDataService.stop();
   }
+
+  generateOrder() {
+
+  }
+
+  cleanOrder() {
+    this._FirebaseDataService.deleteOrderItem();
+    this._FirebaseDataService.deleteOrder();
+    this._FirebaseDataService.deleteDelivery();
+  }
 }
