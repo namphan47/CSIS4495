@@ -1,21 +1,24 @@
 import {Injectable} from '@angular/core';
 import _ from 'lodash';
-import {first, tap} from 'rxjs/operators';
 import {ENUM_TABLES} from "../../constant/const-value";
 import {IDefaultModelConstructor} from "../../constant/models/i-default-model";
 import {UtilsService} from "../mics/utils.service";
+
+import restaurantData from "../../dummy/restaurant.json";
+import courierData from "../../dummy/courier.json";
+import mealData from "../../dummy/meal.json";
+import customerData from "../../dummy/customer.json";
+import {of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DummyDataService {
-  static TABLES = ENUM_TABLES;
-  readonly CONSTANT_PATH = 'assets/dummy/';
   readonly JSONS = {
-    [ENUM_TABLES.restaurant]: 'restaurant.json',
-    [ENUM_TABLES.customer]: 'customer.json',
-    [ENUM_TABLES.meal]: 'meal.json',
-    [ENUM_TABLES.courier]: 'courier.json',
+    [ENUM_TABLES.restaurant]: restaurantData,
+    [ENUM_TABLES.customer]: customerData,
+    [ENUM_TABLES.meal]: mealData,
+    [ENUM_TABLES.courier]: courierData,
   };
 
   constructor(private _UtilsService: UtilsService) {
@@ -25,13 +28,10 @@ export class DummyDataService {
     if (!this.JSONS[table]) {
       return Promise.resolve([]);
     }
-    return this._UtilsService.getJSON(this.CONSTANT_PATH + this.JSONS[table])
-      .pipe(
-        tap(),
-        first()
-      )
+    return of()
       .toPromise()
-      .then(data => {
+      .then(() => {
+        const data = this.JSONS[table];
         const array = [];
         _.map(data, (x) => {
           const model = new modelClass(x);

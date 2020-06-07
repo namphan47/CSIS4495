@@ -10,6 +10,7 @@ import { NotificationService } from '../mics/notification.service';
 import { OrderItem } from '../../constant/models/order_item/order-item';
 import { Order } from '../../constant/models/order/order';
 import { QueryParamModel } from "../../constant/models/query-param-model";
+import { Delivery, OrderStatusHistory } from "../../constant/models";
 export declare class FirebaseDataService {
     private _AngularFirestore;
     private _DummyDataService;
@@ -35,13 +36,17 @@ export declare class FirebaseDataService {
             name: ENUM_TABLES;
             class: typeof Order;
         };
+        delivery: {
+            name: ENUM_TABLES;
+            class: typeof Delivery;
+        };
         order_item: {
             name: ENUM_TABLES;
             class: typeof OrderItem;
         };
         order_status_history: {
             name: ENUM_TABLES;
-            class: typeof OrderItem;
+            class: typeof OrderStatusHistory;
         };
     };
     constructor(_AngularFirestore: AngularFirestore, _DummyDataService: DummyDataService, _NotificationService: NotificationService);

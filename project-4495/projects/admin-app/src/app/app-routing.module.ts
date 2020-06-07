@@ -5,6 +5,7 @@ import {MapComponent} from '@app/routes/map/map.component';
 import {CustomerComponent} from '@app/routes/customer/customer.component';
 import {OrderComponent} from '@app/routes/order/order.component';
 import {CourierComponent} from '@app/routes/courier/courier.component';
+import {DeliveryComponent} from "@app/routes/delivery/delivery.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       {path: 'customer', component: CustomerComponent},
       {path: 'order', component: OrderComponent},
       {path: 'courier', component: CourierComponent},
+      {path: 'delivery', component: DeliveryComponent},
     ]
   },
   {path: '', redirectTo: 'admin', pathMatch: 'full'},

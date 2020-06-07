@@ -8,6 +8,7 @@ import {FirebaseDataService} from "library-app";
 })
 export class MapComponent implements OnInit {
   options: any = {
+    center: "New Westminter, BC, Canada",
     styles: [
       {
         featureType: "poi",
