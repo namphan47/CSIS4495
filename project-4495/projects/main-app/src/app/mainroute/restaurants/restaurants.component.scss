@@ -1,7 +1,7 @@
 #body{
 
   background:#DADDE2;
-
+  font-family: Montserrat, Bold;
 }
 
 a.list1
@@ -17,4 +17,25 @@ div.tile
 div.map
 {
   border: 10px solid white;
+  width:30vw;
+  height: 410px;
+  position: fixed;
+
 }
+#gmap{
+ max-width: 38vw;
+  height: 390px;
+
+}
+.hoverable{
+  border: solid white;
+  background-color: #fff;
+  color: black;
+}
+.hoverable:hover{
+
+  box-shadow: 30px 30px 30px rgb(128, 126, 126);
+  transform: translate3d(0,-2px,0);
+
+}
+

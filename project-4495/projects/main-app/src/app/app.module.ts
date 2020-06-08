@@ -21,7 +21,7 @@ import {NguiMapModule} from "@ngui/map";
     HttpClientModule,
     MainrouteModule,
     AppRoutingModule,
-    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=MY_GOOGLE_API_KEY'}),
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc'}),
   ],
   providers: [],
   bootstrap: [AppComponent]
