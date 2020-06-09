@@ -13,7 +13,8 @@ import {NotificationService} from '../mics/notification.service';
 import {OrderItem} from '../../constant/models/order_item/order-item';
 import {Order} from '../../constant/models/order/order';
 import {QueryParamModel} from "../../constant/models/query-param-model";
-import {Delivery, OrderStatusHistory} from "../../constant/models";
+import {Delivery} from "../../constant/models";
+import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 
 @Injectable({
   providedIn: 'root'
@@ -48,10 +49,10 @@ export class FirebaseDataService {
       name: ENUM_TABLES.order_item,
       class: OrderItem
     },
-    [ENUM_TABLES.order_status_history]: {
-      name: ENUM_TABLES.order_status_history,
-      class: OrderStatusHistory
-    },
+    [ENUM_TABLES.delivery_status_history]: {
+      name: ENUM_TABLES.delivery_status_history,
+      class: DeliveryStatusHistory
+    }
   };
 
   constructor(private _AngularFirestore: AngularFirestore,
@@ -318,6 +319,7 @@ export class FirebaseDataService {
     return collection.doc(id).set(object.getData())
       .then(() => {
         object.id = id;
+        this._NotificationService.pushMessage(`Created ${object.constructor.name}`);
       });
   }
 

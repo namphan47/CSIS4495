@@ -1,13 +1,32 @@
 import { FirebaseDataService } from "../firebase/firebase-data.service";
+import { Customer } from "../../constant/models/customer/customer";
+import { Restaurant } from "../../constant/models/restaurant/restaurant";
+import { NotificationService } from "../mics/notification.service";
+import { Courier } from "../../constant/models";
 export declare class SimulatorDataService {
     private _FirebaseDataService;
-    constructor(_FirebaseDataService: FirebaseDataService);
+    private _NotificationService;
+    constructor(_FirebaseDataService: FirebaseDataService, _NotificationService: NotificationService);
     /**
      * start simulator
      * @returns {Promise<void>}
      */
     start(): Promise<void>;
     stop(): void;
+    /**
+     * randomly generate n number of orders
+     * @param n
+     * @returns {Promise<void>}
+     */
+    generateOrder(n?: number): Promise<void>;
+    /**
+     * generate 1 order, 1 order item, 1 delivery, 1 delivery status history
+     * @param customers
+     * @param restaurants
+     * @param couriers
+     * @returns {Promise<void>}
+     */
+    generateOneOrder(customers: Customer[], restaurants: Restaurant[], couriers: Courier[]): Promise<void>;
     /**
      * get random
      * @param value

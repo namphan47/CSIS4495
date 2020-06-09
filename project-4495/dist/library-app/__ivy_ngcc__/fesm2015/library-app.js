@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, tap, first } from 'rxjs/operators';
+import moment from 'moment';
 
 import * as ɵngcc0 from '@angular/core';
 import * as ɵngcc1 from '@angular/common/http';
@@ -17,9 +18,9 @@ var ENUM_TABLES;
     ENUM_TABLES["meal"] = "meal";
     ENUM_TABLES["order"] = "order";
     ENUM_TABLES["order_item"] = "order_item";
-    ENUM_TABLES["order_status_history"] = "order_status_history";
     ENUM_TABLES["point"] = "point";
     ENUM_TABLES["restaurant"] = "restaurant";
+    ENUM_TABLES["delivery_status_history"] = "delivery_status_history";
 })(ENUM_TABLES || (ENUM_TABLES = {}));
 
 class DefaultComponent {
@@ -112,7 +113,34 @@ class Customer extends DefaultModel {
     }
 }
 
-class Delivery {
+class Delivery extends DefaultModel {
+    constructor(data) {
+        super(data);
+        this.id = '';
+        this.points = [];
+        this.courier_id = '';
+        this.order_id = '';
+        super.copyInto(data);
+    }
+}
+
+var Delivery_Status;
+(function (Delivery_Status) {
+    Delivery_Status[Delivery_Status["ORDERED"] = 0] = "ORDERED";
+    Delivery_Status[Delivery_Status["PREPARING"] = 1] = "PREPARING";
+    Delivery_Status[Delivery_Status["WAIT_FOR_PICK_UP"] = 2] = "WAIT_FOR_PICK_UP";
+    Delivery_Status[Delivery_Status["DELIVERING"] = 3] = "DELIVERING";
+    Delivery_Status[Delivery_Status["DELIVERED"] = 4] = "DELIVERED";
+})(Delivery_Status || (Delivery_Status = {}));
+class DeliveryStatusHistory extends DefaultModel {
+    constructor(data) {
+        super(data);
+        this.id = '';
+        this.status = null;
+        this.delivery_id = '';
+        this.date_time = 0;
+        super.copyInto(data);
+    }
 }
 
 class Meal extends DefaultModel {
@@ -149,12 +177,6 @@ class OrderItem extends DefaultModel {
         this.quantity = 0;
         super.copyInto(data);
     }
-}
-
-class OrderStatusHistory {
-}
-
-class OrderStatusType {
 }
 
 class Point {
@@ -894,7 +916,6 @@ var customerData = [
 let DummyDataService = class DummyDataService {
     constructor(_UtilsService) {
         this._UtilsService = _UtilsService;
-        this.CONSTANT_PATH = 'assets/dummy/';
         this.JSONS = {
             [ENUM_TABLES.restaurant]: restaurantData,
             [ENUM_TABLES.customer]: customerData,
@@ -917,20 +938,6 @@ let DummyDataService = class DummyDataService {
             });
             return array;
         });
-        // return this._UtilsService.getJSON(this.CONSTANT_PATH + this.JSONS[table])
-        //   .pipe(
-        //     tap(),
-        //     first()
-        //   )
-        //   .toPromise()
-        //   .then(data => {
-        //     const array = [];
-        //     _.map(data, (x) => {
-        //       const model = new modelClass(x);
-        //       array.push(model);
-        //     });
-        //     return array;
-        //   });
     }
 };
 DummyDataService.ɵfac = function DummyDataService_Factory(t) { return new (t || DummyDataService)(ɵngcc0.ɵɵinject(UtilsService)); };
@@ -990,10 +997,10 @@ let FirebaseDataService = class FirebaseDataService {
                 name: ENUM_TABLES.order_item,
                 class: OrderItem
             },
-            [ENUM_TABLES.order_status_history]: {
-                name: ENUM_TABLES.order_status_history,
-                class: OrderStatusHistory
-            },
+            [ENUM_TABLES.delivery_status_history]: {
+                name: ENUM_TABLES.delivery_status_history,
+                class: DeliveryStatusHistory
+            }
         };
     }
     /**
@@ -1236,6 +1243,7 @@ let FirebaseDataService = class FirebaseDataService {
         return collection.doc(id).set(object.getData())
             .then(() => {
             object.id = id;
+            this._NotificationService.pushMessage(`Created ${object.constructor.name}`);
         });
     }
     /**
@@ -1291,8 +1299,9 @@ FirebaseDataService.ctorParameters = () => [
 FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
 
 let SimulatorDataService = class SimulatorDataService {
-    constructor(_FirebaseDataService) {
+    constructor(_FirebaseDataService, _NotificationService) {
         this._FirebaseDataService = _FirebaseDataService;
+        this._NotificationService = _NotificationService;
     }
     /**
      * start simulator
@@ -1300,37 +1309,77 @@ let SimulatorDataService = class SimulatorDataService {
      */
     start() {
         return __awaiter(this, void 0, void 0, function* () {
-            Promise.all([this._FirebaseDataService.getCustomer(),
-                this._FirebaseDataService.getRestaurant()])
-                .then(([customers, restaurants]) => __awaiter(this, void 0, void 0, function* () {
-                console.log(customers, restaurants);
-                const customer = this.getRandom(customers);
-                const restaurant = this.getRandom(restaurants);
-                const meal = this.getRandom(restaurant.meals);
-                console.log(customer, restaurant, meal);
-                console.log(customer instanceof DefaultModel);
-                // create order
-                const order = new Order({
-                    date_time: new Date().getTime(),
-                    restaurant_id: restaurant.id,
-                    customer_id: customer.id
-                });
-                yield this._FirebaseDataService.createWithObject(order);
-                // create order item
-                const orderItem = new OrderItem({
-                    meal_id: meal.id,
-                    quantity: this.getRandom(5),
-                    order_id: order.id
-                });
-                orderItem.meal = meal;
-                orderItem.order = order;
-                yield this._FirebaseDataService.createWithObject(orderItem);
-                order.total += orderItem.meal.price * orderItem.quantity;
-                this._FirebaseDataService.updateWithObject(order);
-            }));
         });
     }
     stop() {
+    }
+    /**
+     * randomly generate n number of orders
+     * @param n
+     * @returns {Promise<void>}
+     */
+    generateOrder(n = 1) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this._NotificationService.pushMessage(`generate ${n} order`);
+            return Promise.all([
+                this._FirebaseDataService.getCustomer(),
+                this._FirebaseDataService.getRestaurant(),
+                this._FirebaseDataService.getCourier(),
+            ])
+                .then(([customers, restaurants, couriers]) => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < n; i++) {
+                    yield this.generateOneOrder(customers, restaurants, couriers);
+                }
+                return;
+            }));
+        });
+    }
+    /**
+     * generate 1 order, 1 order item, 1 delivery, 1 delivery status history
+     * @param customers
+     * @param restaurants
+     * @param couriers
+     * @returns {Promise<void>}
+     */
+    generateOneOrder(customers, restaurants, couriers) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const customer = this.getRandom(customers);
+            const restaurant = this.getRandom(restaurants);
+            const meal = this.getRandom(restaurant.meals);
+            const courier = this.getRandom(couriers);
+            // create order
+            const order = new Order({
+                date_time: new Date().getTime(),
+                restaurant_id: restaurant.id,
+                customer_id: customer.id
+            });
+            yield this._FirebaseDataService.createWithObject(order);
+            // create order item
+            const orderItem = new OrderItem({
+                meal_id: meal.id,
+                quantity: this.getRandom(5),
+                order_id: order.id
+            });
+            orderItem.meal = meal;
+            orderItem.order = order;
+            yield this._FirebaseDataService.createWithObject(orderItem);
+            order.total += orderItem.meal.price * orderItem.quantity;
+            this._FirebaseDataService.updateWithObject(order);
+            // create delivery
+            const delivery = new Delivery({
+                points: [],
+                courier_id: courier.id,
+                order_id: order.id
+            });
+            yield this._FirebaseDataService.createWithObject(delivery);
+            // create delivery status
+            const deliveryStatusHistory = new DeliveryStatusHistory({
+                status: Delivery_Status.ORDERED,
+                delivery_id: delivery.id,
+                date_time: moment().valueOf()
+            });
+            yield this._FirebaseDataService.createWithObject(deliveryStatusHistory);
+        });
     }
     /**
      * get random
@@ -1339,7 +1388,7 @@ let SimulatorDataService = class SimulatorDataService {
      */
     getRandom(value) {
         if (!isNaN(Number(value))) {
-            return _.random(0, value);
+            return _.random(0, value) + 1;
         }
         else {
             value = value;
@@ -1348,11 +1397,12 @@ let SimulatorDataService = class SimulatorDataService {
         return null;
     }
 };
-SimulatorDataService.ɵfac = function SimulatorDataService_Factory(t) { return new (t || SimulatorDataService)(ɵngcc0.ɵɵinject(FirebaseDataService)); };
+SimulatorDataService.ɵfac = function SimulatorDataService_Factory(t) { return new (t || SimulatorDataService)(ɵngcc0.ɵɵinject(FirebaseDataService), ɵngcc0.ɵɵinject(NotificationService)); };
 SimulatorDataService.ctorParameters = () => [
-    { type: FirebaseDataService }
+    { type: FirebaseDataService },
+    { type: NotificationService }
 ];
-SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService)); }, token: SimulatorDataService, providedIn: "root" });
+SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService)); }, token: SimulatorDataService, providedIn: "root" });
 
 let LibraryAppService = class LibraryAppService {
     constructor() {
@@ -1420,7 +1470,7 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: FirebaseDataService }]; }, null); })();
+    }], function () { return [{ type: FirebaseDataService }, { type: NotificationService }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(LibraryAppService, [{
         type: Injectable,
         args: [{
@@ -1462,6 +1512,6 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
  * Generated bundle index. Do not edit.
  */
 
-export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, Meal, NotificationService, Order, OrderItem, OrderStatusHistory, OrderStatusType, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
+export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
 
 //# sourceMappingURL=library-app.js.map

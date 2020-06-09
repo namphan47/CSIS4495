@@ -3,7 +3,6 @@ import { IDefaultModelConstructor } from "../../constant/models/i-default-model"
 import { UtilsService } from "../mics/utils.service";
 export declare class DummyDataService {
     private _UtilsService;
-    readonly CONSTANT_PATH = "assets/dummy/";
     readonly JSONS: {
         restaurant: {
             name: string;
