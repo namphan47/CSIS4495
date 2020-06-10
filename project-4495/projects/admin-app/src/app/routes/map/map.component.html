@@ -1,5 +1,38 @@
-<div class="">
-  <ngui-map class="map-wrapper" center= "New Westminter, BC, Canada" [options]="options">
+<div class="map-page-wrapper">
+  <div class="info-group d-flex p-3 justify-content-between">
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title">ORDERED</h5>
+        <h3>{{orderCounts[Delivery_Status.ORDERED]}}</h3>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title">PREPARING</h5>
+        <h3>{{orderCounts[Delivery_Status.PREPARING]}}</h3>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title">WAIT_FOR_PICK_UP</h5>
+        <h3>{{orderCounts[Delivery_Status.WAIT_FOR_PICK_UP]}}</h3>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title">DELIVERING</h5>
+        <h3>{{orderCounts[Delivery_Status.DELIVERING]}}</h3>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <h5 class="card-title">DELIVERED</h5>
+        <h3>{{orderCounts[Delivery_Status.DELIVERED]}}</h3>
+      </div>
+    </div>
+  </div>
+  <ngui-map class="map-wrapper" center="New Westminter, BC, Canada" [options]="options"
+            (mapReady$)="ready($event)">
     <custom-marker position="49.209773, -122.922241" class="custom-icon location">
       <i class="fas fa-map-marker-alt "></i>
     </custom-marker>

@@ -1,7 +1,7 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
+import ___default, { maxBy } from 'lodash';
 import { __decorate, __awaiter } from 'tslib';
 import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
-import _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, tap, first } from 'rxjs/operators';
@@ -120,7 +120,13 @@ class Delivery extends DefaultModel {
         this.points = [];
         this.courier_id = '';
         this.order_id = '';
+        this.status_history = [];
+        this.currentStatus = null;
         super.copyInto(data);
+    }
+    setStatusHistory(histories) {
+        this.status_history = histories;
+        this.currentStatus = maxBy(histories, (x) => x.date_time);
     }
 }
 
@@ -932,7 +938,7 @@ let DummyDataService = class DummyDataService {
             .then(() => {
             const data = this.JSONS[table];
             const array = [];
-            _.map(data, (x) => {
+            ___default.map(data, (x) => {
                 const model = new modelClass(x);
                 array.push(model);
             });
@@ -1010,11 +1016,11 @@ let FirebaseDataService = class FirebaseDataService {
     resetDB() {
         return __awaiter(this, void 0, void 0, function* () {
             // delete tables
-            yield Promise.all(_.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
+            yield Promise.all(___default.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
                 yield this.deleteTable(x.name);
             })));
             // add tables
-            yield Promise.all(_.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
+            yield Promise.all(___default.map(this.TABLES, (x) => __awaiter(this, void 0, void 0, function* () {
                 yield this.addDB(x);
             })));
             // converseMeal
@@ -1035,9 +1041,9 @@ let FirebaseDataService = class FirebaseDataService {
                 this.getMeals()
                     .then((meals) => {
                     // console.log(meals);
-                    _.map(restaurants, (restaurant) => {
+                    ___default.map(restaurants, (restaurant) => {
                         // console.log(restaurant);
-                        restaurant.meal_ids = _.map(_.filter(meals, (meal) => {
+                        restaurant.meal_ids = ___default.map(___default.filter(meals, (meal) => {
                             return restaurant.name === meal.restaurant_name;
                         }), x => x.id);
                         this._AngularFirestore.collection(this.TABLES[ENUM_TABLES.restaurant].name)
@@ -1059,7 +1065,7 @@ let FirebaseDataService = class FirebaseDataService {
                 return;
             }
             const itemsCollection = this._AngularFirestore.collection(object.name);
-            return yield Promise.all(_.map(rs, (x) => __awaiter(this, void 0, void 0, function* () {
+            return yield Promise.all(___default.map(rs, (x) => __awaiter(this, void 0, void 0, function* () {
                 yield itemsCollection.add(x.getData());
                 console.log(`add ${object.name}`);
                 this._NotificationService.pushMessage(`add ${object.name}`);
@@ -1083,6 +1089,28 @@ let FirebaseDataService = class FirebaseDataService {
             .then((rs) => rs);
     }
     /**
+     * get delivery data
+     * @returns {Promise<Delivery[]>}
+     */
+    getDelivery() {
+        return this.getDB(this.TABLES[ENUM_TABLES.delivery])
+            .then((rs) => rs)
+            .then((rs) => {
+            return this.getDeliveryStatusHistory()
+                .then((histories) => {
+                console.log(histories);
+                ___default.map(rs, (delivery) => {
+                    delivery.setStatusHistory(___default.filter(histories, (x) => x.delivery_id === delivery.id));
+                });
+                return rs;
+            });
+        });
+    }
+    getDeliveryStatusHistory() {
+        return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
+            .then((rs) => rs);
+    }
+    /**
      * get restaurant data
      * @returns {Promise<Restaurant[]>}
      */
@@ -1091,8 +1119,8 @@ let FirebaseDataService = class FirebaseDataService {
             .then((restaurants) => {
             return this.getMeals()
                 .then((meals) => {
-                _.map(restaurants, (restaurant) => {
-                    restaurant.meals = _.filter(meals, (meal) => {
+                ___default.map(restaurants, (restaurant) => {
+                    restaurant.meals = ___default.filter(meals, (meal) => {
                         return restaurant.meal_ids.indexOf(meal.id) >= 0;
                     });
                 });
@@ -1118,7 +1146,7 @@ let FirebaseDataService = class FirebaseDataService {
             return this.getDB(this.TABLES[ENUM_TABLES.order_item], queryParams)
                 .then((rs) => rs)
                 .then((orderItems) => {
-                _.map(orderItems, (orderItem) => __awaiter(this, void 0, void 0, function* () {
+                ___default.map(orderItems, (orderItem) => __awaiter(this, void 0, void 0, function* () {
                     // get meal
                     yield this.getDBWithId(this.TABLES[ENUM_TABLES.meal], orderItem.meal_id)
                         .then((meal) => {
@@ -1139,7 +1167,7 @@ let FirebaseDataService = class FirebaseDataService {
                 .then((rs) => rs)
                 .then((orders) => {
                 orders = orders;
-                _.map(orders, (order) => __awaiter(this, void 0, void 0, function* () {
+                ___default.map(orders, (order) => __awaiter(this, void 0, void 0, function* () {
                     // get customer of each order
                     yield this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
                         .then((customer) => {
@@ -1169,7 +1197,7 @@ let FirebaseDataService = class FirebaseDataService {
         const collection = this._AngularFirestore.collection(object.name, ref => {
             let newRef = null;
             if (!!queryParams) {
-                _.map(queryParams, (x) => {
+                ___default.map(queryParams, (x) => {
                     newRef = newRef ? newRef.where(x.key, x.operation, x.value) : ref.where(x.key, x.operation, x.value);
                 });
             }
@@ -1183,7 +1211,7 @@ let FirebaseDataService = class FirebaseDataService {
             // update id
             data['id'] = id;
             return data;
-        })), map((items) => _.filter(items, doc => {
+        })), map((items) => ___default.filter(items, doc => {
             if (!!id) {
                 return doc.id === id;
             }
@@ -1225,7 +1253,7 @@ let FirebaseDataService = class FirebaseDataService {
      */
     convertToClassObject(data, modelClass) {
         const array = [];
-        _.map(data, (x) => {
+        ___default.map(data, (x) => {
             const model = new modelClass(x);
             array.push(model);
         });
@@ -1260,7 +1288,7 @@ let FirebaseDataService = class FirebaseDataService {
      * @returns {any}
      */
     getTable(className) {
-        return _.find(this.TABLES, (table) => {
+        return ___default.find(this.TABLES, (table) => {
             return table.class.name === className;
         }).name;
     }
@@ -1388,11 +1416,11 @@ let SimulatorDataService = class SimulatorDataService {
      */
     getRandom(value) {
         if (!isNaN(Number(value))) {
-            return _.random(0, value) + 1;
+            return ___default.random(0, value) + 1;
         }
         else {
             value = value;
-            return value[_.random(0, value.length - 1)];
+            return value[___default.random(0, value.length - 1)];
         }
         return null;
     }

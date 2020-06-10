@@ -78,6 +78,12 @@ export declare class FirebaseDataService {
      */
     getCourier(): Promise<Courier[]>;
     /**
+     * get delivery data
+     * @returns {Promise<Delivery[]>}
+     */
+    getDelivery(): Promise<Delivery[]>;
+    getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]>;
+    /**
      * get restaurant data
      * @returns {Promise<Restaurant[]>}
      */

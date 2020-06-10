@@ -146,6 +146,30 @@ export class FirebaseDataService {
   }
 
   /**
+   * get delivery data
+   * @returns {Promise<Delivery[]>}
+   */
+  getDelivery(): Promise<Delivery[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery])
+      .then((rs) => rs as unknown as Delivery[])
+      .then((rs) => {
+        return this.getDeliveryStatusHistory()
+          .then((histories) => {
+            console.log(histories);
+            _.map(rs, (delivery: Delivery) => {
+              delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
+            });
+            return rs;
+          })
+      });
+  }
+
+  getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
+      .then((rs) => rs as unknown as DeliveryStatusHistory[]);
+  }
+
+  /**
    * get restaurant data
    * @returns {Promise<Restaurant[]>}
    */

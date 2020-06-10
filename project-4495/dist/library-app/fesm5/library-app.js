@@ -1,7 +1,7 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
 import { __extends, __decorate, __awaiter, __generator, __read } from 'tslib';
+import ___default, { maxBy } from 'lodash';
 import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
-import _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, tap, first } from 'rxjs/operators';
@@ -130,9 +130,15 @@ var Delivery = /** @class */ (function (_super) {
         _this.points = [];
         _this.courier_id = '';
         _this.order_id = '';
+        _this.status_history = [];
+        _this.currentStatus = null;
         _super.prototype.copyInto.call(_this, data);
         return _this;
     }
+    Delivery.prototype.setStatusHistory = function (histories) {
+        this.status_history = histories;
+        this.currentStatus = maxBy(histories, function (x) { return x.date_time; });
+    };
     return Delivery;
 }(DefaultModel));
 
@@ -970,7 +976,7 @@ var DummyDataService = /** @class */ (function () {
             .then(function () {
             var data = _this.JSONS[table];
             var array = [];
-            _.map(data, function (x) {
+            ___default.map(data, function (x) {
                 var model = new modelClass(x);
                 array.push(model);
             });
@@ -1063,7 +1069,7 @@ var FirebaseDataService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: 
                     // delete tables
-                    return [4 /*yield*/, Promise.all(_.map(this.TABLES, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                    return [4 /*yield*/, Promise.all(___default.map(this.TABLES, function (x) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: return [4 /*yield*/, this.deleteTable(x.name)];
@@ -1077,7 +1083,7 @@ var FirebaseDataService = /** @class */ (function () {
                         // delete tables
                         _a.sent();
                         // add tables
-                        return [4 /*yield*/, Promise.all(_.map(this.TABLES, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                        return [4 /*yield*/, Promise.all(___default.map(this.TABLES, function (x) { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0: return [4 /*yield*/, this.addDB(x)];
@@ -1118,9 +1124,9 @@ var FirebaseDataService = /** @class */ (function () {
                                 _this.getMeals()
                                     .then(function (meals) {
                                     // console.log(meals);
-                                    _.map(restaurants, function (restaurant) {
+                                    ___default.map(restaurants, function (restaurant) {
                                         // console.log(restaurant);
-                                        restaurant.meal_ids = _.map(_.filter(meals, function (meal) {
+                                        restaurant.meal_ids = ___default.map(___default.filter(meals, function (meal) {
                                             return restaurant.name === meal.restaurant_name;
                                         }), function (x) { return x.id; });
                                         _this._AngularFirestore.collection(_this.TABLES[ENUM_TABLES.restaurant].name)
@@ -1153,7 +1159,7 @@ var FirebaseDataService = /** @class */ (function () {
                             return [2 /*return*/];
                         }
                         itemsCollection = this._AngularFirestore.collection(object.name);
-                        return [4 /*yield*/, Promise.all(_.map(rs, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                        return [4 /*yield*/, Promise.all(___default.map(rs, function (x) { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0: return [4 /*yield*/, itemsCollection.add(x.getData())];
@@ -1187,6 +1193,29 @@ var FirebaseDataService = /** @class */ (function () {
             .then(function (rs) { return rs; });
     };
     /**
+     * get delivery data
+     * @returns {Promise<Delivery[]>}
+     */
+    FirebaseDataService.prototype.getDelivery = function () {
+        var _this = this;
+        return this.getDB(this.TABLES[ENUM_TABLES.delivery])
+            .then(function (rs) { return rs; })
+            .then(function (rs) {
+            return _this.getDeliveryStatusHistory()
+                .then(function (histories) {
+                console.log(histories);
+                ___default.map(rs, function (delivery) {
+                    delivery.setStatusHistory(___default.filter(histories, function (x) { return x.delivery_id === delivery.id; }));
+                });
+                return rs;
+            });
+        });
+    };
+    FirebaseDataService.prototype.getDeliveryStatusHistory = function () {
+        return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
+            .then(function (rs) { return rs; });
+    };
+    /**
      * get restaurant data
      * @returns {Promise<Restaurant[]>}
      */
@@ -1196,8 +1225,8 @@ var FirebaseDataService = /** @class */ (function () {
             .then(function (restaurants) {
             return _this.getMeals()
                 .then(function (meals) {
-                _.map(restaurants, function (restaurant) {
-                    restaurant.meals = _.filter(meals, function (meal) {
+                ___default.map(restaurants, function (restaurant) {
+                    restaurant.meals = ___default.filter(meals, function (meal) {
                         return restaurant.meal_ids.indexOf(meal.id) >= 0;
                     });
                 });
@@ -1225,7 +1254,7 @@ var FirebaseDataService = /** @class */ (function () {
                 return [2 /*return*/, this.getDB(this.TABLES[ENUM_TABLES.order_item], queryParams)
                         .then(function (rs) { return rs; })
                         .then(function (orderItems) {
-                        _.map(orderItems, function (orderItem) { return __awaiter(_this, void 0, void 0, function () {
+                        ___default.map(orderItems, function (orderItem) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: 
@@ -1258,7 +1287,7 @@ var FirebaseDataService = /** @class */ (function () {
                         .then(function (rs) { return rs; })
                         .then(function (orders) {
                         orders = orders;
-                        _.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
+                        ___default.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: 
@@ -1305,7 +1334,7 @@ var FirebaseDataService = /** @class */ (function () {
         var collection = this._AngularFirestore.collection(object.name, function (ref) {
             var newRef = null;
             if (!!queryParams) {
-                _.map(queryParams, function (x) {
+                ___default.map(queryParams, function (x) {
                     newRef = newRef ? newRef.where(x.key, x.operation, x.value) : ref.where(x.key, x.operation, x.value);
                 });
             }
@@ -1319,7 +1348,7 @@ var FirebaseDataService = /** @class */ (function () {
             // update id
             data['id'] = id;
             return data;
-        }); }), map(function (items) { return _.filter(items, function (doc) {
+        }); }), map(function (items) { return ___default.filter(items, function (doc) {
             if (!!id) {
                 return doc.id === id;
             }
@@ -1362,7 +1391,7 @@ var FirebaseDataService = /** @class */ (function () {
      */
     FirebaseDataService.prototype.convertToClassObject = function (data, modelClass) {
         var array = [];
-        _.map(data, function (x) {
+        ___default.map(data, function (x) {
             var model = new modelClass(x);
             array.push(model);
         });
@@ -1398,7 +1427,7 @@ var FirebaseDataService = /** @class */ (function () {
      * @returns {any}
      */
     FirebaseDataService.prototype.getTable = function (className) {
-        return _.find(this.TABLES, function (table) {
+        return ___default.find(this.TABLES, function (table) {
             return table.class.name === className;
         }).name;
     };
@@ -1574,11 +1603,11 @@ var SimulatorDataService = /** @class */ (function () {
      */
     SimulatorDataService.prototype.getRandom = function (value) {
         if (!isNaN(Number(value))) {
-            return _.random(0, value) + 1;
+            return ___default.random(0, value) + 1;
         }
         else {
             value = value;
-            return value[_.random(0, value.length - 1)];
+            return value[___default.random(0, value.length - 1)];
         }
         return null;
     };
