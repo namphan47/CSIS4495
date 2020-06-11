@@ -1,0 +1,57 @@
+body{
+
+    background:#DADDE2;
+    font-family: Montserrat, Bold;
+    
+ }
+ 
+ a.list1
+ {
+    text-decoration: none;
+ 
+ }
+ 
+ div.tile
+ {
+    font-weight: bold;
+ }
+ 
+ div.map
+ {
+    border: 10px solid white;
+    height: 74vh;
+    width: 30vw;
+ }
+    
+ .hoverable{
+    border: solid white;
+    background-color: #fff;
+    color: black;
+  }
+  .hoverable:hover{
+  
+    box-shadow: 30px 30px 30px rgb(128, 126, 126);
+    transform: translate3d(0,-2px,0);
+  
+  }
+ 
+  .restaurant
+  {
+    width: 5vw;  
+  }
+
+  .menulist
+  {
+    width: 40vw;  
+  }
+
+  .mapbox
+  {
+    width: 40vw;  
+   
+  }
+
+  iframe{
+      height: 70.5vh;
+      width: 28.5vw;
+  }
