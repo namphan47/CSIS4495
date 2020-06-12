@@ -2,16 +2,23 @@ import { FirebaseDataService } from "../firebase/firebase-data.service";
 import { Customer } from "../../constant/models/customer/customer";
 import { Restaurant } from "../../constant/models/restaurant/restaurant";
 import { NotificationService } from "../mics/notification.service";
-import { Courier } from "../../constant/models";
+import { Courier, Delivery } from "../../constant/models";
+declare enum SIMULATOR_MESSAGE {
+    START = "simulator start",
+    STEP = "simulator step",
+    STOP = "simulator stop"
+}
 export declare class SimulatorDataService {
     private _FirebaseDataService;
     private _NotificationService;
+    static MESSAGE: typeof SIMULATOR_MESSAGE;
     constructor(_FirebaseDataService: FirebaseDataService, _NotificationService: NotificationService);
     /**
      * start simulator
      * @returns {Promise<void>}
      */
-    start(): Promise<void>;
+    start(time?: number): Promise<void>;
+    handleDelivery(delivery: Delivery): Promise<void>;
     stop(): void;
     /**
      * randomly generate n number of orders
@@ -34,3 +41,4 @@ export declare class SimulatorDataService {
      */
     getRandom(value: any[] | number): any;
 }
+export {};

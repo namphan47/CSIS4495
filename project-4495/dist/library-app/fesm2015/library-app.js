@@ -117,6 +117,7 @@ class Delivery extends DefaultModel {
         this.order_id = '';
         this.status_history = [];
         this.currentStatus = null;
+        this.timeToNextStatus = 0;
         super.copyInto(data);
     }
     setStatusHistory(histories) {
@@ -1099,13 +1100,12 @@ let FirebaseDataService = class FirebaseDataService {
      * get delivery data
      * @returns {Promise<Delivery[]>}
      */
-    getDelivery() {
+    getDeliveries() {
         return this.getDB(this.TABLES[ENUM_TABLES.delivery])
             .then((rs) => rs)
             .then((rs) => {
             return this.getDeliveryStatusHistory()
                 .then((histories) => {
-                console.log(histories);
                 ___default.map(rs, (delivery) => {
                     delivery.setStatusHistory(___default.filter(histories, (x) => x.delivery_id === delivery.id));
                 });
@@ -1116,6 +1116,12 @@ let FirebaseDataService = class FirebaseDataService {
     getDeliveryStatusHistory() {
         return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
             .then((rs) => rs);
+    }
+    getStatusHistoryOfDelivery(queryParams) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history], queryParams)
+                .then((rs) => rs);
+        });
     }
     /**
      * get restaurant data
@@ -1168,7 +1174,7 @@ let FirebaseDataService = class FirebaseDataService {
      * get order details
      * @returns {Promise<Order[]>}
      */
-    getOrder() {
+    getOrders() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.getDB(this.TABLES[ENUM_TABLES.order])
                 .then((rs) => rs)
@@ -1337,6 +1343,13 @@ FirebaseDataService = __decorate([
     })
 ], FirebaseDataService);
 
+var SIMULATOR_MESSAGE;
+(function (SIMULATOR_MESSAGE) {
+    SIMULATOR_MESSAGE["START"] = "simulator start";
+    SIMULATOR_MESSAGE["STEP"] = "simulator step";
+    SIMULATOR_MESSAGE["STOP"] = "simulator stop";
+})(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
+;
 let SimulatorDataService = class SimulatorDataService {
     constructor(_FirebaseDataService, _NotificationService) {
         this._FirebaseDataService = _FirebaseDataService;
@@ -1346,8 +1359,78 @@ let SimulatorDataService = class SimulatorDataService {
      * start simulator
      * @returns {Promise<void>}
      */
-    start() {
+    start(time = 2000) {
         return __awaiter(this, void 0, void 0, function* () {
+            this._NotificationService.pushMessage(SIMULATOR_MESSAGE.START);
+            // get delivery list
+            let deliveryList;
+            yield this._FirebaseDataService.getDeliveries().then((rs) => deliveryList = rs);
+            deliveryList = ___default.filter(deliveryList, (x) => {
+                return x.currentStatus.status !== Delivery_Status.DELIVERED;
+            });
+            if (deliveryList.length === 0) {
+                return Promise.resolve();
+            }
+            // get order list
+            let orderList;
+            yield this._FirebaseDataService.getOrders().then((rs) => orderList = rs);
+            ___default.map(deliveryList, (x) => {
+                x.order = ___default.find(orderList, o => o.id == x.order_id);
+            });
+            let deliveredDeliveryList = [];
+            let interval = setInterval(() => {
+                if (deliveryList.length === deliveredDeliveryList.length) {
+                    if (interval !== null) {
+                        clearInterval(interval);
+                    }
+                    this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
+                }
+                console.log('step');
+                ___default.map(deliveryList, (x) => __awaiter(this, void 0, void 0, function* () {
+                    yield this.handleDelivery(x);
+                }));
+                deliveredDeliveryList = ___default.filter(deliveryList, (x) => {
+                    return x.currentStatus.status === Delivery_Status.DELIVERED;
+                });
+                this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STEP);
+            }, time);
+        });
+    }
+    handleDelivery(delivery) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (delivery.timeToNextStatus >= moment().valueOf()) {
+                return Promise.resolve();
+            }
+            delivery.timeToNextStatus = moment().valueOf() + ___default.random(5, 10) * 1000;
+            let nextStatus = null;
+            switch (delivery.currentStatus.status) {
+                case Delivery_Status.ORDERED:
+                    nextStatus = Delivery_Status.PREPARING;
+                    break;
+                case Delivery_Status.PREPARING:
+                    nextStatus = Delivery_Status.WAIT_FOR_PICK_UP;
+                    break;
+                case Delivery_Status.WAIT_FOR_PICK_UP:
+                    nextStatus = Delivery_Status.DELIVERING;
+                    break;
+                case Delivery_Status.DELIVERING:
+                    nextStatus = Delivery_Status.DELIVERED;
+                    break;
+                default:
+                    return Promise.resolve();
+            }
+            const statusHistory = new DeliveryStatusHistory({
+                status: nextStatus,
+                delivery_id: delivery.id,
+                date_time: moment().valueOf()
+            });
+            yield this._FirebaseDataService.createWithObject(statusHistory);
+            yield this._FirebaseDataService
+                .getStatusHistoryOfDelivery([new QueryParamModel('delivery_id', QueryParamModel.OPERATIONS.EQUAL, delivery.id)])
+                .then((rs) => {
+                delivery.setStatusHistory(rs);
+                console.log(delivery);
+            });
         });
     }
     stop() {
@@ -1436,6 +1519,7 @@ let SimulatorDataService = class SimulatorDataService {
         return null;
     }
 };
+SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
 SimulatorDataService.ctorParameters = () => [
     { type: FirebaseDataService },
     { type: NotificationService }

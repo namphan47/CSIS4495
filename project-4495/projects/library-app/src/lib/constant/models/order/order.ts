@@ -2,6 +2,7 @@ import {DefaultModel} from "../default-model";
 import {Restaurant} from "../restaurant/restaurant";
 import {Customer} from "../customer/customer";
 import {OrderItem} from "../order_item/order-item";
+import {Delivery} from "../delivery/delivery";
 
 export class Order extends DefaultModel {
   id: string = '';
@@ -18,4 +19,5 @@ export class Order extends DefaultModel {
     super(data);
     super.copyInto(data);
   }
+
 }

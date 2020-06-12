@@ -81,8 +81,9 @@ export declare class FirebaseDataService {
      * get delivery data
      * @returns {Promise<Delivery[]>}
      */
-    getDelivery(): Promise<Delivery[]>;
+    getDeliveries(): Promise<Delivery[]>;
     getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]>;
+    getStatusHistoryOfDelivery(queryParams?: QueryParamModel[]): Promise<DeliveryStatusHistory[]>;
     /**
      * get restaurant data
      * @returns {Promise<Restaurant[]>}
@@ -103,7 +104,7 @@ export declare class FirebaseDataService {
      * get order details
      * @returns {Promise<Order[]>}
      */
-    getOrder(): Promise<Order[]>;
+    getOrders(): Promise<Order[]>;
     /**
      * get data of collection
      * @param object

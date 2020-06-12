@@ -2,6 +2,7 @@ import {DefaultModel} from "../default-model";
 import {Point} from "../point/point";
 import {DeliveryStatusHistory} from "./delivery-status-history";
 import * as _ from 'lodash';
+import {Order} from "../order/order";
 
 export class Delivery extends DefaultModel {
   id: string = '';
@@ -10,6 +11,9 @@ export class Delivery extends DefaultModel {
   order_id: string = '';
   status_history: DeliveryStatusHistory[] = [];
   currentStatus: DeliveryStatusHistory = null;
+  order: Order;
+
+  timeToNextStatus: number = 0;
 
   constructor(data: any) {
     super(data);
@@ -20,5 +24,6 @@ export class Delivery extends DefaultModel {
     this.status_history = histories;
     this.currentStatus = _.maxBy(histories, (x: DeliveryStatusHistory) => x.date_time);
   }
+
 }
 

@@ -345,6 +345,7 @@
             _this.order_id = '';
             _this.status_history = [];
             _this.currentStatus = null;
+            _this.timeToNextStatus = 0;
             _super.prototype.copyInto.call(_this, data);
             return _this;
         }
@@ -1409,14 +1410,13 @@
          * get delivery data
          * @returns {Promise<Delivery[]>}
          */
-        FirebaseDataService.prototype.getDelivery = function () {
+        FirebaseDataService.prototype.getDeliveries = function () {
             var _this = this;
             return this.getDB(this.TABLES[exports.ENUM_TABLES.delivery])
                 .then(function (rs) { return rs; })
                 .then(function (rs) {
                 return _this.getDeliveryStatusHistory()
                     .then(function (histories) {
-                    console.log(histories);
                     ___default__default.map(rs, function (delivery) {
                         delivery.setStatusHistory(___default__default.filter(histories, function (x) { return x.delivery_id === delivery.id; }));
                     });
@@ -1427,6 +1427,14 @@
         FirebaseDataService.prototype.getDeliveryStatusHistory = function () {
             return this.getDB(this.TABLES[exports.ENUM_TABLES.delivery_status_history])
                 .then(function (rs) { return rs; });
+        };
+        FirebaseDataService.prototype.getStatusHistoryOfDelivery = function (queryParams) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.getDB(this.TABLES[exports.ENUM_TABLES.delivery_status_history], queryParams)
+                            .then(function (rs) { return rs; })];
+                });
+            });
         };
         /**
          * get restaurant data
@@ -1492,7 +1500,7 @@
          * get order details
          * @returns {Promise<Order[]>}
          */
-        FirebaseDataService.prototype.getOrder = function () {
+        FirebaseDataService.prototype.getOrders = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var _this = this;
                 return __generator(this, function (_a) {
@@ -1691,6 +1699,13 @@
         return FirebaseDataService;
     }());
 
+    var SIMULATOR_MESSAGE;
+    (function (SIMULATOR_MESSAGE) {
+        SIMULATOR_MESSAGE["START"] = "simulator start";
+        SIMULATOR_MESSAGE["STEP"] = "simulator step";
+        SIMULATOR_MESSAGE["STOP"] = "simulator stop";
+    })(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
+    ;
     var SimulatorDataService = /** @class */ (function () {
         function SimulatorDataService(_FirebaseDataService, _NotificationService) {
             this._FirebaseDataService = _FirebaseDataService;
@@ -1700,10 +1715,104 @@
          * start simulator
          * @returns {Promise<void>}
          */
-        SimulatorDataService.prototype.start = function () {
+        SimulatorDataService.prototype.start = function (time) {
+            if (time === void 0) { time = 2000; }
             return __awaiter(this, void 0, void 0, function () {
+                var deliveryList, orderList, deliveredDeliveryList, interval;
+                var _this = this;
                 return __generator(this, function (_a) {
-                    return [2 /*return*/];
+                    switch (_a.label) {
+                        case 0:
+                            this._NotificationService.pushMessage(SIMULATOR_MESSAGE.START);
+                            return [4 /*yield*/, this._FirebaseDataService.getDeliveries().then(function (rs) { return deliveryList = rs; })];
+                        case 1:
+                            _a.sent();
+                            deliveryList = ___default__default.filter(deliveryList, function (x) {
+                                return x.currentStatus.status !== exports.Delivery_Status.DELIVERED;
+                            });
+                            if (deliveryList.length === 0) {
+                                return [2 /*return*/, Promise.resolve()];
+                            }
+                            return [4 /*yield*/, this._FirebaseDataService.getOrders().then(function (rs) { return orderList = rs; })];
+                        case 2:
+                            _a.sent();
+                            ___default__default.map(deliveryList, function (x) {
+                                x.order = ___default__default.find(orderList, function (o) { return o.id == x.order_id; });
+                            });
+                            deliveredDeliveryList = [];
+                            interval = setInterval(function () {
+                                if (deliveryList.length === deliveredDeliveryList.length) {
+                                    if (interval !== null) {
+                                        clearInterval(interval);
+                                    }
+                                    _this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
+                                }
+                                console.log('step');
+                                ___default__default.map(deliveryList, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, this.handleDelivery(x)];
+                                            case 1:
+                                                _a.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); });
+                                deliveredDeliveryList = ___default__default.filter(deliveryList, function (x) {
+                                    return x.currentStatus.status === exports.Delivery_Status.DELIVERED;
+                                });
+                                _this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STEP);
+                            }, time);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        SimulatorDataService.prototype.handleDelivery = function (delivery) {
+            return __awaiter(this, void 0, void 0, function () {
+                var nextStatus, statusHistory;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (delivery.timeToNextStatus >= moment().valueOf()) {
+                                return [2 /*return*/, Promise.resolve()];
+                            }
+                            delivery.timeToNextStatus = moment().valueOf() + ___default__default.random(5, 10) * 1000;
+                            nextStatus = null;
+                            switch (delivery.currentStatus.status) {
+                                case exports.Delivery_Status.ORDERED:
+                                    nextStatus = exports.Delivery_Status.PREPARING;
+                                    break;
+                                case exports.Delivery_Status.PREPARING:
+                                    nextStatus = exports.Delivery_Status.WAIT_FOR_PICK_UP;
+                                    break;
+                                case exports.Delivery_Status.WAIT_FOR_PICK_UP:
+                                    nextStatus = exports.Delivery_Status.DELIVERING;
+                                    break;
+                                case exports.Delivery_Status.DELIVERING:
+                                    nextStatus = exports.Delivery_Status.DELIVERED;
+                                    break;
+                                default:
+                                    return [2 /*return*/, Promise.resolve()];
+                            }
+                            statusHistory = new DeliveryStatusHistory({
+                                status: nextStatus,
+                                delivery_id: delivery.id,
+                                date_time: moment().valueOf()
+                            });
+                            return [4 /*yield*/, this._FirebaseDataService.createWithObject(statusHistory)];
+                        case 1:
+                            _a.sent();
+                            return [4 /*yield*/, this._FirebaseDataService
+                                    .getStatusHistoryOfDelivery([new QueryParamModel('delivery_id', QueryParamModel.OPERATIONS.EQUAL, delivery.id)])
+                                    .then(function (rs) {
+                                    delivery.setStatusHistory(rs);
+                                    console.log(delivery);
+                                })];
+                        case 2:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
                 });
             });
         };
@@ -1824,6 +1933,7 @@
             }
             return null;
         };
+        SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
         SimulatorDataService.ctorParameters = function () { return [
             { type: FirebaseDataService },
             { type: NotificationService }

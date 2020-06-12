@@ -7,14 +7,21 @@ import {Meal} from "../../constant/models/meal/meal";
 import {Order} from "../../constant/models/order/order";
 import {OrderItem} from "../../constant/models/order_item/order-item";
 import {NotificationService} from "../mics/notification.service";
-import {Courier, Delivery, Delivery_Status, Point} from "../../constant/models";
+import {Courier, Delivery, Delivery_Status, Point, QueryParamModel} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 import moment from "moment";
+
+enum SIMULATOR_MESSAGE {
+  START = 'simulator start',
+  STEP = 'simulator step',
+  STOP = 'simulator stop',
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class SimulatorDataService {
+  static MESSAGE = SIMULATOR_MESSAGE;
 
   constructor(private _FirebaseDataService: FirebaseDataService,
               private _NotificationService: NotificationService) {
@@ -25,7 +32,87 @@ export class SimulatorDataService {
    * start simulator
    * @returns {Promise<void>}
    */
-  async start() {
+  async start(time: number = 2000) {
+    this._NotificationService.pushMessage(SIMULATOR_MESSAGE.START);
+
+    // get delivery list
+    let deliveryList: Delivery[];
+    await this._FirebaseDataService.getDeliveries().then((rs) => deliveryList = rs);
+    deliveryList = _.filter(deliveryList, (x: Delivery) => {
+      return x.currentStatus.status !== Delivery_Status.DELIVERED;
+    });
+    if (deliveryList.length === 0) {
+      this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
+      return Promise.resolve();
+    }
+
+    // get order list
+    let orderList;
+    await this._FirebaseDataService.getOrders().then((rs) => orderList = rs);
+    _.map(deliveryList, (x: Delivery) => {
+      x.order = _.find(orderList, o => o.id == x.order_id);
+    })
+
+    let deliveredDeliveryList = [];
+    let interval = setInterval(() => {
+      if (deliveryList.length === deliveredDeliveryList.length) {
+        if (interval !== null) {
+          clearInterval(interval);
+        }
+        this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
+      }
+
+      console.log('step');
+      _.map(deliveryList, async (x) => {
+        await this.handleDelivery(x);
+      });
+
+      deliveredDeliveryList = _.filter(deliveryList, (x: Delivery) => {
+        return x.currentStatus.status === Delivery_Status.DELIVERED;
+      });
+      this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STEP);
+
+    }, time);
+  }
+
+  async handleDelivery(delivery: Delivery) {
+    if (delivery.timeToNextStatus >= moment().valueOf()) {
+      return Promise.resolve();
+    }
+
+    delivery.timeToNextStatus = moment().valueOf() + _.random(5, 10) * 1000;
+
+    let nextStatus = null;
+
+    switch (delivery.currentStatus.status) {
+      case Delivery_Status.ORDERED:
+        nextStatus = Delivery_Status.PREPARING;
+        break;
+      case Delivery_Status.PREPARING:
+        nextStatus = Delivery_Status.WAIT_FOR_PICK_UP;
+        break;
+      case Delivery_Status.WAIT_FOR_PICK_UP:
+        nextStatus = Delivery_Status.DELIVERING;
+        break;
+      case Delivery_Status.DELIVERING:
+        nextStatus = Delivery_Status.DELIVERED;
+        break;
+      default:
+        return Promise.resolve();
+    }
+    const statusHistory = new DeliveryStatusHistory({
+      status: nextStatus,
+      delivery_id: delivery.id,
+      date_time: moment().valueOf()
+    });
+
+    await this._FirebaseDataService.createWithObject(statusHistory);
+    await this._FirebaseDataService
+      .getStatusHistoryOfDelivery([new QueryParamModel('delivery_id', QueryParamModel.OPERATIONS.EQUAL, delivery.id)])
+      .then((rs) => {
+        delivery.setStatusHistory(rs);
+        console.log(delivery);
+      });
 
   }
 
@@ -127,3 +214,5 @@ export class SimulatorDataService {
     return null;
   }
 }
+
+

@@ -149,13 +149,12 @@ export class FirebaseDataService {
    * get delivery data
    * @returns {Promise<Delivery[]>}
    */
-  getDelivery(): Promise<Delivery[]> {
+  getDeliveries(): Promise<Delivery[]> {
     return this.getDB(this.TABLES[ENUM_TABLES.delivery])
       .then((rs) => rs as unknown as Delivery[])
       .then((rs) => {
         return this.getDeliveryStatusHistory()
           .then((histories) => {
-            console.log(histories);
             _.map(rs, (delivery: Delivery) => {
               delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
             });
@@ -166,6 +165,11 @@ export class FirebaseDataService {
 
   getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]> {
     return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
+      .then((rs) => rs as unknown as DeliveryStatusHistory[]);
+  }
+
+  async getStatusHistoryOfDelivery(queryParams?: QueryParamModel[]): Promise<DeliveryStatusHistory[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history], queryParams)
       .then((rs) => rs as unknown as DeliveryStatusHistory[]);
   }
 
@@ -221,7 +225,7 @@ export class FirebaseDataService {
    * get order details
    * @returns {Promise<Order[]>}
    */
-  async getOrder(): Promise<Order[]> {
+  async getOrders(): Promise<Order[]> {
     return this.getDB(this.TABLES[ENUM_TABLES.order])
       .then((rs) => rs as unknown as Order[])
       .then((orders) => {
@@ -337,7 +341,7 @@ export class FirebaseDataService {
    * @param object
    * @returns {Promise<void>}
    */
-  createWithObject(object: IDefaultModel) {
+  createWithObject(object: IDefaultModel): Promise<void> {
     const id = this._AngularFirestore.createId();
     const collection = this._AngularFirestore.collection(this.getTable(object.constructor.name));
     return collection.doc(id).set(object.getData())
