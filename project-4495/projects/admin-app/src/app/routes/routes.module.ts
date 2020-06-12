@@ -18,7 +18,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
     AngularFireModule.initializeApp(environment.firebase),
     PipeModule,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+      apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
     }),
   ]
 })

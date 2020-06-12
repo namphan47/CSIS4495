@@ -12,6 +12,7 @@ declare const google: any;
 })
 export class MapComponent extends DefaultComponent implements OnInit, AfterViewInit {
   Delivery_Status = Delivery_Status;
+  map;
 
   orderCounts = {
     [Delivery_Status.ORDERED]: 0,
@@ -79,6 +80,44 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
   }
 
   ready(map) {
+    this.map = map;
+    this.renderDirection(this.map, new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558),
+      (rs) => {
+        console.log(rs);
+      });
+  }
+
+  renderDirection(map, from, to, callback: Function = () => {
+  }, obj = null) {
+    if (obj) {
+      obj.setMap(null);
+    }
+    const directionsService = new google.maps.DirectionsService;
+    const directionsDisplay =
+      new google.maps.DirectionsRenderer({
+        polylineOptions: {
+          strokeColor: '#4a6170',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        },
+        suppressMarkers: true,
+        preserveViewport: true
+      });
+    directionsDisplay.setMap(map);
+
+    directionsService.route({
+      origin: from,
+      destination: to,
+      travelMode: google.maps.TravelMode['DRIVING']
+    }, function (response, status) {
+      if (status === google.maps.DirectionsStatus['OK']) {
+        directionsDisplay.setDirections(response);
+        callback(directionsDisplay);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+    return directionsDisplay;
   }
 
   ngAfterViewInit() {
