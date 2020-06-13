@@ -62,8 +62,8 @@
     <!-- Restaurants -->
     <div *ngFor="let rest of restaurants">
       <!-- 2nd Restaraunt -->
-      <a class="list1" href="#">
-        <div class="card hoverable" style="max-width: 60vw;">
+      <div class="list1 cursor-pointer">
+        <div class="card hoverable" [routerLink]="['../rest-details', rest.id]" style="max-width: 60vw;">
           <div class="row no-gutters">
             <div class="col-3">
               <img
@@ -97,7 +97,7 @@
             </div>
           </div>
         </div>
-      </a>
+      </div>
       <br>
     </div>
 

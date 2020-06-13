@@ -14,6 +14,7 @@ export class RestaurantsComponent implements OnInit {
   ) {
     // call some function after component is created
     // console.log(1);
+    
   }
 
   ngOnInit(): void {
