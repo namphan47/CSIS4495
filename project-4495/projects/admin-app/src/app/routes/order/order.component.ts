@@ -20,7 +20,7 @@ export class OrderComponent implements OnInit {
   }
 
   onRefresh() {
-    this._FirebaseDataService.getOrder()
+    this._FirebaseDataService.getOrders()
       .then((rs) => {
         this.orders = rs;
         console.log(rs);
