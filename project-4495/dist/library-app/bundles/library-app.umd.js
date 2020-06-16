@@ -312,6 +312,8 @@
             _this.driver_license = '';
             _this.email = '';
             _this.phone_no = '';
+            _this.lat = 49.206762;
+            _this.long = -122.918458;
             _super.prototype.copyInto.call(_this, data);
             return _this;
         }
@@ -1508,7 +1510,7 @@
                             .then(function (rs) { return rs; })
                             .then(function (orders) {
                             orders = orders;
-                            ___default__default.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
+                            return Promise.all(___default__default.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0: 
@@ -1536,11 +1538,12 @@
                                         case 3:
                                             // get restaurant for each order
                                             _a.sent();
-                                            return [2 /*return*/];
+                                            return [2 /*return*/, Promise.resolve()];
                                     }
                                 });
-                            }); });
-                            return orders;
+                            }); })).then(function () {
+                                return orders;
+                            });
                         })];
                 });
             });
@@ -1731,6 +1734,7 @@
                                 return x.currentStatus.status !== exports.Delivery_Status.DELIVERED;
                             });
                             if (deliveryList.length === 0) {
+                                this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
                                 return [2 /*return*/, Promise.resolve()];
                             }
                             return [4 /*yield*/, this._FirebaseDataService.getOrders().then(function (rs) { return orderList = rs; })];

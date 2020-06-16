@@ -13,7 +13,7 @@ export class Order extends DefaultModel {
 
   restaurant: Restaurant;
   customer: Customer;
-  items: OrderItem[]
+  items: OrderItem[];
 
   constructor(data: any) {
     super(data);

@@ -95,6 +95,8 @@ class Courier extends DefaultModel {
         this.driver_license = '';
         this.email = '';
         this.phone_no = '';
+        this.lat = 49.206762;
+        this.long = -122.918458;
         super.copyInto(data);
     }
 }
@@ -1173,7 +1175,7 @@ let FirebaseDataService = class FirebaseDataService {
                 .then((rs) => rs)
                 .then((orders) => {
                 orders = orders;
-                ___default.map(orders, (order) => __awaiter(this, void 0, void 0, function* () {
+                return Promise.all(___default.map(orders, (order) => __awaiter(this, void 0, void 0, function* () {
                     // get customer of each order
                     yield this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
                         .then((customer) => {
@@ -1189,8 +1191,10 @@ let FirebaseDataService = class FirebaseDataService {
                         .then((restaurant) => {
                         order.restaurant = restaurant;
                     });
-                }));
-                return orders;
+                    return Promise.resolve();
+                }))).then(() => {
+                    return orders;
+                });
             });
         });
     }
@@ -1358,6 +1362,7 @@ let SimulatorDataService = class SimulatorDataService {
                 return x.currentStatus.status !== Delivery_Status.DELIVERED;
             });
             if (deliveryList.length === 0) {
+                this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
                 return Promise.resolve();
             }
             // get order list

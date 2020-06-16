@@ -229,8 +229,8 @@ export class FirebaseDataService {
     return this.getDB(this.TABLES[ENUM_TABLES.order])
       .then((rs) => rs as unknown as Order[])
       .then((orders) => {
-        orders = orders as unknown as Order[]
-        _.map(orders, async (order: Order) => {
+        orders = orders as unknown as Order[];
+        return Promise.all(_.map(orders, async (order: Order) => {
 
           // get customer of each order
           await this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
@@ -249,9 +249,11 @@ export class FirebaseDataService {
             .then((restaurant) => {
               order.restaurant = restaurant as unknown as Restaurant;
             });
+          return Promise.resolve();
+        })).then(() => {
+          return orders;
         });
 
-        return orders;
       });
   }
 

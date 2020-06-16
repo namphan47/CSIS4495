@@ -3,6 +3,9 @@ import {Point} from "../point/point";
 import {DeliveryStatusHistory} from "./delivery-status-history";
 import * as _ from 'lodash';
 import {Order} from "../order/order";
+import {Courier} from "../courier/courier";
+import {Restaurant} from "../restaurant/restaurant";
+import {Customer} from "../customer/customer";
 
 export class Delivery extends DefaultModel {
   id: string = '';
@@ -11,9 +14,14 @@ export class Delivery extends DefaultModel {
   order_id: string = '';
   status_history: DeliveryStatusHistory[] = [];
   currentStatus: DeliveryStatusHistory = null;
-  order: Order;
-
   timeToNextStatus: number = 0;
+
+  order: Order;
+  courier: Courier;
+  restaurant: Restaurant;
+  customer: Customer;
+  path_to_restaurant: any[] = [];
+  path_to_customer: any[] = [];
 
   constructor(data: any) {
     super(data);
