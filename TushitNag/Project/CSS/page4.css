@@ -52,6 +52,12 @@ body{
   }
 
   iframe{
-      height: 70.5vh;
+      height: 56vh;
       width: 28.5vw;
   }
+
+  #cart
+  {
+      background-color: chartreuse;
+  }
+

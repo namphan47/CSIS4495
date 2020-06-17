@@ -20,13 +20,26 @@
        [routerLinkActive]="'active'"
        class="menu-item d-flex p-2 align-items-center">Courier
   </div>
+  <div [routerLink]="['admin','delivery']"
+       [routerLinkActive]="'active'"
+       class="menu-item d-flex p-2 align-items-center">Delivery
+  </div>
   <div class="flex-grow-1"></div>
   <div class="p-3">
+    <div class="mt-3 text-center">
+      <h4>{{counter}}</h4>
+    </div>
     <div class="mt-3">
       <button type="button" class="btn btn-primary" (click)="startSimulator()">Start Simulator</button>
     </div>
     <div class="mt-3">
       <button type="button" class="btn btn-danger" (click)="stopSimulator()">Stop Simulator</button>
+    </div>
+    <div class="mt-3">
+      <button type="button" class="btn btn-success" (click)="generateOrder()">Generate Order</button>
+    </div>
+    <div class="mt-3">
+      <button type="button" class="btn btn-success" (click)="cleanOrder()">Clean Order</button>
     </div>
     <div class="mt-3">
       <button type="button" class="btn btn-primary" (click)="resetDB()">Reset DB</button>

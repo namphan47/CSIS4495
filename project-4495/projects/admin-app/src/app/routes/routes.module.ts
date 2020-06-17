@@ -9,15 +9,16 @@ import {CourierComponent} from "@app/routes/courier/courier.component";
 import {environment} from "@environment/environment";
 import {PipeModule} from "@app/shared/pipe/pipe.module";
 import {NguiMapModule} from "@ngui/map";
+import { DeliveryComponent } from './delivery/delivery.component';
 
 @NgModule({
-  declarations: [RestaurantComponent, MapComponent, CustomerComponent, CourierComponent, OrderComponent],
+  declarations: [RestaurantComponent, MapComponent, CustomerComponent, CourierComponent, OrderComponent, DeliveryComponent],
   imports: [
     CommonModule,
     AngularFireModule.initializeApp(environment.firebase),
     PipeModule,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+      apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
     }),
   ]
 })

@@ -1,8 +1,11 @@
 export enum ENUM_TABLES {
-  customer = 'customer',
-  restaurant = 'restaurant',
-  meal = 'meal',
   courier = 'courier',
-  order_item = 'order_item',
+  customer = 'customer',
+  delivery = 'delivery',
+  meal = 'meal',
   order = 'order',
+  order_item = 'order_item',
+  point = 'point',
+  restaurant = 'restaurant',
+  delivery_status_history = 'delivery_status_history',
 }

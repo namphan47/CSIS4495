@@ -3,13 +3,43 @@ import { IDefaultModelConstructor } from "../../constant/models/i-default-model"
 import { UtilsService } from "../mics/utils.service";
 export declare class DummyDataService {
     private _UtilsService;
-    static TABLES: typeof ENUM_TABLES;
-    readonly CONSTANT_PATH = "assets/dummy/";
     readonly JSONS: {
-        restaurant: string;
-        customer: string;
-        meal: string;
-        courier: string;
+        restaurant: {
+            name: string;
+            address: string;
+            lat: string;
+            long: string;
+            phone_no: string;
+        }[];
+        customer: ({
+            name: string;
+            address: string;
+            lat: string;
+            long: string;
+            phone_no: string;
+            email: string;
+        } | {
+            name: string;
+            address: string;
+            phone_no: string;
+            email: string;
+            lat?: undefined;
+            long?: undefined;
+        })[];
+        meal: {
+            name: string;
+            description: string;
+            price: number;
+            image: string;
+            restaurant_name: string;
+        }[];
+        courier: {
+            name: string;
+            vin: string;
+            driver_license: number;
+            email: string;
+            phone_no: string;
+        }[];
     };
     constructor(_UtilsService: UtilsService);
     convertDummyDataToModel(table: ENUM_TABLES, modelClass: IDefaultModelConstructor): Promise<any[]>;

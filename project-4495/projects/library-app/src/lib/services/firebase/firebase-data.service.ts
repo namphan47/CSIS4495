@@ -13,6 +13,8 @@ import {NotificationService} from '../mics/notification.service';
 import {OrderItem} from '../../constant/models/order_item/order-item';
 import {Order} from '../../constant/models/order/order';
 import {QueryParamModel} from "../../constant/models/query-param-model";
+import {Delivery} from "../../constant/models";
+import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 
 @Injectable({
   providedIn: 'root'
@@ -39,16 +41,23 @@ export class FirebaseDataService {
       name: ENUM_TABLES.order,
       class: Order
     },
+    [ENUM_TABLES.delivery]: {
+      name: ENUM_TABLES.delivery,
+      class: Delivery
+    },
     [ENUM_TABLES.order_item]: {
       name: ENUM_TABLES.order_item,
       class: OrderItem
+    },
+    [ENUM_TABLES.delivery_status_history]: {
+      name: ENUM_TABLES.delivery_status_history,
+      class: DeliveryStatusHistory
     }
   };
 
   constructor(private _AngularFirestore: AngularFirestore,
               private _DummyDataService: DummyDataService,
               private _NotificationService: NotificationService) {
-
   }
 
   /**
@@ -58,7 +67,7 @@ export class FirebaseDataService {
   async resetDB() {
     // delete tables
     await Promise.all(_.map(this.TABLES, async (x) => {
-      await this.deleteDB(x.name);
+      await this.deleteTable(x.name);
     }));
 
     // add tables
@@ -94,22 +103,6 @@ export class FirebaseDataService {
                 .doc(restaurant.id).set(restaurant.getData());
             });
           });
-      });
-  }
-
-  /**
-   * delete data of collection
-   * @param name
-   * @returns {Promise<void>}
-   */
-  private deleteDB(name: string) {
-    return this._AngularFirestore.collection(name).get().toPromise()
-      .then(res => {
-        return res.forEach(async element => {
-          await element.ref.delete();
-          console.log(`delete ${name}`);
-          this._NotificationService.pushMessage(`delete ${name}`);
-        });
       });
   }
 
@@ -150,6 +143,34 @@ export class FirebaseDataService {
   getCourier(): Promise<Courier[]> {
     return this.getDB(this.TABLES[ENUM_TABLES.courier])
       .then((rs) => rs as unknown as Courier[]);
+  }
+
+  /**
+   * get delivery data
+   * @returns {Promise<Delivery[]>}
+   */
+  getDeliveries(): Promise<Delivery[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery])
+      .then((rs) => rs as unknown as Delivery[])
+      .then((rs) => {
+        return this.getDeliveryStatusHistory()
+          .then((histories) => {
+            _.map(rs, (delivery: Delivery) => {
+              delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
+            });
+            return rs;
+          })
+      });
+  }
+
+  getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history])
+      .then((rs) => rs as unknown as DeliveryStatusHistory[]);
+  }
+
+  async getStatusHistoryOfDelivery(queryParams?: QueryParamModel[]): Promise<DeliveryStatusHistory[]> {
+    return this.getDB(this.TABLES[ENUM_TABLES.delivery_status_history], queryParams)
+      .then((rs) => rs as unknown as DeliveryStatusHistory[]);
   }
 
   /**
@@ -204,7 +225,7 @@ export class FirebaseDataService {
    * get order details
    * @returns {Promise<Order[]>}
    */
-  async getOrder(): Promise<Order[]> {
+  async getOrders(): Promise<Order[]> {
     return this.getDB(this.TABLES[ENUM_TABLES.order])
       .then((rs) => rs as unknown as Order[])
       .then((orders) => {
@@ -320,12 +341,13 @@ export class FirebaseDataService {
    * @param object
    * @returns {Promise<void>}
    */
-  createWithObject(object: IDefaultModel) {
+  createWithObject(object: IDefaultModel): Promise<void> {
     const id = this._AngularFirestore.createId();
     const collection = this._AngularFirestore.collection(this.getTable(object.constructor.name));
     return collection.doc(id).set(object.getData())
       .then(() => {
         object.id = id;
+        this._NotificationService.pushMessage(`Created ${object.constructor.name}`);
       });
   }
 
@@ -348,4 +370,36 @@ export class FirebaseDataService {
       return table.class.name === className;
     }).name;
   }
+
+  /*========delete=========*/
+
+  deleteOrder() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.order].name);
+  }
+
+  deleteOrderItem() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.order_item].name);
+  }
+
+  deleteDelivery() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
+  }
+
+  /**
+   * delete data of collection
+   * @param name
+   * @returns {Promise<void>}
+   */
+  private deleteTable(name: string) {
+    return this._AngularFirestore.collection(name).get().toPromise()
+      .then(res => {
+        return res.forEach(async element => {
+          await element.ref.delete();
+          console.log(`delete ${name}`);
+          this._NotificationService.pushMessage(`delete ${name}`);
+        });
+      });
+  }
+
+
 }
