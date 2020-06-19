@@ -57,15 +57,15 @@
                 [path]="delivery?.path_to_customer"
                 [strokeColor]="'#2496C9'"
                 [strokeOpacity]="1"></polyline>
-      <custom-marker *ngIf="delivery.customer" [position]="[delivery.customer.lat,delivery.customer.long]"
+      <custom-marker *ngIf="delivery.customer" [position]="[delivery.customer.lat,delivery.customer.lng]"
                      class="custom-icon location">
         <i class="fas fa-map-marker-alt "></i>
       </custom-marker>
-      <custom-marker *ngIf="delivery.courier" [position]="[delivery.courier.lat,delivery.courier.long]"
+      <custom-marker *ngIf="delivery.courier" [position]="[delivery.courier.lat,delivery.courier.lng]"
                      class="custom-icon location">
         <i class="fas fa-car "></i>
       </custom-marker>
-      <custom-marker *ngIf="delivery.restaurant" [position]="[delivery.restaurant.lat,delivery.restaurant.long]"
+      <custom-marker *ngIf="delivery.restaurant" [position]="[delivery.restaurant.lat,delivery.restaurant.lng]"
                      class="custom-icon location">
         <i class="fas fa-utensils"></i>
       </custom-marker>

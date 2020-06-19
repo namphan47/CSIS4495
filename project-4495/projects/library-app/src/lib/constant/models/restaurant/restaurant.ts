@@ -6,8 +6,11 @@ export class Restaurant extends DefaultModel {
   name: string = '';
   address: string = '';
   phone_no: string = '';
-  lat: string = '';
-  long: string = '';
+  img1: string = '';
+  img2: string = '';
+
+  lat: number = 0;
+  lng: number = 0;
 
   meal_ids: string[] = [];
   meals: Meal[] = [];

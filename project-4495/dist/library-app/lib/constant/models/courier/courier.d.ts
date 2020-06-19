@@ -7,6 +7,6 @@ export declare class Courier extends DefaultModel {
     email: string;
     phone_no: string;
     lat: number;
-    long: number;
+    lng: number;
     constructor(data: any);
 }

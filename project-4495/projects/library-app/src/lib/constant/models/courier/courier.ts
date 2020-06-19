@@ -8,7 +8,7 @@ export class Courier extends DefaultModel {
   email: string = '';
   phone_no: string = '';
   lat: number = 49.206762;
-  long: number = -122.918458;
+  lng: number = -122.918458;
 
   constructor(data: any) {
     super(data);
