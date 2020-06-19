@@ -1,0 +1,75 @@
+.row {
+  padding: 1vh;
+}
+.container-fluid {
+  font-family: Montserrat, Regular;
+  font-size: 12px;
+}
+.map-row {
+  margin-top: 65px;
+}
+
+.map-responsive {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.over-map {
+  position: fixed;
+  top: 125px;
+  left: 92px;
+  z-index: 1;
+}
+
+.back-btn {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #000029;
+  opacity: 1;
+  background-image: url('../../../assets/arrow-left-solid.svg');
+  background-position-y: center;
+  background-position-x: 20px;
+  text-align: right;
+  font: 30px Montserrat, medium;
+  letter-spacing: 0px;
+  color: #002F5A;
+  opacity: 1;
+  width: 174px;
+  height: 51px;
+  border: none;
+}
+.delivery {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  opacity: 1;
+  position: fixed;
+  top: 184px;
+  height: 265;
+  width: 363;
+}
+.checkout {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  opacity: 1;
+  position: fixed;
+  top: 184px;
+  right: 86px;
+  width: 363px;
+  height: 448px;
+}
+
+.mid-checkout {
+  background: #F2F4F5 0% 0% no-repeat padding-box;
+  opacity: 1;
+
+}
+.taxes{
+  text-align: left;
+  font: 12px Montserrat, Regular;
+  letter-spacing: 0px;
+  color: #8D9499;
+  opacity: 1;
+}

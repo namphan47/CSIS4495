@@ -4,6 +4,7 @@ import {RestaurantsComponent} from './mainroute/restaurants/restaurants.componen
 import {LoginComponent} from './mainroute/login/login.component';
 import {SignupComponent} from './mainroute/signup/signup.component';
 import {RestaurantDetailsComponent} from "./mainroute/restaurant-details/restaurant-details.component";
+import {CheckoutComponent} from "./mainroute/checkout/checkout.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
       {path: 'rest-details/:id', component: RestaurantDetailsComponent},
       {path: 'login', component: LoginComponent},
       {path: 'signup', component: SignupComponent},
+      {path: 'checkout', component: CheckoutComponent}
     ]
   },
   {path: '', redirectTo: 'main', pathMatch: 'full'},

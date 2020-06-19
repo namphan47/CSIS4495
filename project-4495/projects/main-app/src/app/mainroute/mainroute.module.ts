@@ -6,11 +6,12 @@ import { SignupComponent } from './signup/signup.component';
 import {NguiMapModule} from "@ngui/map";
 import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
 import {RouterModule} from "@angular/router";
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 
 @NgModule({
-  declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent],
+  declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent, CheckoutComponent],
   imports: [
     CommonModule,
     RouterModule.forRoot([]),
