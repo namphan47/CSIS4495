@@ -1,0 +1,201 @@
+<div class="container-fluid">
+
+
+  <div class="row">
+
+    <nav class="navbar fixed-top navbar-light bg-light">
+
+      <div class="col-6">
+        <div class="text-left">
+          <a class="navbar-brand" href="#">
+            <img src="../assets/logo-small.png" width="35" height="35"
+                 class="d-inline-block align-top"
+                 alt="">
+            NomNom
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="text-right">
+          <div class="dropdown">
+            <button type="button" class="btn" data-toggle="dropdown">
+              <svg class="bi bi-person-circle" width="35"
+                   height="35" viewBox="0 0 16 16"
+                   fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M13.468 12.37C12.758 11.226 11.195 10 8
+                                                            10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0
+                                                            8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0
+                                                                0-6 3 3 0 0 0 0 6z" />
+                <path fill-rule="evenodd"
+                      d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8
+                                                                    1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0
+                                                                    8z" />
+              </svg>
+            </button>
+            <div class="dropdown-menu
+                                                                dropdown-menu-right">
+              <a class="dropdown-item" href="#">Order
+                History</a>
+              <a class="dropdown-item" href="#">Account</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+
+
+  </div>
+
+  <div class ="row map-row">
+
+    <div>
+      <iframe class="map-responsive" src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder=0></iframe>
+    </div>
+
+    <div class="over-map">
+      <button class="back-btn"> BACK</button>
+      <div class="card delivery">
+
+        <div>
+          <h5 style="text-align:center;">Delivery</h5>
+        </div>
+
+        <div class="row">
+          <div class="col-2 text-right">
+            <img src="../assets/clock-solid.svg">
+          </div>
+          <div class="col-10 text-left">
+            <span> 31-51 mins (ASAP)</span>
+          </div>
+        </div>
+
+
+        <div class="row">
+
+          <div class="col-2 text-right">
+            <img src="../../assets/map-marker-alt-solid.svg">
+          </div>
+
+          <div class="col-10 text-left">
+            <span> **** 1*th Avenue</span>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-1 text-right"></div>
+          <span class="col-10 text-left">Where should your courier leave your order?</span>
+        </div>
+        <div class="row">
+          <div class="col-1 text-right"></div>
+          <textarea rows="5" cols="40" class="col-10 text-left">
+
+                         </textarea>
+
+        </div>
+
+      </div>
+
+
+      <div class="card checkout">
+
+        <div>
+          <h5 style="text-align:center;">Checkout</h5>
+        </div>
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-4">
+            <span>Tip:</span>
+          </div>
+
+          <div class="col-5">
+            <input type="text" placeholder="$0.00">
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-1">
+          </div>
+          <div class="col-4">
+            <img src="../../assets/cc-visa-brands.svg">
+          </div>
+          <div class="col-7">
+            <span>Pay by card: 4537 **** **** ****</span>
+          </div>
+
+        </div>
+
+        <div class="mid-checkout">
+          <div class="row">
+            <div class="col-2 text-right">3</div>
+            <div class="col-7">12" Meat Pizzas8" Meat Pizzas</div>
+            <div class="col-3 text-left">$ 6.25</div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-2 text-right">3</div>
+            <div class="col-7">12" Meat Pizzas8" Meat Pizzas</div>
+            <div class="col-3 text-left">$ 6.25</div>
+
+          </div>
+
+
+          <div class="taxes">
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-7 text-left">Food & Beverage Subtotal</div>
+              <div class="col-4 text-center">$ 6.25</div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-7 text-left">Delivery Fee</div>
+              <div class="col-4 text-center">$ 6.25</div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-7 text-left">GST</div>
+              <div class="col-4 text-center">$ 6.25</div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-7 text-left">Courier Tip</div>
+              <div class="col-4 text-center">$ 6.25</div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-7 text-left">Total</div>
+          <div class="col-4 text-center">$ 6.25</div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-center">
+            <button class="btn-danger btn-lg">ORDER </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>

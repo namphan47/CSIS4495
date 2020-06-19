@@ -1,2 +1,7 @@
 text-center, right, left : can adjust your text or image in the page
+
 div-col we can adjust the page in grid view
+
+Use the `no-gutters` to remove the spacing (gutter) between columns. Bootstrap uses padding to create the spacing (A.K.A “gutter”) between columns. If you want columns with no horizontal spacing, Bootstrap 4 includes a no-gutters class that can be applied to the entire row 
+
+a display is divided into 12 columns 

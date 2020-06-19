@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <title>Restaurant Page/</title>
+   <meta name="description" content="">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- CSS only -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="/CSS/page4.css">
+   <!-- JS, Popper.js, and jQuery -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+</head>
+<body>
+   <div class="container-fluid">
+      <div class="row">
+         <!-----------------------------Header--------------------->
+         <nav class="navbar fixed-top navbar-light bg-light">
+            <div class="col-4">
+               <div class="text-left">
+                  <a class="navbar-brand" href="#">
+                  <img src="/assets/logo_small.png" width="35" height="35" class="d-inline-block align-top"
+                     alt="">
+                  NomNom
+                  </a>
+               </div>
+            </div>
+            <div class="col-3">
+               <div class="text-right">
+                  <div class="dropdown">
+                     <button type="button" class="btn" data-toggle="dropdown">
+                        <svg class="bi bi-person-circle" width="35" height="35" viewBox="0 0 16 16"
+                           fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M13.468 12.37C12.758 11.226 11.195 10 8
+                              10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0
+                              8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                           <path fill-rule="evenodd" d="M8 9a3 3 0 1 0
+                              0-6 3 3 0 0 0 0 6z" />
+                           <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8
+                              1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0
+                              8z" />
+                        </svg>
+                     </button>
+                     <div class="dropdown-menu
+                        dropdown-menu-right">
+                        <a class="dropdown-item" href="#">Order
+                        History</a>
+                        <a class="dropdown-item" href="#">Account</a>
+                        <a class="dropdown-item" href="#">Logout</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </nav>
+      </div>
+      <br><br><br><br><br><br>
+      <div class="row">
+         <div class="col-3 restaurant">
+            <div class="row">
+               <div class="col-3">
+                  <img src="https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png"
+                     class="card-img" alt="...">
+               </div>
+               <div class="col-6">
+                  <p>Mc Donalds</p>
+                  <p class="text-danger">9.2</p>
+                  <p>44 - 55mins</p>
+                  <p>$3.49 Delivery</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-5 menulist">
+            <a class="list1" href="#">
+               <div class="card hoverable">
+                  <div class="row no-gutters">
+                     <div class="col-3 restaurant">
+                        <img src="https://restaurants-static.skipthedishes.com/images/resized/medium-36a1f57fe155b3711615.jpg"
+                           class="card-img" alt="...">
+                     </div>
+                     <div class="col-9 justify-content-center">
+                        <h6 class="card-title">Big Mac Extra Value Meal</h6>
+                        <p class="card-text"><small class="text-muted">Nothing compares to two 100% Canadian
+                           beef patties, special sauce, crisp lettuce, processed cheddar cheese, pickles
+                           and onions on a toasted sesame seed bun.</small>
+                        </p>
+                        <p class="card-text"> $9.59</p>
+                        <div></div>
+                     </div>
+                  </div>
+               </div>
+            </a>
+         </div>
+         <div class="col-4 mapbox">
+            <div class="map position-fixed">
+               <div class="container-fluid">
+                  <!-- <div class="row" id="cart">
+                  </div> -->
+                  <!-- <div class="row"> -->
+                     <!-- <div class="col-1"></div> -->
+                     <!-- <div class="col-10"> -->
+                        <form id = "cartForm" >
+                            <label id="cartTitle">Your Order</label>
+                           <div class="form-row">
+                              <div class="form-group col-md-6">
+                                 <input type="number" id="quantity" class="form-control text-center" value="1">
+
+                              </div>
+                           
+                           </div>
+                        </form>
+                     </div>
+                     <div class="col-1"></div>
+                     <iframe src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder=0>
+                     </iframe>
+                  <!-- </div> -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+</html>

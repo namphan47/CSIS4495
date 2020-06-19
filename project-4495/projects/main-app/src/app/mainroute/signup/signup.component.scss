@@ -1,77 +1,76 @@
-.body{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #E3E5E8;
-  margin: 0%;
-}
-
-.banner {
-  width: 100%;
-  height: 10%;
-  background-color: #F4F5F7;
-}
-.bimg1 {
-  width: 7%;
-}
-.bimg2 {
-  width: 9%;
+.container {
+  font: 20px montserrat, bold;
+  background: #E3E5E8 0% 0% no-repeat padding-box;
+  opacity: 1;
+  max-height: 100%;
+  max-width: 100%;
+  position: fixed;
   height: 100%;
+  width: 100%;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 598px;
+  padding: 15px;
+  margin: auto;}
+
+.txtbox1, .txtbox2 {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #000029;
+  opacity: 1;
+  background-position-x: 16px;
+  background-position-y: center;
+  padding-left: 50px;
+}
+.txtbox1 {
+  background-image: url('../../../assets/user-light.svg');
+}
+
+.txtbox2 {
+  background-image: url('../../../assets/key-light.svg');
+}
+
+.txtlabel {
+  text-align: left;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+  margin-top: 25px;
+  margin-bottom: 13px;
+}
+.btn-red {
+  margin-top: 46px;
   float: right;
-  padding-right: 2%;
+  background: #E91431 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #000029;
+  border: 1px solid #707070;
+  opacity: 1;
+  width: 168px;
 }
 
-.Login {
+.btn-back {
+  margin-top: 46px;
+  width: 168px;
+  background: #E3E5E8 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #000029;
+  border: 1px solid #E91431;
+  opacity: 1;
+  color: #e91431;
+}
+
+.postform {
+  margin-top: 40px;
   text-align: center;
 }
-.commit {
-  margin-left: 7%;
-}
-.commit {
-  background-color:#E91431;
-  color: white;
-  border-radius: 5px;
-  border-style: groove;
-  border-color: #E91431;
-}
-.back
-{
 
-  color:#E91431;
-  background-color: #E3E5E8;
-  border-radius: 5px;
-  border-style: groove;
-  border-color: #E91431;
-}
-
-.email {
-  padding: 5px 15px;
-  background-image: url(../../../assets/user-light.svg);
-  background-repeat: no-repeat;
-  background-size: 10px;
-  background-position-y: center;
-}
-
-.pass, .repass {
-  padding: 5px 15px;
-  background-image: url(../../../assets/key-light.svg);
-  background-repeat: no-repeat;
-  background-size: 10px;
-  background-position-y: center;
-}
-h2 {
+.or {
+  letter-spacing: 0px;
   color: #002F5A;
-  text-align: center;
+  opacity: 1;
 }
-
-.google-sign {
+.google-sign
+{
   border: none;
-  color: #E3E5E8;
-  display: block;
-  margin: auto;
-  background-color: #E3E5E8;
+  background: #e3e5e8;
 }
-.google-img {
-
-  width: 50%;
-
-}
-
