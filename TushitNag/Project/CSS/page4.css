@@ -54,10 +54,28 @@ body{
   iframe{
       height: 56vh;
       width: 28.5vw;
+      z-index: 2;
   }
 
-  #cart
-  {
-      background-color: chartreuse;
+  #cartForm{
+
+      position: absolute;
+      top: 2px;
+      left: 20px;
+      right: 20px;
+      z-index: 1;
+      background-color: red
+
   }
 
+  #cartTitle{
+
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+#quantity{
+  
+  margin-left: 10px;
+  width: 50px;
+  height: 40px;
+}
