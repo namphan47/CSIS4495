@@ -74,7 +74,8 @@ export class NavComponent extends DefaultComponent implements OnInit {
     Promise.all([
       this._FirebaseDataService.deleteOrderItem(),
       this._FirebaseDataService.deleteOrder(),
-      this._FirebaseDataService.deleteDelivery()
+      this._FirebaseDataService.deleteDelivery(),
+      this._FirebaseDataService.deleteDeliveryStatus()
     ]).then(() => {
       this._NotificationService.pushMessage('|| Finish delete all orders');
     })

@@ -8,6 +8,15 @@
     width: 100%;
     z-index: 1;
   }
+
+  .instruction-group {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 2;
+    background: white;
+    width: 400px;
+  }
 }
 
 .map-wrapper {

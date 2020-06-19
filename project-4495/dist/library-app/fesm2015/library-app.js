@@ -1,11 +1,12 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
-import ___default, { maxBy } from 'lodash';
+import ___default, { map, maxBy } from 'lodash';
 import { __decorate, __awaiter } from 'tslib';
 import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, tap, first } from 'rxjs/operators';
+import { map as map$1, tap, first } from 'rxjs/operators';
 import moment from 'moment';
+import { NguiMapModule } from '@ngui/map';
 
 var ENUM_TABLES;
 (function (ENUM_TABLES) {
@@ -120,7 +121,42 @@ class Delivery extends DefaultModel {
         this.status_history = [];
         this.currentStatus = null;
         this.timeToNextStatus = 0;
+        this.path_to_restaurant = [];
+        this.path_to_customer = [];
         super.copyInto(data);
+        if (this.path_to_customer.length) {
+            this.path_to_customer = map(this.path_to_customer, x => JSON.parse(x));
+        }
+        if (this.path_to_restaurant.length) {
+            this.path_to_restaurant = map(this.path_to_restaurant, x => JSON.parse(x));
+        }
+    }
+    getData() {
+        const self = this;
+        const result = {};
+        Object.keys(this).map(key => {
+            if (this[key] instanceof DefaultModel) {
+                return;
+            }
+            switch (key) {
+                case '_raw':
+                case 'order':
+                case 'restaurant':
+                case 'customer':
+                case 'courier':
+                    return;
+                case 'path_to_restaurant':
+                case 'path_to_customer': {
+                    result[key] = map(self[key], (x) => {
+                        return JSON.stringify(x);
+                    });
+                    // console.log(result[key]);
+                    return;
+                }
+            }
+            result[key] = self[key];
+        });
+        return result;
     }
     setStatusHistory(histories) {
         this.status_history = histories;
@@ -979,11 +1015,48 @@ NotificationService = __decorate([
     })
 ], NotificationService);
 
+let MapService = class MapService {
+    constructor() {
+        // setTimeout(() => {
+        //   this.renderDirection(new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+        //     .then((rs) => {
+        //       console.log(rs);
+        //     });
+        // },1000);
+    }
+    renderDirection(from, to) {
+        return new Promise((resolve, reject) => {
+            const directionsService = new google.maps.DirectionsService;
+            directionsService.route({
+                origin: from,
+                destination: to,
+                travelMode: google.maps.TravelMode['DRIVING']
+            }, function (response, status) {
+                if (status === google.maps.DirectionsStatus['OK']) {
+                    console.log(response);
+                    resolve(response['routes'][0]['overview_path']);
+                }
+                else {
+                    window.alert('Directions request failed due to ' + status);
+                    reject('error');
+                }
+            });
+        });
+    }
+};
+MapService.ɵprov = ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
+MapService = __decorate([
+    Injectable({
+        providedIn: 'root'
+    })
+], MapService);
+
 let FirebaseDataService = class FirebaseDataService {
-    constructor(_AngularFirestore, _DummyDataService, _NotificationService) {
+    constructor(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
         this._AngularFirestore = _AngularFirestore;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
         this.TABLES = {
             [ENUM_TABLES.customer]: {
                 name: ENUM_TABLES.customer,
@@ -1222,13 +1295,13 @@ let FirebaseDataService = class FirebaseDataService {
         });
         return collection
             .snapshotChanges()
-            .pipe(map(items => items.map(a => {
+            .pipe(map$1(items => items.map(a => {
             const data = a.payload.doc.data();
             const id = a.payload.doc.id;
             // update id
             data['id'] = id;
             return data;
-        })), map((items) => ___default.filter(items, doc => {
+        })), map$1((items) => ___default.filter(items, doc => {
             if (!!id) {
                 return doc.id === id;
             }
@@ -1249,7 +1322,7 @@ let FirebaseDataService = class FirebaseDataService {
         const collection = this._AngularFirestore.doc(`${object.name}/${id}`);
         return collection
             .snapshotChanges()
-            .pipe(map(a => {
+            .pipe(map$1(a => {
             const data = a.payload.data();
             const id = a.payload.id;
             // update id
@@ -1319,6 +1392,9 @@ let FirebaseDataService = class FirebaseDataService {
     deleteDelivery() {
         return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
     }
+    deleteDeliveryStatus() {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.delivery_status_history].name);
+    }
     /**
      * delete data of collection
      * @param name
@@ -1338,9 +1414,10 @@ let FirebaseDataService = class FirebaseDataService {
 FirebaseDataService.ctorParameters = () => [
     { type: AngularFirestore },
     { type: DummyDataService },
-    { type: NotificationService }
+    { type: NotificationService },
+    { type: MapService }
 ];
-FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
+FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
 FirebaseDataService = __decorate([
     Injectable({
         providedIn: 'root'
@@ -1355,9 +1432,10 @@ var SIMULATOR_MESSAGE;
 })(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
 ;
 let SimulatorDataService = class SimulatorDataService {
-    constructor(_FirebaseDataService, _NotificationService) {
+    constructor(_FirebaseDataService, _NotificationService, _MapService) {
         this._FirebaseDataService = _FirebaseDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
     }
     /**
      * start simulator
@@ -1498,6 +1576,17 @@ let SimulatorDataService = class SimulatorDataService {
                 courier_id: courier.id,
                 order_id: order.id
             });
+            // add paths
+            yield this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.long), new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)))
+                .then((rs) => {
+                delivery.path_to_restaurant = rs;
+            });
+            yield this._MapService.renderDirection(new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)), new google.maps.LatLng(parseInt(customer.lat), parseInt(customer.long)))
+                .then((rs) => {
+                delivery.path_to_customer = rs;
+            });
+            console.log(delivery);
+            console.log(delivery.getData());
             yield this._FirebaseDataService.createWithObject(delivery);
             // create delivery status
             const deliveryStatusHistory = new DeliveryStatusHistory({
@@ -1527,9 +1616,10 @@ let SimulatorDataService = class SimulatorDataService {
 SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
 SimulatorDataService.ctorParameters = () => [
     { type: FirebaseDataService },
-    { type: NotificationService }
+    { type: NotificationService },
+    { type: MapService }
 ];
-SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService)); }, token: SimulatorDataService, providedIn: "root" });
+SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: SimulatorDataService, providedIn: "root" });
 SimulatorDataService = __decorate([
     Injectable({
         providedIn: 'root'
@@ -1571,7 +1661,11 @@ let LibraryAppModule = class LibraryAppModule {
 LibraryAppModule = __decorate([
     NgModule({
         declarations: [LibraryAppComponent],
-        imports: [],
+        imports: [
+            NguiMapModule.forRoot({
+                apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+            })
+        ],
         exports: [LibraryAppComponent]
     })
 ], LibraryAppModule);
@@ -1598,5 +1692,5 @@ TestAppService = __decorate([
  * Generated bundle index. Do not edit.
  */
 
-export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
+export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
 //# sourceMappingURL=library-app.js.map

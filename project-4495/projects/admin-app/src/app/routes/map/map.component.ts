@@ -13,7 +13,7 @@ declare const google: any;
 export class MapComponent extends DefaultComponent implements OnInit, AfterViewInit {
   Delivery_Status = Delivery_Status;
   map;
-  polylines: DeliveryPolyline[] = [];
+  // polylines: DeliveryPolyline[] = [];
 
   drivers: Courier[] = [];
   customers: Customer[] = [];
@@ -88,14 +88,14 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
           d.restaurant = d.order.restaurant;
           d.customer = d.order.customer;
 
-          this.renderDirection(this.map, new google.maps.LatLng(d.courier.lat, d.courier.long), new google.maps.LatLng(d.restaurant.lat, d.restaurant.long))
-            .then((rs) => {
-              d.path_to_restaurant = rs;
-            });
-          this.renderDirection(this.map, new google.maps.LatLng(d.restaurant.lat, d.restaurant.long), new google.maps.LatLng(d.customer.lat, d.customer.long))
-            .then((rs) => {
-              d.path_to_customer = rs;
-            });
+          // this.renderDirection(new google.maps.LatLng(d.courier.lat, d.courier.long), new google.maps.LatLng(d.restaurant.lat, d.restaurant.long))
+          //   .then((rs) => {
+          //     d.path_to_restaurant = rs;
+          //   });
+          // this.renderDirection(new google.maps.LatLng(d.restaurant.lat, d.restaurant.long), new google.maps.LatLng(d.customer.lat, d.customer.long))
+          //   .then((rs) => {
+          //     d.path_to_customer = rs;
+          //   });
         });
         console.log(this.drivers);
         console.log(this.deliveries);
@@ -105,16 +105,16 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
 
   ready(map) {
     this.map = map;
-    this.renderDirection(this.map, new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
-      .then((rs) => {
-        console.log(rs);
-        this.polylines = [];
-        this.polylines.push(new DeliveryPolyline(rs));
-      });
+    // this.renderDirection(this.map, new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+    //   .then((rs) => {
+    //     console.log(rs);
+    //     this.polylines = [];
+    //     this.polylines.push(new DeliveryPolyline(rs));
+    //   });
     this.getDeliveries();
   }
 
-  renderDirection(map, from, to): Promise<any> {
+  renderDirection(from, to): Promise<any> {
     return new Promise((resolve, reject) => {
       const directionsService = new google.maps.DirectionsService;
 

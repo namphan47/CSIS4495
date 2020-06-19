@@ -1,15 +1,17 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
-import ___default, { maxBy } from 'lodash';
+import ___default, { map, maxBy } from 'lodash';
 import { __decorate, __awaiter } from 'tslib';
 import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, tap, first } from 'rxjs/operators';
+import { map as map$1, tap, first } from 'rxjs/operators';
 import moment from 'moment';
+import { NguiMapModule } from '@ngui/map';
 
 import * as ɵngcc0 from '@angular/core';
 import * as ɵngcc1 from '@angular/common/http';
 import * as ɵngcc2 from '@angular/fire/firestore';
+import * as ɵngcc3 from '@ngui/map';
 var ENUM_TABLES;
 (function (ENUM_TABLES) {
     ENUM_TABLES["courier"] = "courier";
@@ -125,7 +127,42 @@ class Delivery extends DefaultModel {
         this.status_history = [];
         this.currentStatus = null;
         this.timeToNextStatus = 0;
+        this.path_to_restaurant = [];
+        this.path_to_customer = [];
         super.copyInto(data);
+        if (this.path_to_customer.length) {
+            this.path_to_customer = map(this.path_to_customer, x => JSON.parse(x));
+        }
+        if (this.path_to_restaurant.length) {
+            this.path_to_restaurant = map(this.path_to_restaurant, x => JSON.parse(x));
+        }
+    }
+    getData() {
+        const self = this;
+        const result = {};
+        Object.keys(this).map(key => {
+            if (this[key] instanceof DefaultModel) {
+                return;
+            }
+            switch (key) {
+                case '_raw':
+                case 'order':
+                case 'restaurant':
+                case 'customer':
+                case 'courier':
+                    return;
+                case 'path_to_restaurant':
+                case 'path_to_customer': {
+                    result[key] = map(self[key], (x) => {
+                        return JSON.stringify(x);
+                    });
+                    // console.log(result[key]);
+                    return;
+                }
+            }
+            result[key] = self[key];
+        });
+        return result;
     }
     setStatusHistory(histories) {
         this.status_history = histories;
@@ -972,11 +1009,44 @@ let NotificationService = class NotificationService {
 NotificationService.ɵfac = function NotificationService_Factory(t) { return new (t || NotificationService)(); };
 NotificationService.ɵprov = ɵɵdefineInjectable({ factory: function NotificationService_Factory() { return new NotificationService(); }, token: NotificationService, providedIn: "root" });
 
+let MapService = class MapService {
+    constructor() {
+        // setTimeout(() => {
+        //   this.renderDirection(new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+        //     .then((rs) => {
+        //       console.log(rs);
+        //     });
+        // },1000);
+    }
+    renderDirection(from, to) {
+        return new Promise((resolve, reject) => {
+            const directionsService = new google.maps.DirectionsService;
+            directionsService.route({
+                origin: from,
+                destination: to,
+                travelMode: google.maps.TravelMode['DRIVING']
+            }, function (response, status) {
+                if (status === google.maps.DirectionsStatus['OK']) {
+                    console.log(response);
+                    resolve(response['routes'][0]['overview_path']);
+                }
+                else {
+                    window.alert('Directions request failed due to ' + status);
+                    reject('error');
+                }
+            });
+        });
+    }
+};
+MapService.ɵfac = function MapService_Factory(t) { return new (t || MapService)(); };
+MapService.ɵprov = ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
+
 let FirebaseDataService = class FirebaseDataService {
-    constructor(_AngularFirestore, _DummyDataService, _NotificationService) {
+    constructor(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
         this._AngularFirestore = _AngularFirestore;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
         this.TABLES = {
             [ENUM_TABLES.customer]: {
                 name: ENUM_TABLES.customer,
@@ -1215,13 +1285,13 @@ let FirebaseDataService = class FirebaseDataService {
         });
         return collection
             .snapshotChanges()
-            .pipe(map(items => items.map(a => {
+            .pipe(map$1(items => items.map(a => {
             const data = a.payload.doc.data();
             const id = a.payload.doc.id;
             // update id
             data['id'] = id;
             return data;
-        })), map((items) => ___default.filter(items, doc => {
+        })), map$1((items) => ___default.filter(items, doc => {
             if (!!id) {
                 return doc.id === id;
             }
@@ -1242,7 +1312,7 @@ let FirebaseDataService = class FirebaseDataService {
         const collection = this._AngularFirestore.doc(`${object.name}/${id}`);
         return collection
             .snapshotChanges()
-            .pipe(map(a => {
+            .pipe(map$1(a => {
             const data = a.payload.data();
             const id = a.payload.id;
             // update id
@@ -1312,6 +1382,9 @@ let FirebaseDataService = class FirebaseDataService {
     deleteDelivery() {
         return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
     }
+    deleteDeliveryStatus() {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.delivery_status_history].name);
+    }
     /**
      * delete data of collection
      * @param name
@@ -1328,13 +1401,14 @@ let FirebaseDataService = class FirebaseDataService {
         });
     }
 };
-FirebaseDataService.ɵfac = function FirebaseDataService_Factory(t) { return new (t || FirebaseDataService)(ɵngcc0.ɵɵinject(ɵngcc2.AngularFirestore), ɵngcc0.ɵɵinject(DummyDataService), ɵngcc0.ɵɵinject(NotificationService)); };
+FirebaseDataService.ɵfac = function FirebaseDataService_Factory(t) { return new (t || FirebaseDataService)(ɵngcc0.ɵɵinject(ɵngcc2.AngularFirestore), ɵngcc0.ɵɵinject(DummyDataService), ɵngcc0.ɵɵinject(NotificationService), ɵngcc0.ɵɵinject(MapService)); };
 FirebaseDataService.ctorParameters = () => [
     { type: AngularFirestore },
     { type: DummyDataService },
-    { type: NotificationService }
+    { type: NotificationService },
+    { type: MapService }
 ];
-FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
+FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
 
 var SIMULATOR_MESSAGE;
 (function (SIMULATOR_MESSAGE) {
@@ -1344,9 +1418,10 @@ var SIMULATOR_MESSAGE;
 })(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
 ;
 let SimulatorDataService = class SimulatorDataService {
-    constructor(_FirebaseDataService, _NotificationService) {
+    constructor(_FirebaseDataService, _NotificationService, _MapService) {
         this._FirebaseDataService = _FirebaseDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
     }
     /**
      * start simulator
@@ -1487,6 +1562,17 @@ let SimulatorDataService = class SimulatorDataService {
                 courier_id: courier.id,
                 order_id: order.id
             });
+            // add paths
+            yield this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.long), new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)))
+                .then((rs) => {
+                delivery.path_to_restaurant = rs;
+            });
+            yield this._MapService.renderDirection(new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)), new google.maps.LatLng(parseInt(customer.lat), parseInt(customer.long)))
+                .then((rs) => {
+                delivery.path_to_customer = rs;
+            });
+            console.log(delivery);
+            console.log(delivery.getData());
             yield this._FirebaseDataService.createWithObject(delivery);
             // create delivery status
             const deliveryStatusHistory = new DeliveryStatusHistory({
@@ -1513,13 +1599,14 @@ let SimulatorDataService = class SimulatorDataService {
         return null;
     }
 };
-SimulatorDataService.ɵfac = function SimulatorDataService_Factory(t) { return new (t || SimulatorDataService)(ɵngcc0.ɵɵinject(FirebaseDataService), ɵngcc0.ɵɵinject(NotificationService)); };
+SimulatorDataService.ɵfac = function SimulatorDataService_Factory(t) { return new (t || SimulatorDataService)(ɵngcc0.ɵɵinject(FirebaseDataService), ɵngcc0.ɵɵinject(NotificationService), ɵngcc0.ɵɵinject(MapService)); };
 SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
 SimulatorDataService.ctorParameters = () => [
     { type: FirebaseDataService },
-    { type: NotificationService }
+    { type: NotificationService },
+    { type: MapService }
 ];
-SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService)); }, token: SimulatorDataService, providedIn: "root" });
+SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: SimulatorDataService, providedIn: "root" });
 
 let LibraryAppService = class LibraryAppService {
     constructor() {
@@ -1546,7 +1633,11 @@ LibraryAppComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: LibraryAppCompon
 let LibraryAppModule = class LibraryAppModule {
 };
 LibraryAppModule.ɵmod = ɵngcc0.ɵɵdefineNgModule({ type: LibraryAppModule });
-LibraryAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function LibraryAppModule_Factory(t) { return new (t || LibraryAppModule)(); }, imports: [[]] });
+LibraryAppModule.ɵinj = ɵngcc0.ɵɵdefineInjector({ factory: function LibraryAppModule_Factory(t) { return new (t || LibraryAppModule)(); }, imports: [[
+            NguiMapModule.forRoot({
+                apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+            })
+        ]] });
 
 let TestAppService = class TestAppService {
     constructor() {
@@ -1576,18 +1667,24 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
                 providedIn: 'root'
             }]
     }], function () { return []; }, null); })();
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(MapService, [{
+        type: Injectable,
+        args: [{
+                providedIn: 'root'
+            }]
+    }], function () { return []; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(FirebaseDataService, [{
         type: Injectable,
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: ɵngcc2.AngularFirestore }, { type: DummyDataService }, { type: NotificationService }]; }, null); })();
+    }], function () { return [{ type: ɵngcc2.AngularFirestore }, { type: DummyDataService }, { type: NotificationService }, { type: MapService }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(SimulatorDataService, [{
         type: Injectable,
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: FirebaseDataService }, { type: NotificationService }]; }, null); })();
+    }], function () { return [{ type: FirebaseDataService }, { type: NotificationService }, { type: MapService }]; }, null); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(LibraryAppService, [{
         type: Injectable,
         args: [{
@@ -1605,12 +1702,16 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
   `
             }]
     }], function () { return []; }, null); })();
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(LibraryAppModule, { declarations: [LibraryAppComponent], exports: [LibraryAppComponent] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵngcc0.ɵɵsetNgModuleScope(LibraryAppModule, { declarations: [LibraryAppComponent], imports: [ɵngcc3.NguiMapModule], exports: [LibraryAppComponent] }); })();
 /*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(LibraryAppModule, [{
         type: NgModule,
         args: [{
                 declarations: [LibraryAppComponent],
-                imports: [],
+                imports: [
+                    NguiMapModule.forRoot({
+                        apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+                    })
+                ],
                 exports: [LibraryAppComponent]
             }]
     }], null, null); })();
@@ -1629,6 +1730,6 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
  * Generated bundle index. Do not edit.
  */
 
-export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
+export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
 
 //# sourceMappingURL=library-app.js.map

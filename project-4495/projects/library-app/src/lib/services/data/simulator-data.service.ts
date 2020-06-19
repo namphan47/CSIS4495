@@ -10,6 +10,7 @@ import {NotificationService} from "../mics/notification.service";
 import {Courier, Delivery, Delivery_Status, Point, QueryParamModel} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 import moment from "moment";
+import {MapService} from "../map/map.service";
 
 enum SIMULATOR_MESSAGE {
   START = 'simulator start',
@@ -24,7 +25,8 @@ export class SimulatorDataService {
   static MESSAGE = SIMULATOR_MESSAGE;
 
   constructor(private _FirebaseDataService: FirebaseDataService,
-              private _NotificationService: NotificationService) {
+              private _NotificationService: NotificationService,
+              private _MapService: MapService) {
 
   }
 
@@ -185,6 +187,20 @@ export class SimulatorDataService {
         order_id: order.id
       }
     );
+
+    // add paths
+    await this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.long), new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)))
+      .then((rs) => {
+        delivery.path_to_restaurant = rs;
+      });
+
+    await this._MapService.renderDirection(new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)), new google.maps.LatLng(parseInt(customer.lat), parseInt(customer.long)))
+      .then((rs) => {
+        delivery.path_to_customer = rs;
+      });
+
+    console.log(delivery);
+    console.log(delivery.getData());
 
     await this._FirebaseDataService.createWithObject(delivery);
 

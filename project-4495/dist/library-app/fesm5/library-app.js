@@ -1,11 +1,12 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
 import { __extends, __decorate, __awaiter, __generator, __read } from 'tslib';
-import ___default, { maxBy } from 'lodash';
+import ___default, { map, maxBy } from 'lodash';
 import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, tap, first } from 'rxjs/operators';
+import { map as map$1, tap, first } from 'rxjs/operators';
 import moment from 'moment';
+import { NguiMapModule } from '@ngui/map';
 
 var ENUM_TABLES;
 (function (ENUM_TABLES) {
@@ -135,9 +136,45 @@ var Delivery = /** @class */ (function (_super) {
         _this.status_history = [];
         _this.currentStatus = null;
         _this.timeToNextStatus = 0;
+        _this.path_to_restaurant = [];
+        _this.path_to_customer = [];
         _super.prototype.copyInto.call(_this, data);
+        if (_this.path_to_customer.length) {
+            _this.path_to_customer = map(_this.path_to_customer, function (x) { return JSON.parse(x); });
+        }
+        if (_this.path_to_restaurant.length) {
+            _this.path_to_restaurant = map(_this.path_to_restaurant, function (x) { return JSON.parse(x); });
+        }
         return _this;
     }
+    Delivery.prototype.getData = function () {
+        var _this = this;
+        var self = this;
+        var result = {};
+        Object.keys(this).map(function (key) {
+            if (_this[key] instanceof DefaultModel) {
+                return;
+            }
+            switch (key) {
+                case '_raw':
+                case 'order':
+                case 'restaurant':
+                case 'customer':
+                case 'courier':
+                    return;
+                case 'path_to_restaurant':
+                case 'path_to_customer': {
+                    result[key] = map(self[key], function (x) {
+                        return JSON.stringify(x);
+                    });
+                    // console.log(result[key]);
+                    return;
+                }
+            }
+            result[key] = self[key];
+        });
+        return result;
+    };
     Delivery.prototype.setStatusHistory = function (histories) {
         this.status_history = histories;
         this.currentStatus = maxBy(histories, function (x) { return x.date_time; });
@@ -1020,12 +1057,50 @@ var NotificationService = /** @class */ (function () {
     return NotificationService;
 }());
 
+var MapService = /** @class */ (function () {
+    function MapService() {
+        // setTimeout(() => {
+        //   this.renderDirection(new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+        //     .then((rs) => {
+        //       console.log(rs);
+        //     });
+        // },1000);
+    }
+    MapService.prototype.renderDirection = function (from, to) {
+        return new Promise(function (resolve, reject) {
+            var directionsService = new google.maps.DirectionsService;
+            directionsService.route({
+                origin: from,
+                destination: to,
+                travelMode: google.maps.TravelMode['DRIVING']
+            }, function (response, status) {
+                if (status === google.maps.DirectionsStatus['OK']) {
+                    console.log(response);
+                    resolve(response['routes'][0]['overview_path']);
+                }
+                else {
+                    window.alert('Directions request failed due to ' + status);
+                    reject('error');
+                }
+            });
+        });
+    };
+    MapService.ɵprov = ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
+    MapService = __decorate([
+        Injectable({
+            providedIn: 'root'
+        })
+    ], MapService);
+    return MapService;
+}());
+
 var FirebaseDataService = /** @class */ (function () {
-    function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService) {
+    function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
         var _a;
         this._AngularFirestore = _AngularFirestore;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
         this.TABLES = (_a = {},
             _a[ENUM_TABLES.customer] = {
                 name: ENUM_TABLES.customer,
@@ -1353,13 +1428,13 @@ var FirebaseDataService = /** @class */ (function () {
         });
         return collection
             .snapshotChanges()
-            .pipe(map(function (items) { return items.map(function (a) {
+            .pipe(map$1(function (items) { return items.map(function (a) {
             var data = a.payload.doc.data();
             var id = a.payload.doc.id;
             // update id
             data['id'] = id;
             return data;
-        }); }), map(function (items) { return ___default.filter(items, function (doc) {
+        }); }), map$1(function (items) { return ___default.filter(items, function (doc) {
             if (!!id) {
                 return doc.id === id;
             }
@@ -1381,7 +1456,7 @@ var FirebaseDataService = /** @class */ (function () {
         var collection = this._AngularFirestore.doc(object.name + "/" + id);
         return collection
             .snapshotChanges()
-            .pipe(map(function (a) {
+            .pipe(map$1(function (a) {
             var data = a.payload.data();
             var id = a.payload.id;
             // update id
@@ -1452,6 +1527,9 @@ var FirebaseDataService = /** @class */ (function () {
     FirebaseDataService.prototype.deleteDelivery = function () {
         return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
     };
+    FirebaseDataService.prototype.deleteDeliveryStatus = function () {
+        return this.deleteTable(this.TABLES[ENUM_TABLES.delivery_status_history].name);
+    };
     /**
      * delete data of collection
      * @param name
@@ -1478,9 +1556,10 @@ var FirebaseDataService = /** @class */ (function () {
     FirebaseDataService.ctorParameters = function () { return [
         { type: AngularFirestore },
         { type: DummyDataService },
-        { type: NotificationService }
+        { type: NotificationService },
+        { type: MapService }
     ]; };
-    FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
+    FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
     FirebaseDataService = __decorate([
         Injectable({
             providedIn: 'root'
@@ -1497,9 +1576,10 @@ var SIMULATOR_MESSAGE;
 })(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
 ;
 var SimulatorDataService = /** @class */ (function () {
-    function SimulatorDataService(_FirebaseDataService, _NotificationService) {
+    function SimulatorDataService(_FirebaseDataService, _NotificationService, _MapService) {
         this._FirebaseDataService = _FirebaseDataService;
         this._NotificationService = _NotificationService;
+        this._MapService = _MapService;
     }
     /**
      * start simulator
@@ -1693,8 +1773,24 @@ var SimulatorDataService = /** @class */ (function () {
                             courier_id: courier.id,
                             order_id: order.id
                         });
-                        return [4 /*yield*/, this._FirebaseDataService.createWithObject(delivery)];
+                        // add paths
+                        return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.long), new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)))
+                                .then(function (rs) {
+                                delivery.path_to_restaurant = rs;
+                            })];
                     case 3:
+                        // add paths
+                        _a.sent();
+                        return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(parseInt(restaurant.lat), parseInt(restaurant.long)), new google.maps.LatLng(parseInt(customer.lat), parseInt(customer.long)))
+                                .then(function (rs) {
+                                delivery.path_to_customer = rs;
+                            })];
+                    case 4:
+                        _a.sent();
+                        console.log(delivery);
+                        console.log(delivery.getData());
+                        return [4 /*yield*/, this._FirebaseDataService.createWithObject(delivery)];
+                    case 5:
                         _a.sent();
                         deliveryStatusHistory = new DeliveryStatusHistory({
                             status: Delivery_Status.ORDERED,
@@ -1702,7 +1798,7 @@ var SimulatorDataService = /** @class */ (function () {
                             date_time: moment().valueOf()
                         });
                         return [4 /*yield*/, this._FirebaseDataService.createWithObject(deliveryStatusHistory)];
-                    case 4:
+                    case 6:
                         _a.sent();
                         return [2 /*return*/];
                 }
@@ -1727,9 +1823,10 @@ var SimulatorDataService = /** @class */ (function () {
     SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
     SimulatorDataService.ctorParameters = function () { return [
         { type: FirebaseDataService },
-        { type: NotificationService }
+        { type: NotificationService },
+        { type: MapService }
     ]; };
-    SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService)); }, token: SimulatorDataService, providedIn: "root" });
+    SimulatorDataService.ɵprov = ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(ɵɵinject(FirebaseDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: SimulatorDataService, providedIn: "root" });
     SimulatorDataService = __decorate([
         Injectable({
             providedIn: 'root'
@@ -1773,7 +1870,11 @@ var LibraryAppModule = /** @class */ (function () {
     LibraryAppModule = __decorate([
         NgModule({
             declarations: [LibraryAppComponent],
-            imports: [],
+            imports: [
+                NguiMapModule.forRoot({
+                    apiUrl: "https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc"
+                })
+            ],
             exports: [LibraryAppComponent]
         })
     ], LibraryAppModule);
@@ -1803,5 +1904,5 @@ var TestAppService = /** @class */ (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
+export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
 //# sourceMappingURL=library-app.js.map
