@@ -5,7 +5,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-052deb1f3ae55ac65bec.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png",
     "lat": 49.212271,
-    "long": -122.918816,
+    "lng": -122.918816,
     "phone_no": "(604)-718-1172"
   },
   {
@@ -14,7 +14,7 @@
     "img1":"https://static.skipthedishes.com/indian-bombay-bistro-menu-image-small-1470363342212.jpg",
     "img2":"https://static.skipthedishes.com/indian-bombay-bistro-list-image-mobile-1490966940146.png",
     "lat": 49.223155,
-    "long": -122.932605,
+    "lng": -122.932605,
     "phone_no": " (604)-553-1719"
   },
   {
@@ -23,7 +23,7 @@
     "img1":"https://static.skipthedishes.com/baba-sweets-and-restaurant-menu-image-small-1529343317142.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-646b00287c87d93df6e6.png",
     "lat": 49.223281,
-    "long": -122.943316,
+    "lng": -122.943316,
     "phone_no": " (604)-515-4230"
   },
   {
@@ -32,7 +32,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-f1381e01aa6dc424e2b4.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-c86295f6aeb01e431414.png",
     "lat": 49.204826,
-    "long": -122.910192,
+    "lng": -122.910192,
     "phone_no": "(778)-397-7800"
   },
   {
@@ -41,7 +41,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-fbe36404df951ecccbc1.jpg",
     "img2":"https://static.skipthedishes.com/hon-sushi-list-image-mobile-1491230537653.jpg",
     "lat": 49.286826,
-    "long": -123.112584,
+    "lng": -123.112584,
     "phone_no": "(604)-568-3900"
   },
   {
@@ -50,7 +50,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-fc24c6064188563c7bae.png",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-ff0221a21117f2c6780f.jpg",
     "lat": 49.202816,
-    "long": -122.911051,
+    "lng": -122.911051,
     "phone_no": "(604)-553-9966"
   },
   {
@@ -59,7 +59,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-12a63687e66ed6108c27.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-0e0339ecb35a072239ff.png",
     "lat": 49.200451,
-    "long": -122.917861,
+    "lng": -122.917861,
     "phone_no": "(604)-521-2288"
   },
   {
@@ -68,7 +68,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-7b55cf0da25ce6764b7d.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-0c87f8fdef4fefe787d6.png",
     "lat": 49.198050,
-    "long": -122.978744,
+    "lng": -122.978744,
     "phone_no": " (604)-433-8424"
   },
   {
@@ -77,7 +77,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-7cf3d494d42a0ac8f772.png",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-a32c6ec3f143ef49b40f.png",
     "lat": 49.222195,
-    "long": -122.931487,
+    "lng": -122.931487,
     "phone_no": "(604)-525-5108"
   },
   {
@@ -86,7 +86,7 @@
     "img1":"https://restaurants-static.skipthedishes.com/images/resized/small-1990bd85e70162a48a42.jpg",
     "img2":"https://restaurants-static.skipthedishes.com/images/resized/mobile-e7550a65a1ee298b4958.png",
     "lat": 49.218681,
-    "long": -122.956770,
+    "lng": -122.956770,
     "phone_no": "(604)-759-0016"
   }
 ]
