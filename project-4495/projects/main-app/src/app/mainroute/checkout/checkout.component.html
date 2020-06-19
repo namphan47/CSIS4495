@@ -55,8 +55,16 @@
   <div class ="row map-row">
 
     <div>
-      <iframe class="map-responsive" src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder=0></iframe>
-    </div>
+      <div class="map">
+        <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper map-responsive">
+          <custom-marker position="49.209773, -122.922241" class="custom-icon location">
+            <i class="fas fa-map-marker-alt "></i>
+          </custom-marker>
+          <custom-marker position="49.211773, -122.923016" class="custom-icon car">
+            <i class="fas fa-car"></i>
+          </custom-marker>
+        </ngui-map>
+      </div></div>
 
     <div class="over-map">
       <button class="back-btn"> BACK</button>
