@@ -6,5 +6,7 @@ export declare class Courier extends DefaultModel {
     driver_license: string;
     email: string;
     phone_no: string;
+    lat: number;
+    lng: number;
     constructor(data: any);
 }

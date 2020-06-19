@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/common/http'), require('@angular/fire/firestore'), require('rxjs/operators'), require('moment')) :
-    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/common/http', '@angular/fire/firestore', 'rxjs/operators', 'moment'], factory) :
-    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.common.http, global.ng.fire.firestore, global.rxjs.operators, global.moment));
-}(this, (function (exports, rxjs, ___default, core, http, firestore, operators, moment) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/common/http'), require('@angular/fire/firestore'), require('rxjs/operators'), require('moment'), require('@ngui/map')) :
+    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/common/http', '@angular/fire/firestore', 'rxjs/operators', 'moment', '@ngui/map'], factory) :
+    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.common.http, global.ng.fire.firestore, global.rxjs.operators, global.moment, global.map));
+}(this, (function (exports, rxjs, ___default, core, http, firestore, operators, moment, map) { 'use strict';
 
     var ___default__default = 'default' in ___default ? ___default['default'] : ___default;
     moment = moment && Object.prototype.hasOwnProperty.call(moment, 'default') ? moment['default'] : moment;
@@ -312,6 +312,8 @@
             _this.driver_license = '';
             _this.email = '';
             _this.phone_no = '';
+            _this.lat = 49.206762;
+            _this.lng = -122.918458;
             _super.prototype.copyInto.call(_this, data);
             return _this;
         }
@@ -325,8 +327,8 @@
             _this.id = '';
             _this.name = '';
             _this.address = '';
-            _this.lat = '';
-            _this.long = '';
+            _this.lat = 0;
+            _this.lng = 0;
             _this.phone_no = '';
             _this.email = '';
             _super.prototype.copyInto.call(_this, data);
@@ -346,9 +348,46 @@
             _this.status_history = [];
             _this.currentStatus = null;
             _this.timeToNextStatus = 0;
+            _this.path_to_restaurant = [];
+            _this.path_to_customer = [];
             _super.prototype.copyInto.call(_this, data);
+            if (_this.path_to_customer.length) {
+                _this.path_to_customer = ___default.map(_this.path_to_customer, function (x) { return JSON.parse(x); });
+            }
+            if (_this.path_to_restaurant.length) {
+                _this.path_to_restaurant = ___default.map(_this.path_to_restaurant, function (x) { return JSON.parse(x); });
+            }
             return _this;
         }
+        Delivery.prototype.getData = function () {
+            var _this = this;
+            var self = this;
+            var result = {};
+            Object.keys(this).map(function (key) {
+                if (_this[key] instanceof DefaultModel) {
+                    return;
+                }
+                switch (key) {
+                    case '_raw':
+                    case 'order':
+                    case 'restaurant':
+                    case 'customer':
+                    case 'courier':
+                    case 'points':
+                        return;
+                    case 'path_to_restaurant':
+                    case 'path_to_customer': {
+                        result[key] = ___default.map(self[key], function (x) {
+                            return JSON.stringify(x);
+                        });
+                        // console.log(result[key]);
+                        return;
+                    }
+                }
+                result[key] = self[key];
+            });
+            return result;
+        };
         Delivery.prototype.setStatusHistory = function (histories) {
             this.status_history = histories;
             this.currentStatus = ___default.maxBy(histories, function (x) { return x.date_time; });
@@ -437,8 +476,10 @@
             _this.name = '';
             _this.address = '';
             _this.phone_no = '';
-            _this.lat = '';
-            _this.long = '';
+            _this.img1 = '';
+            _this.img2 = '';
+            _this.lat = 0;
+            _this.lng = 0;
             _this.meal_ids = [];
             _this.meals = [];
             _super.prototype.copyInto.call(_this, data);
@@ -488,72 +529,92 @@
     	{
     		name: "McDonald's",
     		address: "515 6th StNew Westminster, BC V3L 3B9",
-    		lat: "49.212271",
-    		long: "-122.918816",
-    		phone_no: "(604) 718-1172"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-052deb1f3ae55ac65bec.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png",
+    		lat: 49.212271,
+    		lng: -122.918816,
+    		phone_no: "(604)-718-1172"
     	},
     	{
     		name: "Indian Bombay Bistro",
     		address: " 7558 6th St, Burnaby, BC V3N 3M3",
-    		lat: "49.223155",
-    		long: "-122.932605",
-    		phone_no: " (604) 553-1719"
+    		img1: "https://static.skipthedishes.com/indian-bombay-bistro-menu-image-small-1470363342212.jpg",
+    		img2: "https://static.skipthedishes.com/indian-bombay-bistro-list-image-mobile-1490966940146.png",
+    		lat: 49.223155,
+    		lng: -122.932605,
+    		phone_no: " (604)-553-1719"
     	},
     	{
     		name: "Manjal South Indian Kitchen",
     		address: "7613 Edmonds St, Burnaby, BC V3N 1B6",
-    		lat: "49.223281",
-    		long: "-122.943316",
-    		phone_no: " (604) 515-4230"
+    		img1: "https://static.skipthedishes.com/baba-sweets-and-restaurant-menu-image-small-1529343317142.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-646b00287c87d93df6e6.png",
+    		lat: 49.223281,
+    		lng: -122.943316,
+    		phone_no: " (604)-515-4230"
     	},
     	{
     		name: "Bubble World",
     		address: "601 Agnes St, New Westminster, BC V3M 1G9",
-    		lat: "49.204826",
-    		long: "-122.910192",
-    		phone_no: "(778) 397-7800"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-f1381e01aa6dc424e2b4.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-c86295f6aeb01e431414.png",
+    		lat: 49.204826,
+    		lng: -122.910192,
+    		phone_no: "(778)-397-7800"
     	},
     	{
     		name: "Miku Vancouver",
     		address: " 200 Granville St # 70, Vancouver, BC V6C 1S4",
-    		lat: "49.286826",
-    		long: "-123.112584",
-    		phone_no: "(604) 568-3900"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-fbe36404df951ecccbc1.jpg",
+    		img2: "https://static.skipthedishes.com/hon-sushi-list-image-mobile-1491230537653.jpg",
+    		lat: 49.286826,
+    		lng: -123.112584,
+    		phone_no: "(604)-568-3900"
     	},
     	{
     		name: "Banh Mi Bar",
     		address: "722 Carnarvon St, New Westminster, BC V3M 6V4",
-    		lat: "49.202816",
-    		long: "-122.911051",
-    		phone_no: "(604) 553-9966"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-fc24c6064188563c7bae.png",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-ff0221a21117f2c6780f.jpg",
+    		lat: 49.202816,
+    		lng: -122.911051,
+    		phone_no: "(604)-553-9966"
     	},
     	{
     		name: "De Dutch Pannekoek House",
     		address: "1035 Columbia St #102, New Westminster, BC V3M 1C4",
-    		lat: "49.200451",
-    		long: "-122.917861",
-    		phone_no: "(604) 521-2288"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-12a63687e66ed6108c27.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0e0339ecb35a072239ff.png",
+    		lat: 49.200451,
+    		lng: -122.917861,
+    		phone_no: "(604)-521-2288"
     	},
     	{
     		name: "Pizza Hut",
     		address: "7515 Market Crossing #170, Burnaby, BC V5J 0A3",
-    		lat: "49.198050",
-    		long: "-122.978744",
-    		phone_no: " (604) 433-8424"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-7b55cf0da25ce6764b7d.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0c87f8fdef4fefe787d6.png",
+    		lat: 49.19805,
+    		lng: -122.978744,
+    		phone_no: " (604)-433-8424"
     	},
     	{
     		name: "Donair & Sub House",
     		address: "7634 6th St, Burnaby, BC V3N 3M5",
-    		lat: "49.222195",
-    		long: "-122.931487",
-    		phone_no: "(604) 525-5108"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-7cf3d494d42a0ac8f772.png",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a32c6ec3f143ef49b40f.png",
+    		lat: 49.222195,
+    		lng: -122.931487,
+    		phone_no: "(604)-525-5108"
     	},
     	{
     		name: "Subway",
     		address: "7155 Kingsway Suite# 110, Burnaby, BC V5E 2V1",
-    		lat: "49.218681",
-    		long: "-122.956770",
-    		phone_no: "(604) 759-0016"
+    		img1: "https://restaurants-static.skipthedishes.com/images/resized/small-1990bd85e70162a48a42.jpg",
+    		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-e7550a65a1ee298b4958.png",
+    		lat: 49.218681,
+    		lng: -122.95677,
+    		phone_no: "(604)-759-0016"
     	}
     ];
 
@@ -563,70 +624,90 @@
     		vin: "WVGAV7AX1CW622064",
     		driver_license: 9470107268,
     		email: "lscourge0@php.net",
-    		phone_no: "633-385-2282"
+    		phone_no: "633-385-2282",
+    		lat: 49.211149,
+    		lng: -122.942574
     	},
     	{
     		name: "Constantina Jude",
     		vin: "WAUKF68E15A253661",
     		driver_license: 2897719788,
     		email: "cjude1@amazon.co.jp",
-    		phone_no: "100-897-4918"
+    		phone_no: "100-897-4918",
+    		lat: 49.210589,
+    		lng: -122.931072
     	},
     	{
     		name: "Elvis Kee",
     		vin: "JH4CU4F41BC617894",
     		driver_license: 4368855612,
     		email: "ekee2@house.gov",
-    		phone_no: "314-262-4369"
+    		phone_no: "314-262-4369",
+    		lat: 49.208872,
+    		lng: -122.919184
     	},
     	{
     		name: "Bryce Barck",
     		vin: "WBA3B1C59EF926774",
     		driver_license: 933161220,
     		email: "bbarck3@yellowpages.com",
-    		phone_no: "749-951-5984"
+    		phone_no: "749-951-5984",
+    		lat: 49.243703,
+    		lng: -122.988951
     	},
     	{
     		name: "Wyn Elleton",
     		vin: "1GYS4GEF3DR541915",
     		driver_license: 2959453573,
     		email: "welleton4@ask.com",
-    		phone_no: "767-563-9023"
+    		phone_no: "767-563-9023",
+    		lat: 49.222311,
+    		lng: -122.997079
     	},
     	{
     		name: "Patrice Costello",
     		vin: "KM8NU4CC9AU096286",
     		driver_license: 3432604998,
     		email: "pcostello5@un.org",
-    		phone_no: "722-500-6965"
+    		phone_no: "722-500-6965",
+    		lat: 49.223544,
+    		lng: -122.992841
     	},
     	{
     		name: "Tammy Lahiff",
     		vin: "2C3CCAJG7DH396665",
     		driver_license: 426260708,
     		email: "tlahiff6@ibm.com",
-    		phone_no: "458-277-8003"
+    		phone_no: "458-277-8003",
+    		lat: 49.230003,
+    		lng: -122.964729
     	},
     	{
     		name: "Heddi Garci",
     		vin: "3D7TP2HT6AG956637",
     		driver_license: 432395245,
     		email: "hgarci7@google.co.jp",
-    		phone_no: "826-314-5170"
+    		phone_no: "826-314-5170",
+    		lat: 49.245021,
+    		lng: -122.973886
     	},
     	{
     		name: "Maryann Matthew",
     		vin: "5UXKR0C56F0833637",
     		driver_license: 7489646901,
     		email: "mmatthew8@soundcloud.com",
-    		phone_no: "209-327-5368"
+    		phone_no: "209-327-5368",
+    		lat: 49.251335,
+    		lng: -123.004277
     	},
     	{
     		name: "Inessa Ewells",
     		vin: "1FTWW3B55AE261371",
     		driver_license: 9318168349,
     		email: "iewells9@dell.com",
-    		phone_no: "323-249-1314"
+    		phone_no: "323-249-1314",
+    		lat: 49.226187,
+    		lng: -122.937293
     	}
     ];
 
@@ -1092,78 +1173,80 @@
     	{
     		name: "Courtnay",
     		address: "4194 Dominion St,Burnaby,BC,V5G 1C6",
-    		lat: "49.256128",
-    		long: "-123.012232",
+    		lat: 49.256128,
+    		lng: -123.012232,
     		phone_no: "817-681-0289",
     		email: "chawkeswood0@vkontakte.ru"
     	},
     	{
     		name: "Carlen",
     		address: "4360 Beresford St,Burnaby,BC,V5H 0G2",
-    		lat: "49.226981",
-    		long: "-123.007774",
+    		lat: 49.226981,
+    		lng: -123.007774,
     		phone_no: "778-727-2099",
     		email: "cdomenichelli1@economist.com"
     	},
     	{
     		name: "Kylen",
     		address: "2133 Douglas Rd,Burnaby,BC,V5C 0E9, 49.264296,-122.991842",
+    		lat: 49.21413,
+    		lng: -122.975091,
     		phone_no: "604-505-4586",
     		email: "kbentson2@mysql.com"
     	},
     	{
     		name: "Herbie",
     		address: "6688 Arcola St,Burnaby,BC,V5E 0B4",
-    		lat: " 49.219039",
-    		long: "-122.965729",
+    		lat: 49.219039,
+    		lng: -122.965729,
     		phone_no: "369-253-5221",
     		email: "hgough3@bbb.org"
     	},
     	{
     		name: "Issy",
     		address: "8066 18th Avenue,Burnaby,BC,V3N 1J8",
-    		lat: "49.227500",
-    		long: "-122.930111",
+    		lat: 49.2275,
+    		lng: -122.930111,
     		phone_no: "373-711-2168",
     		email: "ihegarty4@psu.edu"
     	},
     	{
     		name: "Michaelina",
     		address: "7007 Marlborough Avenue,Burnaby,BC,V5J 4G6",
-    		lat: "49.219436",
-    		long: "-122.991558",
+    		lat: 49.219436,
+    		lng: -122.991558,
     		phone_no: "921-117-8066",
     		email: "mmutlow5@cdc.gov"
     	},
     	{
     		name: "Kerry",
     		address: "7111 18th Avenue, Burnaby,BC,V3N 1H2,, -122.955665",
-    		lat: " 49.214635",
-    		long: "-122.991558",
+    		lat: 49.214635,
+    		lng: -122.991558,
     		phone_no: "746-507-2664",
     		email: "kmarval6@phoca.cz"
     	},
     	{
     		name: "Jeannie",
     		address: "7656 17th Ave, Burnaby,BC,V3N 1L7",
-    		lat: "49.221472",
-    		long: "-122.939420",
+    		lat: 49.221472,
+    		lng: -122.93942,
     		phone_no: "729-320-3289",
     		email: "jorneblow7@hibu.com"
     	},
     	{
     		name: "Tobe",
     		address: "9835 King George Blvd, Surrey,BC,T1J 4E1",
-    		lat: "49.181111",
-    		long: "-122.846641",
+    		lat: 49.181111,
+    		lng: -122.846641,
     		phone_no: "544-822-6534",
     		email: "thume8@paginegialle.it"
     	},
     	{
     		name: "Cecilio",
     		address: "12905 111 Ave,Surrey,BC,V3T 2R5",
-    		lat: "49.204931",
-    		long: "-122.864619",
+    		lat: 49.204931,
+    		lng: -122.864619,
     		phone_no: "321-437-1039",
     		email: "cstow9@google.pl"
     	}
@@ -1231,12 +1314,50 @@
         return NotificationService;
     }());
 
+    var MapService = /** @class */ (function () {
+        function MapService() {
+            // setTimeout(() => {
+            //   this.renderDirection(new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+            //     .then((rs) => {
+            //       console.log(rs);
+            //     });
+            // },1000);
+        }
+        MapService.prototype.renderDirection = function (from, to) {
+            return new Promise(function (resolve, reject) {
+                var directionsService = new google.maps.DirectionsService;
+                directionsService.route({
+                    origin: from,
+                    destination: to,
+                    travelMode: google.maps.TravelMode['DRIVING']
+                }, function (response, status) {
+                    if (status === google.maps.DirectionsStatus['OK']) {
+                        console.log(response);
+                        resolve(response['routes'][0]['overview_path']);
+                    }
+                    else {
+                        window.alert('Directions request failed due to ' + status);
+                        reject('error');
+                    }
+                });
+            });
+        };
+        MapService.ɵprov = core.ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
+        MapService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], MapService);
+        return MapService;
+    }());
+
     var FirebaseDataService = /** @class */ (function () {
-        function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService) {
+        function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
             var _a;
             this._AngularFirestore = _AngularFirestore;
             this._DummyDataService = _DummyDataService;
             this._NotificationService = _NotificationService;
+            this._MapService = _MapService;
             this.TABLES = (_a = {},
                 _a[exports.ENUM_TABLES.customer] = {
                     name: exports.ENUM_TABLES.customer,
@@ -1508,7 +1629,7 @@
                             .then(function (rs) { return rs; })
                             .then(function (orders) {
                             orders = orders;
-                            ___default__default.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
+                            return Promise.all(___default__default.map(orders, function (order) { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0: 
@@ -1536,11 +1657,12 @@
                                         case 3:
                                             // get restaurant for each order
                                             _a.sent();
-                                            return [2 /*return*/];
+                                            return [2 /*return*/, Promise.resolve()];
                                     }
                                 });
-                            }); });
-                            return orders;
+                            }); })).then(function () {
+                                return orders;
+                            });
                         })];
                 });
             });
@@ -1662,6 +1784,9 @@
         FirebaseDataService.prototype.deleteDelivery = function () {
             return this.deleteTable(this.TABLES[exports.ENUM_TABLES.delivery].name);
         };
+        FirebaseDataService.prototype.deleteDeliveryStatus = function () {
+            return this.deleteTable(this.TABLES[exports.ENUM_TABLES.delivery_status_history].name);
+        };
         /**
          * delete data of collection
          * @param name
@@ -1688,9 +1813,10 @@
         FirebaseDataService.ctorParameters = function () { return [
             { type: firestore.AngularFirestore },
             { type: DummyDataService },
-            { type: NotificationService }
+            { type: NotificationService },
+            { type: MapService }
         ]; };
-        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService)); }, token: FirebaseDataService, providedIn: "root" });
+        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
         FirebaseDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'
@@ -1707,9 +1833,10 @@
     })(SIMULATOR_MESSAGE || (SIMULATOR_MESSAGE = {}));
     ;
     var SimulatorDataService = /** @class */ (function () {
-        function SimulatorDataService(_FirebaseDataService, _NotificationService) {
+        function SimulatorDataService(_FirebaseDataService, _NotificationService, _MapService) {
             this._FirebaseDataService = _FirebaseDataService;
             this._NotificationService = _NotificationService;
+            this._MapService = _MapService;
         }
         /**
          * start simulator
@@ -1731,6 +1858,7 @@
                                 return x.currentStatus.status !== exports.Delivery_Status.DELIVERED;
                             });
                             if (deliveryList.length === 0) {
+                                this._NotificationService.pushMessage(SIMULATOR_MESSAGE.STOP);
                                 return [2 /*return*/, Promise.resolve()];
                             }
                             return [4 /*yield*/, this._FirebaseDataService.getOrders().then(function (rs) { return orderList = rs; })];
@@ -1902,8 +2030,24 @@
                                 courier_id: courier.id,
                                 order_id: order.id
                             });
-                            return [4 /*yield*/, this._FirebaseDataService.createWithObject(delivery)];
+                            // add paths
+                            return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.lng), new google.maps.LatLng(restaurant.lat, restaurant.lng))
+                                    .then(function (rs) {
+                                    delivery.path_to_restaurant = rs;
+                                })];
                         case 3:
+                            // add paths
+                            _a.sent();
+                            return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
+                                    .then(function (rs) {
+                                    delivery.path_to_customer = rs;
+                                })];
+                        case 4:
+                            _a.sent();
+                            console.log(delivery);
+                            console.log(delivery.getData());
+                            return [4 /*yield*/, this._FirebaseDataService.createWithObject(delivery)];
+                        case 5:
                             _a.sent();
                             deliveryStatusHistory = new DeliveryStatusHistory({
                                 status: exports.Delivery_Status.ORDERED,
@@ -1911,7 +2055,7 @@
                                 date_time: moment().valueOf()
                             });
                             return [4 /*yield*/, this._FirebaseDataService.createWithObject(deliveryStatusHistory)];
-                        case 4:
+                        case 6:
                             _a.sent();
                             return [2 /*return*/];
                     }
@@ -1936,9 +2080,10 @@
         SimulatorDataService.MESSAGE = SIMULATOR_MESSAGE;
         SimulatorDataService.ctorParameters = function () { return [
             { type: FirebaseDataService },
-            { type: NotificationService }
+            { type: NotificationService },
+            { type: MapService }
         ]; };
-        SimulatorDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(core.ɵɵinject(FirebaseDataService), core.ɵɵinject(NotificationService)); }, token: SimulatorDataService, providedIn: "root" });
+        SimulatorDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function SimulatorDataService_Factory() { return new SimulatorDataService(core.ɵɵinject(FirebaseDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: SimulatorDataService, providedIn: "root" });
         SimulatorDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'
@@ -1982,7 +2127,11 @@
         LibraryAppModule = __decorate([
             core.NgModule({
                 declarations: [LibraryAppComponent],
-                imports: [],
+                imports: [
+                    map.NguiMapModule.forRoot({
+                        apiUrl: "https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc"
+                    })
+                ],
                 exports: [LibraryAppComponent]
             })
         ], LibraryAppModule);
@@ -2015,6 +2164,7 @@
     exports.LibraryAppComponent = LibraryAppComponent;
     exports.LibraryAppModule = LibraryAppModule;
     exports.LibraryAppService = LibraryAppService;
+    exports.MapService = MapService;
     exports.Meal = Meal;
     exports.NotificationService = NotificationService;
     exports.Order = Order;

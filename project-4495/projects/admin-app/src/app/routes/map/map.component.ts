@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Delivery, FirebaseDataService, SimulatorDataService} from "library-app";
+import {Courier, Customer, Delivery, FirebaseDataService, Order, Restaurant, SimulatorDataService} from "library-app";
 import {Delivery_Status, DefaultComponent, NotificationService} from "library-app";
 import * as _ from 'lodash';
 
@@ -13,6 +13,12 @@ declare const google: any;
 export class MapComponent extends DefaultComponent implements OnInit, AfterViewInit {
   Delivery_Status = Delivery_Status;
   map;
+  // polylines: DeliveryPolyline[] = [];
+
+  drivers: Courier[] = [];
+  customers: Customer[] = [];
+  deliveries: Delivery[] = [];
+  orders: Order[] = [];
 
   orderCounts = {
     [Delivery_Status.ORDERED]: 0,
@@ -50,13 +56,12 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
     );
 
     //
-    this.getDeliveries();
+
   }
 
   getDeliveries() {
-    this._FirebaseDataService.getDeliveries()
+    const deliveryPromise = this._FirebaseDataService.getDeliveries()
       .then((rs) => {
-        console.log(rs);
         this.orderCounts = {
           [Delivery_Status.ORDERED]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.ORDERED).length,
           [Delivery_Status.DELIVERED]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.DELIVERED).length,
@@ -64,60 +69,70 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
           [Delivery_Status.PREPARING]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.PREPARING).length,
           [Delivery_Status.WAIT_FOR_PICK_UP]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.WAIT_FOR_PICK_UP).length,
         };
+        this.deliveries = _.filter(rs, (x: Delivery) => x.currentStatus.status !== Delivery_Status.DELIVERED);
+
         console.log(this.orderCounts);
       });
 
-    // this._FirebaseDataService.getCustomer()
-    //   .then((rs) => {
-    //     console.log(rs);
-    //   });
-    //
-    // this._FirebaseDataService.getRestaurant()
-    //   .then((rs) => {
-    //     console.log(rs);
-    //   });
+    Promise.all([
+      this._FirebaseDataService.getCourier(),
+      this._FirebaseDataService.getOrders(),
+      deliveryPromise]
+    )
+      .then(([couriers, orders]) => {
+        this.drivers = couriers;
+        this.orders = orders;
+        _.map(this.deliveries, (d: Delivery) => {
+          d.courier = _.find(this.drivers, x => x.id === d.courier_id);
+          d.order = _.find(this.orders, x => x.id === d.order_id);
+          d.restaurant = d.order.restaurant;
+          d.customer = d.order.customer;
+
+          // this.renderDirection(new google.maps.LatLng(d.courier.lat, d.courier.long), new google.maps.LatLng(d.restaurant.lat, d.restaurant.long))
+          //   .then((rs) => {
+          //     d.path_to_restaurant = rs;
+          //   });
+          // this.renderDirection(new google.maps.LatLng(d.restaurant.lat, d.restaurant.long), new google.maps.LatLng(d.customer.lat, d.customer.long))
+          //   .then((rs) => {
+          //     d.path_to_customer = rs;
+          //   });
+        });
+        console.log(this.drivers);
+        console.log(this.deliveries);
+      });
 
   }
 
   ready(map) {
     this.map = map;
-    this.renderDirection(this.map, new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558),
-      (rs) => {
-        console.log(rs);
-      });
+    // this.renderDirection(this.map, new google.maps.LatLng(49.205333, -122.920441), new google.maps.LatLng(49.206195, -122.911558))
+    //   .then((rs) => {
+    //     console.log(rs);
+    //     this.polylines = [];
+    //     this.polylines.push(new DeliveryPolyline(rs));
+    //   });
+    this.getDeliveries();
   }
 
-  renderDirection(map, from, to, callback: Function = () => {
-  }, obj = null) {
-    if (obj) {
-      obj.setMap(null);
-    }
-    const directionsService = new google.maps.DirectionsService;
-    const directionsDisplay =
-      new google.maps.DirectionsRenderer({
-        polylineOptions: {
-          strokeColor: '#4a6170',
-          strokeOpacity: 1.0,
-          strokeWeight: 3
-        },
-        suppressMarkers: true,
-        preserveViewport: true
-      });
-    directionsDisplay.setMap(map);
+  renderDirection(from, to): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const directionsService = new google.maps.DirectionsService;
 
-    directionsService.route({
-      origin: from,
-      destination: to,
-      travelMode: google.maps.TravelMode['DRIVING']
-    }, function (response, status) {
-      if (status === google.maps.DirectionsStatus['OK']) {
-        directionsDisplay.setDirections(response);
-        callback(directionsDisplay);
-      } else {
-        window.alert('Directions request failed due to ' + status);
-      }
+      directionsService.route({
+        origin: from,
+        destination: to,
+        travelMode: google.maps.TravelMode['DRIVING']
+      }, function (response, status) {
+        if (status === google.maps.DirectionsStatus['OK']) {
+          console.log(response);
+          let array = response['routes'][0]['overview_path'];
+          resolve(array);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+          reject('error');
+        }
+      });
     });
-    return directionsDisplay;
   }
 
   ngAfterViewInit() {
@@ -127,4 +142,12 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
 
   }
 
+}
+
+class DeliveryPolyline {
+  points: any[];
+
+  constructor(array) {
+    this.points = array;
+  }
 }

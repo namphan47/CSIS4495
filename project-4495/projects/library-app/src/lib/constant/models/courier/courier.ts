@@ -7,6 +7,8 @@ export class Courier extends DefaultModel {
   driver_license: string = '';
   email: string = '';
   phone_no: string = '';
+  lat: number = 49.206762;
+  lng: number = -122.918458;
 
   constructor(data: any) {
     super(data);

@@ -5,8 +5,10 @@ export declare class Restaurant extends DefaultModel {
     name: string;
     address: string;
     phone_no: string;
-    lat: string;
-    long: string;
+    img1: string;
+    img2: string;
+    lat: number;
+    lng: number;
     meal_ids: string[];
     meals: Meal[];
     constructor(data: any);

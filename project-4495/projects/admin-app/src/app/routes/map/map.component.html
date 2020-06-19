@@ -31,13 +31,50 @@
       </div>
     </div>
   </div>
+  <div class="instruction-group p-3">
+    <h3>Instruction</h3>
+    <ul>
+      <li>Click "Reset DB" to reset all data</li>
+      <li>Click "Generate Order" to generate randomly order (click "Clean Orders" to delete all orders)</li>
+      <li>Click "Start Simulator" to start simulator, everything will be automatically created basing on frequency</li>
+      <li>Click "Stop Simulator" to stop simulator</li>
+    </ul>
+  </div>
   <ngui-map class="map-wrapper" center="New Westminter, BC, Canada" [options]="options"
             (mapReady$)="ready($event)">
-    <custom-marker position="49.209773, -122.922241" class="custom-icon location">
-      <i class="fas fa-map-marker-alt "></i>
-    </custom-marker>
-    <custom-marker position="49.211773, -122.923016" class="custom-icon car">
-      <i class="fas fa-car"></i>
-    </custom-marker>
+    <!--    <custom-marker position="49.209773, -122.922241" class="custom-icon location">-->
+    <!--      <i class="fas fa-map-marker-alt "></i>-->
+    <!--    </custom-marker>-->
+    <!--    <custom-marker position="49.211773, -122.923016" class="custom-icon car">-->
+    <!--      <i class="fas fa-car"></i>-->
+    <!--    </custom-marker>-->
+    <ng-container *ngFor="let delivery of deliveries">
+      <polyline [editable]="false"
+                [path]="delivery?.path_to_restaurant"
+                [strokeColor]="'#4A6170'"
+                [strokeOpacity]="1"></polyline>
+      <polyline [editable]="false"
+                [path]="delivery?.path_to_customer"
+                [strokeColor]="'#2496C9'"
+                [strokeOpacity]="1"></polyline>
+      <custom-marker *ngIf="delivery.customer" [position]="[delivery.customer.lat,delivery.customer.lng]"
+                     class="custom-icon location">
+        <i class="fas fa-map-marker-alt "></i>
+      </custom-marker>
+      <custom-marker *ngIf="delivery.courier" [position]="[delivery.courier.lat,delivery.courier.lng]"
+                     class="custom-icon location">
+        <i class="fas fa-car "></i>
+      </custom-marker>
+      <custom-marker *ngIf="delivery.restaurant" [position]="[delivery.restaurant.lat,delivery.restaurant.lng]"
+                     class="custom-icon location">
+        <i class="fas fa-utensils"></i>
+      </custom-marker>
+    </ng-container>
+    <!--    <ng-container *ngFor="let polygon of polylines">-->
+    <!--      <polyline [editable]="false"-->
+    <!--                [path]="polygon?.points"-->
+    <!--                [strokeColor]="'#FF0000'"-->
+    <!--                [strokeOpacity]="1"></polyline>-->
+    <!--    </ng-container>-->
   </ngui-map>
 </div>

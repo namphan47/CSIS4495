@@ -12,10 +12,12 @@ import { Order } from '../../constant/models/order/order';
 import { QueryParamModel } from "../../constant/models/query-param-model";
 import { Delivery } from "../../constant/models";
 import { DeliveryStatusHistory } from "../../constant/models/delivery/delivery-status-history";
+import { MapService } from "../map/map.service";
 export declare class FirebaseDataService {
     private _AngularFirestore;
     private _DummyDataService;
     private _NotificationService;
+    private _MapService;
     readonly TABLES: {
         customer: {
             name: ENUM_TABLES;
@@ -50,7 +52,7 @@ export declare class FirebaseDataService {
             class: typeof DeliveryStatusHistory;
         };
     };
-    constructor(_AngularFirestore: AngularFirestore, _DummyDataService: DummyDataService, _NotificationService: NotificationService);
+    constructor(_AngularFirestore: AngularFirestore, _DummyDataService: DummyDataService, _NotificationService: NotificationService, _MapService: MapService);
     /**
      * reset DB
      * @returns {Promise<void>}
@@ -145,6 +147,7 @@ export declare class FirebaseDataService {
     deleteOrder(): Promise<void>;
     deleteOrderItem(): Promise<void>;
     deleteDelivery(): Promise<void>;
+    deleteDeliveryStatus(): Promise<void>;
     /**
      * delete data of collection
      * @param name

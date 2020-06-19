@@ -15,6 +15,7 @@ import {Order} from '../../constant/models/order/order';
 import {QueryParamModel} from "../../constant/models/query-param-model";
 import {Delivery} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
+import {MapService} from "../map/map.service";
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +58,8 @@ export class FirebaseDataService {
 
   constructor(private _AngularFirestore: AngularFirestore,
               private _DummyDataService: DummyDataService,
-              private _NotificationService: NotificationService) {
+              private _NotificationService: NotificationService,
+              private _MapService: MapService) {
   }
 
   /**
@@ -229,8 +231,8 @@ export class FirebaseDataService {
     return this.getDB(this.TABLES[ENUM_TABLES.order])
       .then((rs) => rs as unknown as Order[])
       .then((orders) => {
-        orders = orders as unknown as Order[]
-        _.map(orders, async (order: Order) => {
+        orders = orders as unknown as Order[];
+        return Promise.all(_.map(orders, async (order: Order) => {
 
           // get customer of each order
           await this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
@@ -249,9 +251,11 @@ export class FirebaseDataService {
             .then((restaurant) => {
               order.restaurant = restaurant as unknown as Restaurant;
             });
+          return Promise.resolve();
+        })).then(() => {
+          return orders;
         });
 
-        return orders;
       });
   }
 
@@ -383,6 +387,10 @@ export class FirebaseDataService {
 
   deleteDelivery() {
     return this.deleteTable(this.TABLES[ENUM_TABLES.delivery].name);
+  }
+
+  deleteDeliveryStatus() {
+    return this.deleteTable(this.TABLES[ENUM_TABLES.delivery_status_history].name);
   }
 
   /**

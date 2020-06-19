@@ -3,8 +3,8 @@ export declare class Customer extends DefaultModel {
     id: string;
     name: string;
     address: string;
-    lat: string;
-    long: string;
+    lat: number;
+    lng: number;
     phone_no: string;
     email: string;
     constructor(data: any);
