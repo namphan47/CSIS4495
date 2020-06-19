@@ -67,6 +67,7 @@
         </div>
       </div>
       <div class="col-5 menulist">
+        
         <a class="list1" href="#">
           <div class="card hoverable">
             <div class="row no-gutters">
@@ -96,16 +97,22 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <input type="number" id="quantity" class="form-control text-center" value="1">
-
+                  <br>
+                  <button type="submit" class="btn btn-success" id="checkout">Checkout</button>
                 </div>
 
               </div>
             </form>
           </div>
           <div class="col-1"></div>
-          <iframe src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                  frameborder=0>
-          </iframe>
+          <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
+            <custom-marker position="49.209773, -122.922241" class="custom-icon location">
+              <i class="fas fa-map-marker-alt "></i>
+            </custom-marker>
+            <custom-marker position="49.211773, -122.923016" class="custom-icon car">
+              <i class="fas fa-car"></i>
+            </custom-marker>
+          </ngui-map>
 
         </div>
       </div>

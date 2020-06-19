@@ -10,9 +10,9 @@ const routes: Routes = [
   {
     path: 'main',
     children: [
-      {path: '', redirectTo: 'login', pathMatch: 'full'},
+      {path: '', redirectTo: 'rest', pathMatch: 'full'},
       {path: 'rest', component: RestaurantsComponent},
-      {path: 'rest-details', component: RestaurantDetailsComponent},
+      {path: 'rest-details/:id', component: RestaurantDetailsComponent},
       {path: 'login', component: LoginComponent},
       {path: 'signup', component: SignupComponent},
       {path: 'checkout', component: CheckoutComponent}

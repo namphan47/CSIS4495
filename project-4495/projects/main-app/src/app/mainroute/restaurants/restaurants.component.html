@@ -73,7 +73,7 @@
               <div class="row no-gutters">
                 <div class="col-3">
                   <img
-                    src="https://static.skipthedishes.com/indian-bombay-bistro-menu-image-small-1470363342212.jpg"
+                    src="{{rest.img1}}"
                     class="card-img"
                     alt="cardImg">
                 </div>
@@ -81,25 +81,21 @@
                 <div class="col-1
                                                 align-self-center">
                   <img
-                    src="https://static.skipthedishes.com/indian-bombay-bistro-list-image-mobile-1490966940146.png"
+                    src="{{rest.img2}}"
                     class="card-img" alt="Logo">
                 </div>
                 <div class="col-1"></div>
                 <div class="col-4
                                                 align-self-center">
-                  <h5 class="card-title">Indian
-                    Bombay
-                    Bistro</h5>
-                  <p class="card-text">35 - 55
-                    mins</p>
-                  <p class="card-text">$3.49
-                    Delivery</p>
+                  <h5 class="card-title">{{rest.name}}</h5>
+                  <p class="card-text">{{rest.del_time}}</p>
+                  <p class="card-text">{{rest.del_fee}}</p>
                 </div>
                 <div class="col-2
                                                 align-self-center">
                   <div
                     class="tile"><span
-                    class="text-danger">9.4</span></div>
+                    class="text-danger">{{rest.rating}}</span></div>
                 </div>
               </div>
             </div>
@@ -132,3 +128,4 @@
 
 </div>
 
+<router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-restaurant-details',
@@ -17,6 +17,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+
   }
 
   ngOnDestroy() {

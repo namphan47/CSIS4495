@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FirebaseDataService, Meal, Restaurant} from "library-app";
+import {FirebaseDataService, Meal, Restaurant} from 'library-app';
 
 @Component({
   selector: 'app-restaurants',
@@ -14,7 +14,7 @@ export class RestaurantsComponent implements OnInit {
   ) {
     // call some function after component is created
     // console.log(1);
-    
+
   }
 
   ngOnInit(): void {
@@ -22,7 +22,7 @@ export class RestaurantsComponent implements OnInit {
     // console.log(2);
 
     // start to call api to load restaurants
-    let promise = this._FirebaseDataService.getRestaurant();
+    const promise = this._FirebaseDataService.getRestaurant();
     promise
       .then((rs) => {
         this.restaurants = rs;
