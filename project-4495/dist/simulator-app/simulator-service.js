@@ -8,7 +8,7 @@ module.exports = {
   stop: stop
 };
 
-const intervalFrequency = 200;
+const intervalFrequency = 1000;
 const listInterval = {};
 
 function start() {
@@ -41,6 +41,7 @@ function startEach(delivery) {
           return;
         } else {
           nextStatus = Delivery_Status.PREPARING;
+          await firebaseService.updatePoint(delivery.id, delivery.currentStatus.status, nextPoint, []);
         }
         break;
       case Delivery_Status.PREPARING:
@@ -48,6 +49,7 @@ function startEach(delivery) {
           return;
         } else {
           nextStatus = Delivery_Status.WAIT_FOR_PICK_UP;
+          await firebaseService.updatePoint(delivery.id, delivery.currentStatus.status, nextPoint, []);
         }
         break;
       case Delivery_Status.WAIT_FOR_PICK_UP:
@@ -91,6 +93,7 @@ function startEach(delivery) {
         break;
       case Delivery_Status.DELIVERED:
         clearInterval(listInterval[delivery.id]);
+        await firebaseService.updatePoint(delivery.id, Delivery_Status.DELIVERED, nextPoint, []);
         return;
       default:
         return Promise.resolve();
@@ -115,7 +118,7 @@ function startEach(delivery) {
   }, intervalFrequency);
 }
 
-function isNext(delivery, from = 5, to = 10, time = 1000) {
+function isNext(delivery, from = 2, to = 2, time = 1000) {
   if (delivery.timeToNextStatus >= moment().valueOf()) {
     return false;
   }

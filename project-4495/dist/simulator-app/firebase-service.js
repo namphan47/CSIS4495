@@ -169,10 +169,10 @@ function updatePoint(id, status, currentPoint, currentArray) {
     if (point !== null && !!point.points) {
       array = point.points || [];
     }
-    if (currentArray) {
+    if (!!currentArray) {
       array = currentArray;
     }
-    if (currentPoint) {
+    if (!!currentPoint) {
       array.push(currentPoint);
     }
     points.update({

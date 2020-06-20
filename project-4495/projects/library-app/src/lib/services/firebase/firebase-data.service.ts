@@ -16,6 +16,7 @@ import {QueryParamModel} from "../../constant/models/query-param-model";
 import {Delivery} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 import {MapService} from "../map/map.service";
+import {AngularFireDatabase} from "@angular/fire/database";
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,7 @@ export class FirebaseDataService {
   };
 
   constructor(private _AngularFirestore: AngularFirestore,
+              private _AngularFireDatabase: AngularFireDatabase,
               private _DummyDataService: DummyDataService,
               private _NotificationService: NotificationService,
               private _MapService: MapService) {
@@ -81,6 +83,7 @@ export class FirebaseDataService {
     await this.linkRestaurantMealDB();
 
     this._NotificationService.pushMessage('All data is reset!!');
+    return Promise.resolve();
   }
 
   /**
@@ -161,7 +164,19 @@ export class FirebaseDataService {
               delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
             });
             return rs;
-          })
+          });
+      });
+  }
+
+  getDeliveryById(id: string): Promise<Delivery> {
+    return this.getDBWithId(this.TABLES[ENUM_TABLES.delivery], id)
+      .then((rs) => rs as unknown as Delivery)
+      .then((rs) => {
+        return this.getDeliveryStatusHistory()
+          .then((histories) => {
+            rs.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === id));
+            return rs;
+          });
       });
   }
 
@@ -400,14 +415,25 @@ export class FirebaseDataService {
    */
   private deleteTable(name: string) {
     return this._AngularFirestore.collection(name).get().toPromise()
-      .then(res => {
-        return res.forEach(async element => {
+      .then(async res => {
+
+        const array = [];
+        res.forEach(element => {
+          array.push(element);
+        });
+        await Promise.all(_.map(array, async element => {
           await element.ref.delete();
           console.log(`delete ${name}`);
           this._NotificationService.pushMessage(`delete ${name}`);
-        });
+        }));
       });
   }
 
+  getPointsRealTime(id) {
+    return this.getRealTimeDB('points', id);
+  }
 
+  getRealTimeDB(name: string, id: string) {
+    return this._AngularFireDatabase.list(`${name}/${id}`).valueChanges();
+  }
 }
