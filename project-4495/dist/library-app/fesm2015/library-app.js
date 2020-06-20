@@ -1,10 +1,10 @@
 import { Subscription, of, BehaviorSubject } from 'rxjs';
 import ___default, { map, maxBy } from 'lodash';
 import { __decorate, __awaiter } from 'tslib';
-import { ɵɵdefineInjectable, ɵɵinject, Injectable, Component, NgModule } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ɵɵdefineInjectable, Injectable, ɵɵinject, Component, NgModule } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map as map$1, tap, first } from 'rxjs/operators';
+import { AngularFireDatabase } from '@angular/fire/database';
 import moment from 'moment';
 import { NguiMapModule } from '@ngui/map';
 
@@ -145,6 +145,7 @@ class Delivery extends DefaultModel {
                 case 'customer':
                 case 'courier':
                 case 'points':
+                case 'subscription':
                     return;
                 case 'path_to_restaurant':
                 case 'path_to_customer': {
@@ -256,24 +257,6 @@ class QueryParamModel {
     }
 }
 QueryParamModel.OPERATIONS = EnumOperation;
-
-let UtilsService = class UtilsService {
-    constructor(_HttpClient) {
-        this._HttpClient = _HttpClient;
-    }
-    getJSON(url) {
-        return this._HttpClient.get(url);
-    }
-};
-UtilsService.ctorParameters = () => [
-    { type: HttpClient }
-];
-UtilsService.ɵprov = ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(ɵɵinject(HttpClient)); }, token: UtilsService, providedIn: "root" });
-UtilsService = __decorate([
-    Injectable({
-        providedIn: 'root'
-    })
-], UtilsService);
 
 var restaurantData = [
 	{
@@ -1003,8 +986,7 @@ var customerData = [
 ];
 
 let DummyDataService = class DummyDataService {
-    constructor(_UtilsService) {
-        this._UtilsService = _UtilsService;
+    constructor() {
         this.JSONS = {
             [ENUM_TABLES.restaurant]: restaurantData,
             [ENUM_TABLES.customer]: customerData,
@@ -1029,10 +1011,7 @@ let DummyDataService = class DummyDataService {
         });
     }
 };
-DummyDataService.ctorParameters = () => [
-    { type: UtilsService }
-];
-DummyDataService.ɵprov = ɵɵdefineInjectable({ factory: function DummyDataService_Factory() { return new DummyDataService(ɵɵinject(UtilsService)); }, token: DummyDataService, providedIn: "root" });
+DummyDataService.ɵprov = ɵɵdefineInjectable({ factory: function DummyDataService_Factory() { return new DummyDataService(); }, token: DummyDataService, providedIn: "root" });
 DummyDataService = __decorate([
     Injectable({
         providedIn: 'root'
@@ -1097,8 +1076,9 @@ MapService = __decorate([
 ], MapService);
 
 let FirebaseDataService = class FirebaseDataService {
-    constructor(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
+    constructor(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
         this._AngularFirestore = _AngularFirestore;
+        this._AngularFireDatabase = _AngularFireDatabase;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
         this._MapService = _MapService;
@@ -1154,6 +1134,7 @@ let FirebaseDataService = class FirebaseDataService {
             // converseMeal
             yield this.linkRestaurantMealDB();
             this._NotificationService.pushMessage('All data is reset!!');
+            return Promise.resolve();
         });
     }
     /**
@@ -1229,6 +1210,17 @@ let FirebaseDataService = class FirebaseDataService {
                 ___default.map(rs, (delivery) => {
                     delivery.setStatusHistory(___default.filter(histories, (x) => x.delivery_id === delivery.id));
                 });
+                return rs;
+            });
+        });
+    }
+    getDeliveryById(id) {
+        return this.getDBWithId(this.TABLES[ENUM_TABLES.delivery], id)
+            .then((rs) => rs)
+            .then((rs) => {
+            return this.getDeliveryStatusHistory()
+                .then((histories) => {
+                rs.setStatusHistory(___default.filter(histories, (x) => x.delivery_id === id));
                 return rs;
             });
         });
@@ -1447,22 +1439,33 @@ let FirebaseDataService = class FirebaseDataService {
      */
     deleteTable(name) {
         return this._AngularFirestore.collection(name).get().toPromise()
-            .then(res => {
-            return res.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+            .then((res) => __awaiter(this, void 0, void 0, function* () {
+            const array = [];
+            res.forEach(element => {
+                array.push(element);
+            });
+            yield Promise.all(___default.map(array, (element) => __awaiter(this, void 0, void 0, function* () {
                 yield element.ref.delete();
                 console.log(`delete ${name}`);
                 this._NotificationService.pushMessage(`delete ${name}`);
-            }));
-        });
+            })));
+        }));
+    }
+    getPointsRealTime(id) {
+        return this.getRealTimeDB('points', id);
+    }
+    getRealTimeDB(name, id) {
+        return this._AngularFireDatabase.list(`${name}/${id}`).valueChanges();
     }
 };
 FirebaseDataService.ctorParameters = () => [
     { type: AngularFirestore },
+    { type: AngularFireDatabase },
     { type: DummyDataService },
     { type: NotificationService },
     { type: MapService }
 ];
-FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(AngularFireDatabase), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
 FirebaseDataService = __decorate([
     Injectable({
         providedIn: 'root'
@@ -1737,5 +1740,5 @@ TestAppService = __decorate([
  * Generated bundle index. Do not edit.
  */
 
-export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService, UtilsService };
+export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService };
 //# sourceMappingURL=library-app.js.map

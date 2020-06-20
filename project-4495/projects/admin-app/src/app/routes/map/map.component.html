@@ -62,6 +62,7 @@
         <i class="fas fa-map-marker-alt "></i>
       </custom-marker>
       <custom-marker *ngIf="delivery.courier" [position]="[delivery.courier.lat,delivery.courier.lng]"
+                     #carMarker
                      class="custom-icon location">
         <i class="fas fa-car "></i>
       </custom-marker>

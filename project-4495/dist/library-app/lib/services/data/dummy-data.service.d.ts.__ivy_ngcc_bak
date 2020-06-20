@@ -1,8 +1,6 @@
 import { ENUM_TABLES } from "../../constant/const-value";
 import { IDefaultModelConstructor } from "../../constant/models/i-default-model";
-import { UtilsService } from "../mics/utils.service";
 export declare class DummyDataService {
-    private _UtilsService;
     readonly JSONS: {
         restaurant: {
             name: string;
@@ -38,6 +36,6 @@ export declare class DummyDataService {
             lng: number;
         }[];
     };
-    constructor(_UtilsService: UtilsService);
+    constructor();
     convertDummyDataToModel(table: ENUM_TABLES, modelClass: IDefaultModelConstructor): Promise<any[]>;
 }

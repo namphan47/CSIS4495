@@ -23,6 +23,8 @@ export class Delivery extends DefaultModel {
   path_to_restaurant: any[] = [];
   path_to_customer: any[] = [];
 
+  subscription;
+
   constructor(data: any) {
     super(data);
     super.copyInto(data);
@@ -49,6 +51,7 @@ export class Delivery extends DefaultModel {
         case 'customer':
         case 'courier':
         case 'points':
+        case 'subscription':
           return;
         case 'path_to_restaurant':
         case 'path_to_customer': {

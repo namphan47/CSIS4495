@@ -13,8 +13,10 @@ import { QueryParamModel } from "../../constant/models/query-param-model";
 import { Delivery } from "../../constant/models";
 import { DeliveryStatusHistory } from "../../constant/models/delivery/delivery-status-history";
 import { MapService } from "../map/map.service";
+import { AngularFireDatabase } from "@angular/fire/database";
 export declare class FirebaseDataService {
     private _AngularFirestore;
+    private _AngularFireDatabase;
     private _DummyDataService;
     private _NotificationService;
     private _MapService;
@@ -52,7 +54,7 @@ export declare class FirebaseDataService {
             class: typeof DeliveryStatusHistory;
         };
     };
-    constructor(_AngularFirestore: AngularFirestore, _DummyDataService: DummyDataService, _NotificationService: NotificationService, _MapService: MapService);
+    constructor(_AngularFirestore: AngularFirestore, _AngularFireDatabase: AngularFireDatabase, _DummyDataService: DummyDataService, _NotificationService: NotificationService, _MapService: MapService);
     /**
      * reset DB
      * @returns {Promise<void>}
@@ -84,6 +86,7 @@ export declare class FirebaseDataService {
      * @returns {Promise<Delivery[]>}
      */
     getDeliveries(): Promise<Delivery[]>;
+    getDeliveryById(id: string): Promise<Delivery>;
     getDeliveryStatusHistory(): Promise<DeliveryStatusHistory[]>;
     getStatusHistoryOfDelivery(queryParams?: QueryParamModel[]): Promise<DeliveryStatusHistory[]>;
     /**
@@ -154,4 +157,6 @@ export declare class FirebaseDataService {
      * @returns {Promise<void>}
      */
     private deleteTable;
+    getPointsRealTime(id: any): import("rxjs").Observable<unknown[]>;
+    getRealTimeDB(name: string, id: string): import("rxjs").Observable<unknown[]>;
 }
