@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/common/http'), require('@angular/fire/firestore'), require('rxjs/operators'), require('moment'), require('@ngui/map')) :
-    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/common/http', '@angular/fire/firestore', 'rxjs/operators', 'moment', '@ngui/map'], factory) :
-    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.common.http, global.ng.fire.firestore, global.rxjs.operators, global.moment, global.map));
-}(this, (function (exports, rxjs, ___default, core, http, firestore, operators, moment, map) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/fire/firestore'), require('rxjs/operators'), require('@angular/fire/database'), require('moment'), require('@ngui/map')) :
+    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/fire/firestore', 'rxjs/operators', '@angular/fire/database', 'moment', '@ngui/map'], factory) :
+    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.fire.firestore, global.rxjs.operators, global.ng.fire.database, global.moment, global.map));
+}(this, (function (exports, rxjs, ___default, core, firestore, operators, database, moment, map) { 'use strict';
 
     var ___default__default = 'default' in ___default ? ___default['default'] : ___default;
     moment = moment && Object.prototype.hasOwnProperty.call(moment, 'default') ? moment['default'] : moment;
@@ -374,6 +374,7 @@
                     case 'customer':
                     case 'courier':
                     case 'points':
+                    case 'subscription':
                         return;
                     case 'path_to_restaurant':
                     case 'path_to_customer': {
@@ -504,25 +505,6 @@
         }
         QueryParamModel.OPERATIONS = EnumOperation;
         return QueryParamModel;
-    }());
-
-    var UtilsService = /** @class */ (function () {
-        function UtilsService(_HttpClient) {
-            this._HttpClient = _HttpClient;
-        }
-        UtilsService.prototype.getJSON = function (url) {
-            return this._HttpClient.get(url);
-        };
-        UtilsService.ctorParameters = function () { return [
-            { type: http.HttpClient }
-        ]; };
-        UtilsService.ɵprov = core.ɵɵdefineInjectable({ factory: function UtilsService_Factory() { return new UtilsService(core.ɵɵinject(http.HttpClient)); }, token: UtilsService, providedIn: "root" });
-        UtilsService = __decorate([
-            core.Injectable({
-                providedIn: 'root'
-            })
-        ], UtilsService);
-        return UtilsService;
     }());
 
     var restaurantData = [
@@ -1253,9 +1235,8 @@
     ];
 
     var DummyDataService = /** @class */ (function () {
-        function DummyDataService(_UtilsService) {
+        function DummyDataService() {
             var _a;
-            this._UtilsService = _UtilsService;
             this.JSONS = (_a = {},
                 _a[exports.ENUM_TABLES.restaurant] = restaurantData,
                 _a[exports.ENUM_TABLES.customer] = customerData,
@@ -1280,10 +1261,7 @@
                 return array;
             });
         };
-        DummyDataService.ctorParameters = function () { return [
-            { type: UtilsService }
-        ]; };
-        DummyDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function DummyDataService_Factory() { return new DummyDataService(core.ɵɵinject(UtilsService)); }, token: DummyDataService, providedIn: "root" });
+        DummyDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function DummyDataService_Factory() { return new DummyDataService(); }, token: DummyDataService, providedIn: "root" });
         DummyDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'
@@ -1352,9 +1330,10 @@
     }());
 
     var FirebaseDataService = /** @class */ (function () {
-        function FirebaseDataService(_AngularFirestore, _DummyDataService, _NotificationService, _MapService) {
+        function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
             var _a;
             this._AngularFirestore = _AngularFirestore;
+            this._AngularFireDatabase = _AngularFireDatabase;
             this._DummyDataService = _DummyDataService;
             this._NotificationService = _NotificationService;
             this._MapService = _MapService;
@@ -1437,7 +1416,7 @@
                             // converseMeal
                             _a.sent();
                             this._NotificationService.pushMessage('All data is reset!!');
-                            return [2 /*return*/];
+                            return [2 /*return*/, Promise.resolve()];
                     }
                 });
             });
@@ -1541,6 +1520,18 @@
                     ___default__default.map(rs, function (delivery) {
                         delivery.setStatusHistory(___default__default.filter(histories, function (x) { return x.delivery_id === delivery.id; }));
                     });
+                    return rs;
+                });
+            });
+        };
+        FirebaseDataService.prototype.getDeliveryById = function (id) {
+            var _this = this;
+            return this.getDBWithId(this.TABLES[exports.ENUM_TABLES.delivery], id)
+                .then(function (rs) { return rs; })
+                .then(function (rs) {
+                return _this.getDeliveryStatusHistory()
+                    .then(function (histories) {
+                    rs.setStatusHistory(___default__default.filter(histories, function (x) { return x.delivery_id === id; }));
                     return rs;
                 });
             });
@@ -1795,28 +1786,49 @@
         FirebaseDataService.prototype.deleteTable = function (name) {
             var _this = this;
             return this._AngularFirestore.collection(name).get().toPromise()
-                .then(function (res) {
-                return res.forEach(function (element) { return __awaiter(_this, void 0, void 0, function () {
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0: return [4 /*yield*/, element.ref.delete()];
-                            case 1:
-                                _a.sent();
-                                console.log("delete " + name);
-                                this._NotificationService.pushMessage("delete " + name);
-                                return [2 /*return*/];
-                        }
-                    });
-                }); });
-            });
+                .then(function (res) { return __awaiter(_this, void 0, void 0, function () {
+                var array;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            array = [];
+                            res.forEach(function (element) {
+                                array.push(element);
+                            });
+                            return [4 /*yield*/, Promise.all(___default__default.map(array, function (element) { return __awaiter(_this, void 0, void 0, function () {
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, element.ref.delete()];
+                                            case 1:
+                                                _a.sent();
+                                                console.log("delete " + name);
+                                                this._NotificationService.pushMessage("delete " + name);
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); }))];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            }); });
+        };
+        FirebaseDataService.prototype.getPointsRealTime = function (id) {
+            return this.getRealTimeDB('points', id);
+        };
+        FirebaseDataService.prototype.getRealTimeDB = function (name, id) {
+            return this._AngularFireDatabase.list(name + "/" + id).valueChanges();
         };
         FirebaseDataService.ctorParameters = function () { return [
             { type: firestore.AngularFirestore },
+            { type: database.AngularFireDatabase },
             { type: DummyDataService },
             { type: NotificationService },
             { type: MapService }
         ]; };
-        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(database.AngularFireDatabase), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
         FirebaseDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'
@@ -2174,7 +2186,6 @@
     exports.Restaurant = Restaurant;
     exports.SimulatorDataService = SimulatorDataService;
     exports.TestAppService = TestAppService;
-    exports.UtilsService = UtilsService;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

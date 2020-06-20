@@ -1,7 +1,12 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Courier, Customer, Delivery, FirebaseDataService, Order, Restaurant, SimulatorDataService} from "library-app";
 import {Delivery_Status, DefaultComponent, NotificationService} from "library-app";
 import * as _ from 'lodash';
+import {HttpClient} from "@angular/common/http";
+import {AngularFireDatabase} from "@angular/fire/database";
+import {CustomMarker} from "@ngui/map";
+import {DeliveryStatusHistory} from "../../../../../library-app/src/lib/constant/models";
+import {UiControllerService} from "@app/shared/controller/ui-controller.service";
 
 declare const google: any;
 
@@ -11,6 +16,7 @@ declare const google: any;
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent extends DefaultComponent implements OnInit, AfterViewInit {
+  @ViewChild('carMarker') carMarker;
   Delivery_Status = Delivery_Status;
   map;
   // polylines: DeliveryPolyline[] = [];
@@ -44,7 +50,10 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
   };
 
   constructor(private _FirebaseDataService: FirebaseDataService,
-              private _NotificationService: NotificationService) {
+              private _NotificationService: NotificationService,
+              private _HttpClient: HttpClient,
+              private _AngularFireDatabase: AngularFireDatabase,
+              private _UiControllerService: UiControllerService) {
     super();
     this.addSubscribes(
       this._NotificationService.getMessageOservable()
@@ -55,12 +64,29 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
         })
     );
 
-    //
+    this.addSubscribes(
+      this._UiControllerService.mapController.subscribe((rs) => {
+        if (rs) {
+          this.getDeliveries();
+        }
+      })
+    );
 
+    // this.points = this._FirebaseDataService.getPointsRealTime();
+    // this.addSubscribes(this.points.subscribe((rs) => {
+    //     console.log(rs);
+    //   })
+    // );
+
+    //
+    // this._AngularFireDatabase.list('points/u6Mnyt1o8ZDCh44zhXks').valueChanges()
+    //   .subscribe((rs) => {
+    //     console.log(rs);
+    //   });
   }
 
-  getDeliveries() {
-    const deliveryPromise = this._FirebaseDataService.getDeliveries()
+  getSummary() {
+    return this._FirebaseDataService.getDeliveries()
       .then((rs) => {
         this.orderCounts = {
           [Delivery_Status.ORDERED]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.ORDERED).length,
@@ -69,17 +95,28 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
           [Delivery_Status.PREPARING]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.PREPARING).length,
           [Delivery_Status.WAIT_FOR_PICK_UP]: _.filter(rs, (x: Delivery) => x.currentStatus.status === Delivery_Status.WAIT_FOR_PICK_UP).length,
         };
-        this.deliveries = _.filter(rs, (x: Delivery) => x.currentStatus.status !== Delivery_Status.DELIVERED);
 
-        console.log(this.orderCounts);
+        // console.log(this.orderCounts);
+        return rs;
       });
+  }
+
+  getDeliveries() {
+    _.map(this.deliveries, (delivery: Delivery) => {
+      if (delivery.subscription) {
+        delivery.subscription.unsubscribe();
+      }
+    });
+    const deliveryPromise = this.getSummary();
 
     Promise.all([
       this._FirebaseDataService.getCourier(),
       this._FirebaseDataService.getOrders(),
       deliveryPromise]
     )
-      .then(([couriers, orders]) => {
+      .then(([couriers, orders, rs]) => {
+        this.deliveries = _.filter(rs, (x: Delivery) => x.currentStatus.status !== Delivery_Status.DELIVERED);
+
         this.drivers = couriers;
         this.orders = orders;
         _.map(this.deliveries, (d: Delivery) => {
@@ -99,6 +136,9 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
         });
         console.log(this.drivers);
         console.log(this.deliveries);
+      })
+      .then(() => {
+        this.listenPoints();
       });
 
   }
@@ -112,6 +152,34 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
     //     this.polylines.push(new DeliveryPolyline(rs));
     //   });
     this.getDeliveries();
+  }
+
+  listenPoints() {
+    _.map(this.deliveries, (delivery: Delivery) => {
+      delivery.subscription = this._FirebaseDataService.getPointsRealTime(delivery.id)
+        .subscribe((rs) => {
+          console.log(rs);
+          if (rs && rs.length) {
+            if (rs[0]['lat'] !== 0 && rs[0]['lng'] !== 0) {
+              delivery.courier.lat = rs[0]['lat'];
+              delivery.courier.lng = rs[0]['lng'];
+            }
+            if (rs[2] === Delivery_Status.DELIVERED) {
+              this.deliveries.splice(this.deliveries.indexOf(delivery), 1);
+              delivery.subscription.unsubscribe();
+            }
+            if (rs[2] !== delivery.currentStatus.status) {
+              this._FirebaseDataService.getDeliveryStatusHistory()
+                .then((histories) => {
+                  delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
+                  // console.log(delivery);
+                });
+              this.getSummary();
+            }
+          }
+        });
+      this.addSubscribes(delivery.subscription);
+    });
   }
 
   renderDirection(from, to): Promise<any> {

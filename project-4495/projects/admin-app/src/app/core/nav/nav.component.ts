@@ -1,5 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {DefaultComponent, FirebaseDataService, NotificationService, SimulatorDataService} from 'library-app';
+import {
+  DefaultComponent,
+  FirebaseDataService,
+  NotificationService,
+  SimulatorDataService,
+} from 'library-app';
+import {HttpClient} from "@angular/common/http";
+import {tap} from "rxjs/operators";
+import {UiControllerService} from "@app/shared/controller/ui-controller.service";
 
 @Component({
   selector: 'app-nav',
@@ -12,16 +20,18 @@ export class NavComponent extends DefaultComponent implements OnInit {
 
   constructor(private _FirebaseDataService: FirebaseDataService,
               private _SimulatorDataService: SimulatorDataService,
-              private _NotificationService: NotificationService) {
+              private _NotificationService: NotificationService,
+              private _UiControllerService: UiControllerService,
+              private _HttpClient: HttpClient) {
     super();
-    this.addSubscribes(
-      this._NotificationService.getMessageOservable()
-        .subscribe((rs) => {
-          if (rs === SimulatorDataService.MESSAGE.STOP) {
-            this.stopSimulator();
-          }
-        })
-    );
+    // this.addSubscribes(
+    //   this._NotificationService.getMessageOservable()
+    //     .subscribe((rs) => {
+    //       if (rs === SimulatorDataService.MESSAGE.STOP) {
+    //         this.stopSimulator();
+    //       }
+    //     })
+    // );
   }
 
   ngOnInit(): void {
@@ -33,15 +43,25 @@ export class NavComponent extends DefaultComponent implements OnInit {
    * create default DBs
    */
   resetDB() {
-    this._FirebaseDataService.resetDB();
+    this._FirebaseDataService.resetDB()
+      .then(() => {
+        this._UiControllerService.nextMapController();
+      });
   }
 
   /**
    * start simulator
    */
   startSimulator() {
-    this._SimulatorDataService.start(5000);
+    this._HttpClient.get(`http://${window.location.hostname}:3000/simulator/start`)
+      .subscribe((rs) => {
+        this._NotificationService.pushMessage(rs['message']);
+      });
+    // this._SimulatorDataService.start(5000);
     this.counter = 0;
+    if (this.counterInterval) {
+      clearInterval(this.counterInterval);
+    }
     this.counterInterval = setInterval(() => {
       this.counter++;
     }, 1000);
@@ -51,7 +71,11 @@ export class NavComponent extends DefaultComponent implements OnInit {
    * stop simulator
    */
   stopSimulator() {
-    this._SimulatorDataService.stop();
+    this._HttpClient.get(`http://${window.location.hostname}:3000/simulator/stop`)
+      .subscribe((rs) => {
+        this._NotificationService.pushMessage(rs['message']);
+      });
+    // this._SimulatorDataService.stop();
     if (this.counterInterval) {
       clearInterval(this.counterInterval);
     }
@@ -64,6 +88,7 @@ export class NavComponent extends DefaultComponent implements OnInit {
     this._SimulatorDataService.generateOrder(1)
       .then(() => {
         this._NotificationService.pushMessage('|| Finish generating orders');
+        this._UiControllerService.nextMapController();
       });
   }
 
@@ -78,6 +103,7 @@ export class NavComponent extends DefaultComponent implements OnInit {
       this._FirebaseDataService.deleteDeliveryStatus()
     ]).then(() => {
       this._NotificationService.pushMessage('|| Finish delete all orders');
-    })
+      this._UiControllerService.nextMapController();
+    });
   }
 }

@@ -19,6 +19,7 @@ export declare class Delivery extends DefaultModel {
     customer: Customer;
     path_to_restaurant: any[];
     path_to_customer: any[];
+    subscription: any;
     constructor(data: any);
     getData(): object;
     setStatusHistory(histories: DeliveryStatusHistory[]): void;
