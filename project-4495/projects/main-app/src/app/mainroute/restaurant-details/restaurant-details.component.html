@@ -1,127 +1,131 @@
 <div id="body">
 
 
-<div>
+  <div>
 
 
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-    <div class="row">
-      <!-----------------------------Header--------------------->
-      <nav class="navbar fixed-top navbar-light bg-light">
-        <div class="col-4">
-          <div class="text-left">
-            <a class="navbar-brand" href="#">
-              <img src="/assets/logo_small.png" width="35" height="35" class="d-inline-block align-top"
-                   alt="">
-              NomNom
-            </a>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="text-right">
-            <div class="dropdown">
-              <button type="button" class="btn" data-toggle="dropdown">
-                <svg class="bi bi-person-circle" width="35" height="35" viewBox="0 0 16 16"
-                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.468 12.37C12.758 11.226 11.195 10 8
-                              10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0
-                              8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0
-                              0-6 3 3 0 0 0 0 6z" />
-                  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8
-                              1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0
-                              8z" />
-                </svg>
-              </button>
-              <div class="dropdown-menu
-                        dropdown-menu-right">
-                <a class="dropdown-item" href="#">Order
-                  History</a>
-                <a class="dropdown-item" href="#">Account</a>
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
+      <div class="row">
+        <!-----------------------------Header--------------------->
+        <nav class="navbar fixed-top navbar-light bg-light">
+          <div class="col-4">
+            <div class="text-left">
+              <a class="navbar-brand" href="#">
+                <img src="/assets/logo_small.png" width="35" height="35" class="d-inline-block align-top"
+                     alt="">
+                NomNom
+              </a>
             </div>
           </div>
-        </div>
-      </nav>
-    </div>
-
-    <br><br><br><br><br><br>
-
-    <div class="row">
-
-      <div class="col-3 restaurant">
-        <div class="row">
           <div class="col-3">
-            <img src="https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png"
-                 class="card-img" alt="...">
-          </div>
-
-          <div class="col-6">
-            <p>{{detail.name}}</p>
-            <p class="text-danger">9.2</p>
-            <p>44 - 55mins</p>
-            <p>$3.49 Delivery</p>
-            <p>{{id}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-5 menulist">
-
-        <a class="list1" href="#">
-          <div class="card hoverable">
-            <div class="row no-gutters">
-              <div class="col-3 restaurant">
-                <img src="https://restaurants-static.skipthedishes.com/images/resized/medium-36a1f57fe155b3711615.jpg"
-                     class="card-img" alt="...">
-              </div>
-              <div class="col-9 justify-content-center">
-                <h6 class="card-title">Big Mac Extra Value Meal</h6>
-                <p class="card-text"><small class="text-muted">Nothing compares to two 100% Canadian
-                  beef patties, special sauce, crisp lettuce, processed cheddar cheese, pickles
-                  and onions on a toasted sesame seed bun.</small>
-                </p>
-                <p class="card-text"> $9.59</p>
-                <div></div>
+            <div class="text-right">
+              <div class="dropdown">
+                <button type="button" class="btn" data-toggle="dropdown">
+                  <svg class="bi bi-person-circle" width="35" height="35" viewBox="0 0 16 16"
+                       fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.468 12.37C12.758 11.226 11.195 10 8
+                              10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0
+                              8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0
+                              0-6 3 3 0 0 0 0 6z"/>
+                    <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8
+                              1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0
+                              8z"/>
+                  </svg>
+                </button>
+                <div class="dropdown-menu
+                        dropdown-menu-right">
+                  <a class="dropdown-item" href="#">Order
+                    History</a>
+                  <a class="dropdown-item" href="#">Account</a>
+                  <a class="dropdown-item" href="#">Logout</a>
+                </div>
               </div>
             </div>
           </div>
-        </a>
+        </nav>
       </div>
 
-      <div class="col-4 mapbox">
-        <div class="map position-fixed">
-          <div class="container-fluid">
-            <form id = "cartForm" >
-              <label id="cartTitle">Your Order</label>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <input type="number" id="quantity" class="form-control text-center" value="1">
-                  <br>
-                  <a role="button" class="btn btn-success" id="checkout" routerLink="../../checkout">Checkout</a>
-                </div>
+      <br><br><br><br><br><br>
 
-              </div>
-            </form>
+      <div class="row">
+
+        <div class="col-3 restaurant">
+          <div class="row">
+            <div class="col-3">
+              <img src="https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png"
+                   class="card-img" alt="...">
+            </div>
+            <div class="col-6">
+              <p>{{detail.name}}</p>
+              <p class="text-danger">9.2</p>
+              <p>44 - 55mins</p>
+              <p>$3.49 Delivery</p>
+              <p>{{id}}</p>
+            </div>
           </div>
-          <div class="col-1"></div>
-          <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
-            <custom-marker position="49.209773, -122.922241" class="custom-icon location">
-              <i class="fas fa-map-marker-alt "></i>
-            </custom-marker>
-            <custom-marker position="49.211773, -122.923016" class="custom-icon car">
-              <i class="fas fa-car"></i>
-            </custom-marker>
-          </ngui-map>
+        </div>
 
+        <!--=============================================================-->
+
+        <div class="col-5 menulist">
+
+          <div *ngFor="let me of meal">
+            <div class="list1 cursor-pointer">
+              <div class="card hoverable"[routerLink]="['../meal-name', me.id]" style="max-width: 60vw;">
+                <div class="row no-gutters">
+                  <div class="col-3 restaurant">
+                    <img
+                      src="{{me.image}}"
+                      class="card-img" alt="...">
+                  </div>
+                  <div class="col-9 justify-content-center">
+                    <h6 class="card-title">{{me.name}}</h6>
+                    <p class="card-text"><small class="text-muted">{{me.description}}</small>
+                    </p>
+                    <p class="card-text">${{me.price}}</p>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  ======================================================-->
+        <div class="col-4 mapbox">
+          <div class="map position-fixed">
+            <div class="container-fluid">
+              <form id="cartForm">
+                <label id="cartTitle">Your Order</label>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input type="number" id="quantity" class="form-control text-center" value="1">
+                    <br>
+                    <a role="button" class="btn btn-success" id="checkout" routerLink="../../checkout">Checkout</a>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+            <div class="col-1"></div>
+            <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
+              <custom-marker position="49.209773, -122.922241" class="custom-icon location">
+                <i class="fas fa-map-marker-alt "></i>
+              </custom-marker>
+              <custom-marker position="49.211773, -122.923016" class="custom-icon car">
+                <i class="fas fa-car"></i>
+              </custom-marker>
+            </ngui-map>
+
+          </div>
         </div>
       </div>
     </div>
+
+
   </div>
-
-
-</div>
 
 </div>
 

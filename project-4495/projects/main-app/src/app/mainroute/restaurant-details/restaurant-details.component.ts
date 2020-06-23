@@ -11,10 +11,9 @@ import {FirebaseDataService, Meal, Restaurant} from 'library-app';
 export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   private sub: any;
   id: string;
-  private restaurants: Restaurant[];
-  private meals: Meal[];
-  private restaurantDetail: Restaurant;
-  private detail;
+  restaurants: Restaurant[];
+  detail;
+  meal: Meal[];
 
 
   constructor(private route: ActivatedRoute, private _FirebaseDataService: FirebaseDataService) {
@@ -25,15 +24,20 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
       promise
         .then((rs) => {
           this.restaurants = rs;
-          console.log(this.detail);
-          console.log(this.restaurants);
 
-          for (let i = 0 ; i < this.restaurants.length; i++) {
-            if (this.restaurants[i].id = this.id) {
+          console.log(this.restaurants);
+          for (let i = 0; i < this.restaurants.length; i++) {
+            if (this.restaurants[i].id == this.id) {
               this.detail = this.restaurants[i];
             }
           }
           console.log(this.detail);
+          for (let i = 0, len = this.detail.meals.length; i < len; i++) {
+              this.meal = this.detail.meals;
+          }
+          console.log('please work baby');
+          console.log(this.meal);
+          console.log(this.meal);
         });
 
 
