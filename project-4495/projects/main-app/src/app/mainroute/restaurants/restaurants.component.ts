@@ -27,6 +27,9 @@ export class RestaurantsComponent implements OnInit {
       .then((rs) => {
         this.restaurants = rs;
         console.log(this.restaurants);
+        console.log(this.restaurants[2].lat);
+        console.log(this.restaurants[2].lng);
+
       });
 
   }
