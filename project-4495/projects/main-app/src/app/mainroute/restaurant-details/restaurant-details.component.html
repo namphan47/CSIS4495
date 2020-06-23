@@ -110,12 +110,11 @@
             </div>
             <div class="col-1"></div>
             <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
-              <custom-marker position="49.209773, -122.922241" class="custom-icon location">
-                <i class="fas fa-map-marker-alt "></i>
-              </custom-marker>
-              <custom-marker position="49.211773, -122.923016" class="custom-icon car">
-                <i class="fas fa-car"></i>
-              </custom-marker>
+
+              <marker  position="{{detail.lat}},{{detail.lng}}" class="custom-icon location">
+                <i class="fa fa-map-marker"></i>
+
+              </marker>
             </ngui-map>
 
           </div>
