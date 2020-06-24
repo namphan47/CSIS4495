@@ -195,12 +195,12 @@
     "image": "",
     "restaurant_name": "Miku Vancouver"
   }, {
-  "name": "Saba Oshi Sushi",
-  "description": "house cured mackerel, miso sauce, 6 pieces",
-  "price": 14,
-  "image": "",
-  "restaurant_name": "Miku Vancouver"
-},
+    "name": "Saba Oshi Sushi",
+    "description": "house cured mackerel, miso sauce, 6 pieces",
+    "price": 14,
+    "image": "",
+    "restaurant_name": "Miku Vancouver"
+  },
   {
     "name": "Aburi Sushi Bento",
     "description": "Aburi Salmon Oshi, Aburi Ebi Oshi, Aburi Saba Oshi, Maguro Nigiri, Tai Nigiri, Hamachi Nigiri, Ebi Fritters, Chef's Seasonal Salad",
