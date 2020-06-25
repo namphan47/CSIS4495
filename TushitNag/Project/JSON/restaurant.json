@@ -9,7 +9,7 @@
     "phone_no": "(604)-718-1172",
     "del_time": "44-55 mins",
     "del_fee": "$2.49 Delivery",
-    "rating": "9.2"
+    "rating": 9.2
      	
   },
   {
@@ -22,7 +22,7 @@
     "phone_no": "(604)-553-1719",
     "del_time": "35-55 mins",
     "del_fee": "$3.49 Delivery",
-    "rating": "9.4"
+    "rating": 9.4
   },
   {
     "name": "Manjal South Indian Kitchen",
@@ -34,7 +34,7 @@
     "phone_no": "(604)-515-4230",
     "del_time": "40-60 mins",
     "del_fee": "$3.49 Delivery",
-    "rating": "9.1"
+    "rating": 9.1
   },
   {
     "name": "Bubble World",
@@ -46,7 +46,7 @@
     "phone_no": "(778)-397-7800",
     "del_time": "15-30 mins",
     "del_fee": "$4.29 Delivery",
-    "rating": "8.5"
+    "rating": 8.5
   },
   {
     "name": "Miku Vancouver",
@@ -58,7 +58,7 @@
     "phone_no": "(604)-568-3900",
     "del_time": "35-55 mins",
     "del_fee": "$4.29 Delivery",
-    "rating": "9.4"
+    "rating": 9.4
   },
   {
     "name": "Banh Mi Bar",
@@ -70,7 +70,7 @@
     "phone_no": "(604)-553-9966",
     "del_time": "27-47 mins",
     "del_fee": "$4.49 Delivery / Free Over $20",
-    "rating": "8.7"
+    "rating": 8.7
   },
   {
     "name": "De Dutch Pannekoek House",
@@ -82,7 +82,7 @@
     "phone_no": "(604)-521-2288",
     "del_time": "27-47 mins",
     "del_fee": "$3.49 Delivery",
-    "rating": "9.3"
+    "rating": 9.3
   },
   {
     "name": "Pizza Hut",
@@ -94,7 +94,7 @@
     "phone_no": "(604)-433-8424",
     "del_time": "25-45 mins",
     "del_fee": "$4.50 Delivery",
-    "rating": "8.9"
+    "rating": 8.9
   },
   {
     "name": "Donair & Sub House",
@@ -106,7 +106,7 @@
     "phone_no": "(604)-525-5108",
     "del_time": "32-52 mins",
     "del_fee": "$2.49 Delivery / Free Over $20",
-    "rating": "9.7"
+    "rating": 9.7
   },
   {
     "name": "Subway",
@@ -118,6 +118,6 @@
     "phone_no": "(604)-759-0016",
     "del_time": "19-39 mins",
     "del_fee": "$2.49 Delivery",
-    "rating": "9.7"
+    "rating": 9.7
   }
 ]
