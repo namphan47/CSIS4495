@@ -1,0 +1,46 @@
+import { FirebaseDataService } from "../firebase/firebase-data.service";
+import { Customer } from "../../constant/models/customer/customer";
+import { Restaurant } from "../../constant/models/restaurant/restaurant";
+import { NotificationService } from "../mics/notification.service";
+import { Courier, Delivery } from "../../constant/models";
+import { MapService } from "../map/map.service";
+declare enum SIMULATOR_MESSAGE {
+    START = "simulator start",
+    STEP = "simulator step",
+    STOP = "simulator stop"
+}
+export declare class SimulatorDataService {
+    private _FirebaseDataService;
+    private _NotificationService;
+    private _MapService;
+    static MESSAGE: typeof SIMULATOR_MESSAGE;
+    constructor(_FirebaseDataService: FirebaseDataService, _NotificationService: NotificationService, _MapService: MapService);
+    /**
+     * start simulator
+     * @returns {Promise<void>}
+     */
+    start(time?: number): Promise<void>;
+    handleDelivery(delivery: Delivery): Promise<void>;
+    stop(): void;
+    /**
+     * randomly generate n number of orders
+     * @param n
+     * @returns {Promise<void>}
+     */
+    generateOrder(n?: number): Promise<void>;
+    /**
+     * generate 1 order, 1 order item, 1 delivery, 1 delivery status history
+     * @param customers
+     * @param restaurants
+     * @param couriers
+     * @returns {Promise<void>}
+     */
+    generateOneOrder(customers: Customer[], restaurants: Restaurant[], couriers: Courier[]): Promise<void>;
+    /**
+     * get random
+     * @param value
+     * @returns {any | null | number}
+     */
+    getRandom(value: any[] | number): any;
+}
+export {};

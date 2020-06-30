@@ -7,11 +7,12 @@ import {NguiMapModule} from '@ngui/map';
 import { RestaurantDetailsComponent } from './restaurant-details/restaurant-details.component';
 import {RouterModule} from '@angular/router';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 
 
 @NgModule({
-  declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent, CheckoutComponent],
+  declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent, CheckoutComponent, DeliveryComponent],
   imports: [
     CommonModule,
     RouterModule.forRoot([]),
