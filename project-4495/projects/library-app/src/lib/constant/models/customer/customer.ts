@@ -10,6 +10,8 @@ export class Customer extends DefaultModel {
   phone_no: string = '';
   email: string = '';
 
+  password: string = '';
+
   constructor(data: any) {
     super(data);
     super.copyInto(data);

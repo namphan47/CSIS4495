@@ -17,7 +17,7 @@
   <br/><br/>
 
   <div class="container-fluid">
-    <form class="form-signin">
+    <div class="form-signin">
 
       <div class="row">
         <div class="col">
@@ -27,7 +27,9 @@
 
       <div class="row">
         <div class="col">
-          <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="Enter Email" required="" autofocus="">
+          <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="Enter Email" required=""
+                 autofocus=""
+                 [(ngModel)]="inputData.email">
         </div>
       </div>
 
@@ -39,7 +41,10 @@
 
       <div class="row">
         <div class="col">
-          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Enter Password" required="">
+          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Enter Password"
+                 name="inputEmail"
+                 [(ngModel)]="inputData.password"
+                 required="">
         </div>
       </div>
 
@@ -51,7 +56,9 @@
 
       <div class="row">
         <div class="col">
-          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Re-enter Password" required="">
+          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Re-enter Password"
+                 [(ngModel)]="inputData.repassword"
+                 required="">
         </div>
       </div>
 
@@ -61,10 +68,10 @@
         </div>
 
         <div class="col">
-          <a class="btn btn-red" role="button" routerLink="../login">SIGN UP</a>
+          <a class="btn btn-red" role="button" (click)="signup()">SIGN UP</a>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 
   <div class="postform">

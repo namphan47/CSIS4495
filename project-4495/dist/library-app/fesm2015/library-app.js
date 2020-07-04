@@ -107,6 +107,7 @@ class Customer extends DefaultModel {
         this.lng = 0;
         this.phone_no = '';
         this.email = '';
+        this.password = '';
         super.copyInto(data);
     }
 }

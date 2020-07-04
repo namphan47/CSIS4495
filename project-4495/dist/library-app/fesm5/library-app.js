@@ -119,6 +119,7 @@ var Customer = /** @class */ (function (_super) {
         _this.lng = 0;
         _this.phone_no = '';
         _this.email = '';
+        _this.password = '';
         _super.prototype.copyInto.call(_this, data);
         return _this;
     }

@@ -113,6 +113,7 @@ class Customer extends DefaultModel {
         this.lng = 0;
         this.phone_no = '';
         this.email = '';
+        this.password = '';
         super.copyInto(data);
     }
 }
@@ -1810,6 +1811,5 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
  */
 
 export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService };
-
 
 //# sourceMappingURL=library-app.js.map

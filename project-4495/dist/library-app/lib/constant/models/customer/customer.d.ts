@@ -7,5 +7,6 @@ export declare class Customer extends DefaultModel {
     lng: number;
     phone_no: string;
     email: string;
+    password: string;
     constructor(data: any);
 }

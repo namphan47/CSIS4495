@@ -1,4 +1,3 @@
-
 <div class="container">
   <nav class="navbar fixed-top navbar-light bg-light">
 
@@ -18,34 +17,51 @@
   <br/><br/>
 
   <div class="container-fluid">
-  <form class="form-signin">
+    <div class="form-signin">
 
-    <div class="row">
-      <label for="inputEmail" class="txtlabel">Email</label>
-    </div>
-    <div class="row">
-      <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="        Enter Email" required="" autofocus="">
-    </div>
-    <div class="row">
-      <label for="inputPassword" class="txtlabel">Password</label>
-    </div>
-    <div class="row">
-      <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="        Enter Password" required="">
-    </div>
+      <div class="row">
+        <label for="inputEmail" class="txtlabel">Email</label>
+      </div>
+      <div class="row">
+        <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="        Enter Email" required=""
+               [ngModel]="loginFormGroup.get('email').value"
+               (ngModelChange)="loginFormGroup.get('email').setValue($event)"
+        >
+        <div *ngIf="loginFormGroup.get('email').invalid">
+          <div *ngFor="let error of loginFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
+            <div *ngSwitchCase="'required'">
+              This field is required
+            </div>
+            <div *ngSwitchCase="'email'">
+              This email is invalid
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputPassword" class="txtlabel">Password</label>
+      </div>
+      <div class="row">
+        <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="        Enter Password"
+               [ngModel]="loginFormGroup.get('password').value"
+               (ngModelChange)="loginFormGroup.get('password').setValue($event)"
+        >
+      </div>
 
-    <div class="row flex-row-reverse">
-      <a class="btn btn-danger btn-red" role="button" routerLink="../rest">LOGIN        </a>
+      <div class="row flex-row-reverse">
+        <a class="btn btn-danger btn-red" role="button" (click)="login()">LOGIN </a>
+      </div>
     </div>
-  </form>
-</div>
+  </div>
 
-<div class="postform">
-  <h2 class="or"> OR </h2>
+  <div class="postform">
+    <h2 class="or"> OR </h2>
 
-  <br/>
-  <button class="google-sign"><img src="../assets/btn_google_signin_dark_focus_web@2x.png" class="google-img"/></button>
+    <br/>
+    <button class="google-sign"><img src="../assets/btn_google_signin_dark_focus_web@2x.png" class="google-img"/>
+    </button>
 
-</div>
+  </div>
 
 
 </div>
