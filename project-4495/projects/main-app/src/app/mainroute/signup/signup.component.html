@@ -29,9 +29,22 @@
         <div class="col">
           <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="Enter Email" required=""
                  autofocus=""
-                 [(ngModel)]="inputData.email">
+                 [ngModel] = "signupFormGroup.get('email').value"
+                 (ngModelChange) = "signupFormGroup.get('email').setValue($event)"
+          >
         </div>
+
       </div>
+        <div *ngIf="signupFormGroup.get('email').invalid">
+          <div *ngFor="let error of signupFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
+            <div *ngSwitchCase="'required'">
+              This field is required
+            </div>
+            <div *ngSwitchCase="'email'">
+              This email is invalid
+            </div>
+          </div>
+        </div>
 
       <div class="row">
         <div class="col">
@@ -43,25 +56,47 @@
         <div class="col">
           <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Enter Password"
                  name="inputEmail"
-                 [(ngModel)]="inputData.password"
+                 [ngModel] = "[signupFormGroup.get('password').value]"
+                 (ngModelChange) = "[signupFormGroup.get('password').setValue($event)]"
                  required="">
+        </div>
+      </div>
+      <div *ngIf="signupFormGroup.get('password').invalid">
+        <div *ngFor="let error of signupFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'password'">
+            This email is invalid
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="inputPassword" class="txtlabel">Re-Password</label>
+          <label for="" class="txtlabel">Re-Password</label>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Re-enter Password"
-                 [(ngModel)]="inputData.repassword"
+          <input type="password" id="" class="form-control txtbox2" placeholder="Re-enter Password"
+                 [ngModel] = "signupFormGroup.get('password').value"
+                 (ngModelChange) = "signupFormGroup.get('password').setValue($event)"
                  required="">
         </div>
       </div>
 
+      <div *ngIf="signupFormGroup.get('password').invalid">
+        <div *ngFor="let error of signupFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'password'">
+            This email is invalid
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <button class="btn btn-back" type="submit">BACK</button>

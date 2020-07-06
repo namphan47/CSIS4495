@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Customer} from "library-app";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
   customer: Customer;
   loginFormGroup: FormGroup;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -39,5 +40,10 @@ export class LoginComponent implements OnInit {
     if (!isValid) {
       alert('The form is invalid');
     }
+    else
+    {
+      this.router.navigate(['/main/', 'rest']);
+    }
+
   }
 }
