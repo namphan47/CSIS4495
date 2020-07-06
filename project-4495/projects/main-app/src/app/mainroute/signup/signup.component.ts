@@ -16,12 +16,6 @@ export class SignupComponent implements OnInit {
   signupFormGroup: FormGroup;
 
 
-  inputData = {
-    email: '',
-    password: '',
-    repassword: ''
-  };
-  private Validators: any;
 
   constructor(private router: Router) {
   }
@@ -40,8 +34,9 @@ export class SignupComponent implements OnInit {
   // }
 
   signup() {
+    console.log(this.customer);
+    console.log(this.signupFormGroup);
     // if(this.inputData.email !== '')
-    console.log(this.inputData);
     let isValid = true;
 
     for (let key in this.signupFormGroup.controls) {

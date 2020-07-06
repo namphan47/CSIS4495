@@ -47,6 +47,18 @@
                (ngModelChange)="loginFormGroup.get('password').setValue($event)"
         >
       </div>
+      <div class="row">
+        <div *ngIf="loginFormGroup.get('password').invalid">
+          <div *ngFor="let error of loginFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
+            <div *ngSwitchCase="'required'">
+              This field is required
+            </div>
+            <div *ngSwitchCase="'password'">
+              This email is invalid
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="row flex-row-reverse">
         <a class="btn btn-danger btn-red" role="button" (click)="login()">LOGIN </a>
