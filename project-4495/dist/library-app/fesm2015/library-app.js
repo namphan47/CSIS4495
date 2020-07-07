@@ -5,6 +5,7 @@ import { ɵɵdefineInjectable, Injectable, ɵɵinject, Component, NgModule } fro
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map as map$1, tap, first } from 'rxjs/operators';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 import moment from 'moment';
 import { NguiMapModule } from '@ngui/map';
 
@@ -1110,12 +1111,13 @@ MapService = __decorate([
 ], MapService);
 
 let FirebaseDataService = class FirebaseDataService {
-    constructor(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
+    constructor(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService, _AngularFireAuth) {
         this._AngularFirestore = _AngularFirestore;
         this._AngularFireDatabase = _AngularFireDatabase;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
         this._MapService = _MapService;
+        this._AngularFireAuth = _AngularFireAuth;
         this.TABLES = {
             [ENUM_TABLES.customer]: {
                 name: ENUM_TABLES.customer,
@@ -1491,15 +1493,37 @@ let FirebaseDataService = class FirebaseDataService {
     getRealTimeDB(name, id) {
         return this._AngularFireDatabase.list(`${name}/${id}`).valueChanges();
     }
+    /*authentication*/
+    signUp(user) {
+        return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+            .then((result) => {
+            window.alert("You have been successfully registered!");
+            console.log(result);
+        }).catch((error) => {
+            window.alert(error.message);
+        });
+    }
+    // Sign in with email/password
+    signIn(user) {
+        return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+            .then((result) => {
+            console.log(result);
+            // this.router.navigate(['<!-- enter your route name here -->']);
+            return user;
+        }).catch((error) => {
+            window.alert(error.message);
+        });
+    }
 };
 FirebaseDataService.ctorParameters = () => [
     { type: AngularFirestore },
     { type: AngularFireDatabase },
     { type: DummyDataService },
     { type: NotificationService },
-    { type: MapService }
+    { type: MapService },
+    { type: AngularFireAuth }
 ];
-FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(AngularFireDatabase), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(AngularFireDatabase), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService), ɵɵinject(AngularFireAuth)); }, token: FirebaseDataService, providedIn: "root" });
 FirebaseDataService = __decorate([
     Injectable({
         providedIn: 'root'

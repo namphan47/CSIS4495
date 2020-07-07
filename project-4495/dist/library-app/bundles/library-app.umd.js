@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/fire/firestore'), require('rxjs/operators'), require('@angular/fire/database'), require('moment'), require('@ngui/map')) :
-    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/fire/firestore', 'rxjs/operators', '@angular/fire/database', 'moment', '@ngui/map'], factory) :
-    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.fire.firestore, global.rxjs.operators, global.ng.fire.database, global.moment, global.map));
-}(this, (function (exports, rxjs, ___default, core, firestore, operators, database, moment, map) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/fire/firestore'), require('rxjs/operators'), require('@angular/fire/database'), require('@angular/fire/auth'), require('moment'), require('@ngui/map')) :
+    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/fire/firestore', 'rxjs/operators', '@angular/fire/database', '@angular/fire/auth', 'moment', '@ngui/map'], factory) :
+    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.fire.firestore, global.rxjs.operators, global.ng.fire.database, global.ng.fire.auth, global.moment, global.map));
+}(this, (function (exports, rxjs, ___default, core, firestore, operators, database, auth, moment, map) { 'use strict';
 
     var ___default__default = 'default' in ___default ? ___default['default'] : ___default;
     moment = moment && Object.prototype.hasOwnProperty.call(moment, 'default') ? moment['default'] : moment;
@@ -1364,13 +1364,14 @@
     }());
 
     var FirebaseDataService = /** @class */ (function () {
-        function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
+        function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService, _AngularFireAuth) {
             var _a;
             this._AngularFirestore = _AngularFirestore;
             this._AngularFireDatabase = _AngularFireDatabase;
             this._DummyDataService = _DummyDataService;
             this._NotificationService = _NotificationService;
             this._MapService = _MapService;
+            this._AngularFireAuth = _AngularFireAuth;
             this.TABLES = (_a = {},
                 _a[exports.ENUM_TABLES.customer] = {
                     name: exports.ENUM_TABLES.customer,
@@ -1855,14 +1856,36 @@
         FirebaseDataService.prototype.getRealTimeDB = function (name, id) {
             return this._AngularFireDatabase.list(name + "/" + id).valueChanges();
         };
+        /*authentication*/
+        FirebaseDataService.prototype.signUp = function (user) {
+            return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+                .then(function (result) {
+                window.alert("You have been successfully registered!");
+                console.log(result);
+            }).catch(function (error) {
+                window.alert(error.message);
+            });
+        };
+        // Sign in with email/password
+        FirebaseDataService.prototype.signIn = function (user) {
+            return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+                .then(function (result) {
+                console.log(result);
+                // this.router.navigate(['<!-- enter your route name here -->']);
+                return user;
+            }).catch(function (error) {
+                window.alert(error.message);
+            });
+        };
         FirebaseDataService.ctorParameters = function () { return [
             { type: firestore.AngularFirestore },
             { type: database.AngularFireDatabase },
             { type: DummyDataService },
             { type: NotificationService },
-            { type: MapService }
+            { type: MapService },
+            { type: auth.AngularFireAuth }
         ]; };
-        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(database.AngularFireDatabase), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(database.AngularFireDatabase), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService), core.ɵɵinject(auth.AngularFireAuth)); }, token: FirebaseDataService, providedIn: "root" });
         FirebaseDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'
