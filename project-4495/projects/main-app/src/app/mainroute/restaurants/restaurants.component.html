@@ -90,6 +90,7 @@
                     <h5 class="card-title">{{rest.name}}</h5>
                     <p class="card-text">{{rest.del_time}}</p>
                     <p class="card-text">{{rest.del_fee}}</p>
+                    
                   </div>
                   <div class="col-2
                                                 align-self-center">
@@ -113,8 +114,9 @@
             <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
             <ng-container *ngFor="let rest of restaurants">
 
-              <marker  position="{{rest.lat}},{{rest.lng}}" class="custom-icon location">
-                <i class="fa fa-map-marker"></i>
+              <marker  position="{{rest.lat}},{{rest.lng}}" id="{{rest.name}}" class="custom-icon location">
+
+                <i class="fas fa-utensils"></i>
 
               </marker>
 
