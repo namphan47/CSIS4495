@@ -19,6 +19,51 @@
   <div class="container-fluid">
     <div class="form-signin">
 
+
+      <div class="row">
+        <div class="col">
+          <label class="txtlabel">Full Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="Name"  class="form-control txtbox2" placeholder="Enter Name"
+                 required=""
+                 [ngModel] = "signupFormGroup.get('fullname').value"
+                 (ngModelChange) = "signupFormGroup.get('fullname').setValue($event)">
+        </div>
+      </div>
+
+      <div >
+      <div *ngIf="signupFormGroup.get('fullname').errors?.required">
+            This field is required
+          </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col">
+          <label  class="txtlabel">Phone Number</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="tel"  class="form-control txtbox2" placeholder="Enter Phone No."
+                 required=""
+                 [ngModel] = "signupFormGroup.get('phone').value"
+                 (ngModelChange) = "signupFormGroup.get('phone').setValue($event)">
+        </div>
+      </div>
+
+
+      <div >
+        <div *ngIf="signupFormGroup.get('phone').errors?.required">
+          This field is required
+        </div>
+      </div>
+
+
+
       <div class="row">
         <div class="col">
           <label for="inputEmail" class="txtlabel">Email</label>
@@ -74,15 +119,15 @@
 
       <div class="row">
         <div class="col">
-          <label for="" class="txtlabel">Re-Password</label>
+          <label  class="txtlabel">Re-Password</label>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <input type="password" id="" class="form-control txtbox2" placeholder="Re-enter Password"
-                 [ngModel] = "signupFormGroup.get('password').value"
-                 (ngModelChange) = "signupFormGroup.get('password').setValue($event)"
+          <input type="password" class="form-control txtbox2" placeholder="Re-enter Password"
+                 [ngModel] = "signupFormGroup.get('repassword').value"
+                 (ngModelChange) = "signupFormGroup.get('repassword').setValue($event)"
                  required="">
         </div>
       </div>
@@ -97,6 +142,34 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <label  class="txtlabel">Address</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="address"  class="form-control txtbox2" placeholder="Enter Address"
+                 required=""
+                 [ngModel] = "signupFormGroup.get('address').value"
+                 (ngModelChange) = "signupFormGroup.get('address').setValue($event)">
+        </div>
+      </div>
+
+
+      <div >
+        <div *ngIf="signupFormGroup.get('address').errors?.required">
+          <div>
+            <div>
+              This field is required
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
       <div class="row">
         <div class="col">
           <button class="btn btn-back" type="submit">BACK</button>
