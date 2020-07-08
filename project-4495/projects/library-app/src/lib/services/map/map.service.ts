@@ -38,4 +38,19 @@ export class MapService {
       });
     });
   }
+
+  getLatLngFromAddress(address: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const geocoder = new google.maps.Geocoder;
+      geocoder.geocode({'address': address}, function (results, status) {
+        if (status === 'OK') {
+          console.log(results);
+          resolve(results[0]['geometry']['location']);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+          reject('error');
+        }
+      });
+    });
+  }
 }

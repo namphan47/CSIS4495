@@ -144,6 +144,18 @@ export class FirebaseDataService {
   }
 
   /**
+   * get customer by email
+   * @param email
+   * @returns {Promise<Customer>}
+   */
+  getCustomerByEmail(email: string): Promise<Customer> {
+    return this.getCustomer()
+      .then((rs) => {
+        return _.find(rs, x => x.email === email);
+      });
+  }
+
+  /**
    * get courier data
    * @returns {Promise<Courier[]>}
    */
@@ -441,25 +453,44 @@ export class FirebaseDataService {
 
   /*authentication*/
 
-  signUp(user: Customer) {
+  /**
+   * Sign in with email/password
+   * @param user
+   * @returns {Promise<boolean>}
+   */
+  async signUp(user: Customer) {
+
+    const geoPoint = await this._MapService.getLatLngFromAddress(user.address);
+    user.lat = geoPoint.lat();
+    user.lng = geoPoint.lng();
+
     return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        window.alert("You have been successfully registered!");
-        console.log(result);
+        // create customer object
+        delete user.password;
+        return this.createWithObject(user)
+          .then(() => {
+            return true;
+          });
       }).catch((error) => {
         window.alert(error.message);
+        return false;
       });
   }
 
-  // Sign in with email/password
-  signIn(user: Customer) {
+  /**
+   * Sign in with email/password
+   * @param user
+   * @returns {Promise<Customer>}
+   */
+  signIn(user: Customer): Promise<Customer> {
     return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        console.log(result);
-        // this.router.navigate(['<!-- enter your route name here -->']);
-        return user;
+        // console.log(result);
+        return this.getCustomerByEmail(user.email);
       }).catch((error) => {
         window.alert(error.message);
+        return null;
       });
   }
 }

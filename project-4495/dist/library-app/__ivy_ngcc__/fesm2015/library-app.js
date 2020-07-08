@@ -1101,6 +1101,21 @@ let MapService = class MapService {
             });
         });
     }
+    getLatLngFromAddress(address) {
+        return new Promise((resolve, reject) => {
+            const geocoder = new google.maps.Geocoder;
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    console.log(results);
+                    resolve(results[0]['geometry']['location']);
+                }
+                else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                    reject('error');
+                }
+            });
+        });
+    }
 };
 MapService.ɵfac = function MapService_Factory(t) { return new (t || MapService)(); };
 MapService.ɵprov = ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
@@ -1219,6 +1234,17 @@ let FirebaseDataService = class FirebaseDataService {
     getCustomer() {
         return this.getDB(this.TABLES[ENUM_TABLES.customer])
             .then((rs) => rs);
+    }
+    /**
+     * get customer by email
+     * @param email
+     * @returns {Promise<Customer>}
+     */
+    getCustomerByEmail(email) {
+        return this.getCustomer()
+            .then((rs) => {
+            return ___default.find(rs, x => x.email === email);
+        });
     }
     /**
      * get courier data
@@ -1489,24 +1515,43 @@ let FirebaseDataService = class FirebaseDataService {
         return this._AngularFireDatabase.list(`${name}/${id}`).valueChanges();
     }
     /*authentication*/
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<boolean>}
+     */
     signUp(user) {
-        return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
-            .then((result) => {
-            window.alert("You have been successfully registered!");
-            console.log(result);
-        }).catch((error) => {
-            window.alert(error.message);
+        return __awaiter(this, void 0, void 0, function* () {
+            const geoPoint = yield this._MapService.getLatLngFromAddress(user.address);
+            user.lat = geoPoint.lat();
+            user.lng = geoPoint.lng();
+            return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+                .then((result) => {
+                // create customer object
+                delete user.password;
+                return this.createWithObject(user)
+                    .then(() => {
+                    return true;
+                });
+            }).catch((error) => {
+                window.alert(error.message);
+                return false;
+            });
         });
     }
-    // Sign in with email/password
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<Customer>}
+     */
     signIn(user) {
         return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
             .then((result) => {
-            console.log(result);
-            // this.router.navigate(['<!-- enter your route name here -->']);
-            return user;
+            // console.log(result);
+            return this.getCustomerByEmail(user.email);
         }).catch((error) => {
             window.alert(error.message);
+            return null;
         });
     }
 };

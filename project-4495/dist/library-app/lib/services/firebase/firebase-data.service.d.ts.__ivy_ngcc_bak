@@ -79,6 +79,12 @@ export declare class FirebaseDataService {
      */
     getCustomer(): Promise<Customer[]>;
     /**
+     * get customer by email
+     * @param email
+     * @returns {Promise<Customer>}
+     */
+    getCustomerByEmail(email: string): Promise<Customer>;
+    /**
      * get courier data
      * @returns {Promise<Courier[]>}
      */
@@ -161,6 +167,16 @@ export declare class FirebaseDataService {
     private deleteTable;
     getPointsRealTime(id: any): import("rxjs").Observable<unknown[]>;
     getRealTimeDB(name: string, id: string): import("rxjs").Observable<unknown[]>;
-    signUp(user: Customer): Promise<void>;
-    signIn(user: Customer): Promise<void | Customer>;
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<boolean>}
+     */
+    signUp(user: Customer): Promise<boolean>;
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<Customer>}
+     */
+    signIn(user: Customer): Promise<Customer>;
 }

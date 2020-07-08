@@ -5,9 +5,9 @@ import {
   FirebaseDataService,
   NotificationService,
   SimulatorDataService,
+  MapService
 } from 'library-app';
 import {HttpClient} from "@angular/common/http";
-import {tap} from "rxjs/operators";
 import {UiControllerService} from "@app/shared/controller/ui-controller.service";
 import {AngularFireAuth} from "@angular/fire/auth";
 
@@ -25,6 +25,7 @@ export class NavComponent extends DefaultComponent implements OnInit {
               private _NotificationService: NotificationService,
               private _UiControllerService: UiControllerService,
               private _HttpClient: HttpClient,
+              private _MapService: MapService,
               private _AngularFireAuth: AngularFireAuth) {
     super();
     // this.addSubscribes(
@@ -111,22 +112,28 @@ export class NavComponent extends DefaultComponent implements OnInit {
   }
 
   signUp() {
+    const time = new Date().getTime();
     const user = new Customer({
-      email: "a" + new Date().getTime() + "a@gc.com",
-      password: "a" + new Date().getTime(),
+      email: "a" + time + "a@gc.com",
+      password: "a" + time,
+      name: 'nam',
+      address: '8264 Amberwood Pl, Burnaby, BC V5A 3V2',
+      phone_no: '333',
     });
+    console.log(user);
     this._FirebaseDataService.signUp(user);
+    // this._MapService.getLatLngFromAddress('British Columbia V3N 3Z6');
   }
 
   // Sign in with email/password
   signIn() {
     const user = new Customer({
-      email: "dasd@fd.com",
-      password: 'sdfs3333',
+      email: "a1594239014660a@gc.com",
+      password: "a1594f239014660",
     });
     this._FirebaseDataService.signIn(user)
       .then((rs) => {
-        console.log(user);
+        console.log(rs);
       });
   }
 }

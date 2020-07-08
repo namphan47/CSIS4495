@@ -1143,6 +1143,21 @@ var MapService = /** @class */ (function () {
             });
         });
     };
+    MapService.prototype.getLatLngFromAddress = function (address) {
+        return new Promise(function (resolve, reject) {
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    console.log(results);
+                    resolve(results[0]['geometry']['location']);
+                }
+                else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                    reject('error');
+                }
+            });
+        });
+    };
     MapService.ɵprov = ɵɵdefineInjectable({ factory: function MapService_Factory() { return new MapService(); }, token: MapService, providedIn: "root" });
     MapService = __decorate([
         Injectable({
@@ -1321,6 +1336,17 @@ var FirebaseDataService = /** @class */ (function () {
     FirebaseDataService.prototype.getCustomer = function () {
         return this.getDB(this.TABLES[ENUM_TABLES.customer])
             .then(function (rs) { return rs; });
+    };
+    /**
+     * get customer by email
+     * @param email
+     * @returns {Promise<Customer>}
+     */
+    FirebaseDataService.prototype.getCustomerByEmail = function (email) {
+        return this.getCustomer()
+            .then(function (rs) {
+            return ___default.find(rs, function (x) { return x.email === email; });
+        });
     };
     /**
      * get courier data
@@ -1646,24 +1672,52 @@ var FirebaseDataService = /** @class */ (function () {
         return this._AngularFireDatabase.list(name + "/" + id).valueChanges();
     };
     /*authentication*/
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<boolean>}
+     */
     FirebaseDataService.prototype.signUp = function (user) {
-        return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
-            .then(function (result) {
-            window.alert("You have been successfully registered!");
-            console.log(result);
-        }).catch(function (error) {
-            window.alert(error.message);
+        return __awaiter(this, void 0, void 0, function () {
+            var geoPoint;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this._MapService.getLatLngFromAddress(user.address)];
+                    case 1:
+                        geoPoint = _a.sent();
+                        user.lat = geoPoint.lat();
+                        user.lng = geoPoint.lng();
+                        return [2 /*return*/, this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+                                .then(function (result) {
+                                // create customer object
+                                delete user.password;
+                                return _this.createWithObject(user)
+                                    .then(function () {
+                                    return true;
+                                });
+                            }).catch(function (error) {
+                                window.alert(error.message);
+                                return false;
+                            })];
+                }
+            });
         });
     };
-    // Sign in with email/password
+    /**
+     * Sign in with email/password
+     * @param user
+     * @returns {Promise<Customer>}
+     */
     FirebaseDataService.prototype.signIn = function (user) {
+        var _this = this;
         return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
             .then(function (result) {
-            console.log(result);
-            // this.router.navigate(['<!-- enter your route name here -->']);
-            return user;
+            // console.log(result);
+            return _this.getCustomerByEmail(user.email);
         }).catch(function (error) {
             window.alert(error.message);
+            return null;
         });
     };
     FirebaseDataService.ctorParameters = function () { return [
