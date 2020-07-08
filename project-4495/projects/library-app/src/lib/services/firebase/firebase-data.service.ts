@@ -17,6 +17,7 @@ import {Delivery} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 import {MapService} from "../map/map.service";
 import {AngularFireDatabase} from "@angular/fire/database";
+import {AngularFireAuth} from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +62,8 @@ export class FirebaseDataService {
               private _AngularFireDatabase: AngularFireDatabase,
               private _DummyDataService: DummyDataService,
               private _NotificationService: NotificationService,
-              private _MapService: MapService) {
+              private _MapService: MapService,
+              private _AngularFireAuth: AngularFireAuth) {
   }
 
   /**
@@ -435,5 +437,29 @@ export class FirebaseDataService {
 
   getRealTimeDB(name: string, id: string) {
     return this._AngularFireDatabase.list(`${name}/${id}`).valueChanges();
+  }
+
+  /*authentication*/
+
+  signUp(user: Customer) {
+    return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+      .then((result) => {
+        window.alert("You have been successfully registered!");
+        console.log(result);
+      }).catch((error) => {
+        window.alert(error.message);
+      });
+  }
+
+  // Sign in with email/password
+  signIn(user: Customer) {
+    return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+      .then((result) => {
+        console.log(result);
+        // this.router.navigate(['<!-- enter your route name here -->']);
+        return user;
+      }).catch((error) => {
+        window.alert(error.message);
+      });
   }
 }

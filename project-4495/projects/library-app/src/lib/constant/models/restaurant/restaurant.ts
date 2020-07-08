@@ -9,6 +9,11 @@ export class Restaurant extends DefaultModel {
   img1: string = '';
   img2: string = '';
 
+  del_time: string = '';
+  del_fee: string = '';
+
+  rating: number = 0;
+
   lat: number = 0;
   lng: number = 0;
 

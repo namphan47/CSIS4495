@@ -1,0 +1,136 @@
+
+<div class="container-fluid">
+
+
+  <div class="row">
+
+    <nav class="navbar fixed-top navbar-light bg-light">
+
+      <div class="col-6">
+        <div class="text-left">
+          <a class="navbar-brand" href="#">
+            <img src="../assets/logo-small.png" width="35" height="35"
+                 class="d-inline-block align-top"
+                 alt="">
+            NomNom
+          </a>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="text-right">
+          <div class="dropdown">
+            <button type="button" class="btn" data-toggle="dropdown">
+              <svg class="bi bi-person-circle" width="35"
+                   height="35" viewBox="0 0 16 16"
+                   fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M13.468 12.37C12.758 11.226 11.195 10 8
+                                                            10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0
+                                                            8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0
+                                                                0-6 3 3 0 0 0 0 6z" />
+                <path fill-rule="evenodd"
+                      d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8
+                                                                    1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0
+                                                                    8z" />
+              </svg>
+            </button>
+            <div class="dropdown-menu
+                                                                dropdown-menu-right">
+              <a class="dropdown-item" href="#">Order
+                History</a>
+              <a class="dropdown-item" href="#">Account</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+
+
+  </div>
+
+  <div class ="row map-row">
+
+    <div>
+      <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper map-responsive">
+
+
+        <!--         <marker  position="{{detail.lat}},{{detail.lng}}" class="custom-icon location">
+                   <i class="fa fa-map-marker"></i>
+
+                 </marker>-->
+
+
+      </ngui-map>  </div>
+
+    <div class="over-map">
+      <button class="back-btn"> BACK</button>
+      <div class="card delivery">
+
+        <div>
+          <h5 style="text-align:center;">Delivery</h5>
+        </div>
+
+        <div class="row">
+          <div class="col-2 text-right">
+            <img src="../assets/clock-solid.svg">
+          </div>
+          <div class="col-10 text-left">
+            <span> 31-51 mins (ASAP)</span>
+          </div>
+        </div>
+
+
+        <div class="row">
+
+          <div class="col-2 text-right">
+            <img src="../assets/map-marker-alt-solid.svg">
+          </div>
+
+          <div class="col-10 text-left">
+            <span> **** 1*th Avenue</span>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-1 text-right"></div>
+          <span class="col-10 text-left">Courier</span>
+        </div>
+        <!--
+                     <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-6 text-left">
+                                <span>Nick ***</span>
+                            </div>
+                     </div>
+                    -->
+        <div class="row">
+
+          <div class="col-3 text-center" style="align-self:flex-end;">
+            <img src="../assets/car-solid.svg">
+          </div>
+
+          <div class="col-6 text-left">
+            <span>Nick ***</span><br>
+            <span>UN3 ***</span><br>
+            <span>(403)-***-****</span>
+          </div>
+
+
+        </div>
+
+
+        <div class="card-footer">Your order will be delivered around 5 mins</div>
+      </div>
+
+    </div>
+
+
+
+  </div>

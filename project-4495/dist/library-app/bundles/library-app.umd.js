@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/fire/firestore'), require('rxjs/operators'), require('@angular/fire/database'), require('moment'), require('@ngui/map')) :
-    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/fire/firestore', 'rxjs/operators', '@angular/fire/database', 'moment', '@ngui/map'], factory) :
-    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.fire.firestore, global.rxjs.operators, global.ng.fire.database, global.moment, global.map));
-}(this, (function (exports, rxjs, ___default, core, firestore, operators, database, moment, map) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('lodash'), require('@angular/core'), require('@angular/fire/firestore'), require('rxjs/operators'), require('@angular/fire/database'), require('@angular/fire/auth'), require('moment'), require('@ngui/map')) :
+    typeof define === 'function' && define.amd ? define('library-app', ['exports', 'rxjs', 'lodash', '@angular/core', '@angular/fire/firestore', 'rxjs/operators', '@angular/fire/database', '@angular/fire/auth', 'moment', '@ngui/map'], factory) :
+    (global = global || self, factory(global['library-app'] = {}, global.rxjs, global.lodash, global.ng.core, global.ng.fire.firestore, global.rxjs.operators, global.ng.fire.database, global.ng.fire.auth, global.moment, global.map));
+}(this, (function (exports, rxjs, ___default, core, firestore, operators, database, auth, moment, map) { 'use strict';
 
     var ___default__default = 'default' in ___default ? ___default['default'] : ___default;
     moment = moment && Object.prototype.hasOwnProperty.call(moment, 'default') ? moment['default'] : moment;
@@ -331,6 +331,7 @@
             _this.lng = 0;
             _this.phone_no = '';
             _this.email = '';
+            _this.password = '';
             _super.prototype.copyInto.call(_this, data);
             return _this;
         }
@@ -479,6 +480,9 @@
             _this.phone_no = '';
             _this.img1 = '';
             _this.img2 = '';
+            _this.del_time = '';
+            _this.del_fee = '';
+            _this.rating = 0;
             _this.lat = 0;
             _this.lng = 0;
             _this.meal_ids = [];
@@ -515,7 +519,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png",
     		lat: 49.212271,
     		lng: -122.918816,
-    		phone_no: "(604)-718-1172"
+    		phone_no: "(604)-718-1172",
+    		del_time: "44-55 mins",
+    		del_fee: "$2.49 Delivery",
+    		rating: 9.2
     	},
     	{
     		name: "Indian Bombay Bistro",
@@ -524,7 +531,10 @@
     		img2: "https://static.skipthedishes.com/indian-bombay-bistro-list-image-mobile-1490966940146.png",
     		lat: 49.223155,
     		lng: -122.932605,
-    		phone_no: " (604)-553-1719"
+    		phone_no: "(604)-553-1719",
+    		del_time: "35-55 mins",
+    		del_fee: "$3.49 Delivery",
+    		rating: 9.4
     	},
     	{
     		name: "Manjal South Indian Kitchen",
@@ -533,7 +543,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-646b00287c87d93df6e6.png",
     		lat: 49.223281,
     		lng: -122.943316,
-    		phone_no: " (604)-515-4230"
+    		phone_no: "(604)-515-4230",
+    		del_time: "40-60 mins",
+    		del_fee: "$3.49 Delivery",
+    		rating: 9.1
     	},
     	{
     		name: "Bubble World",
@@ -542,7 +555,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-c86295f6aeb01e431414.png",
     		lat: 49.204826,
     		lng: -122.910192,
-    		phone_no: "(778)-397-7800"
+    		phone_no: "(778)-397-7800",
+    		del_time: "15-30 mins",
+    		del_fee: "$4.29 Delivery",
+    		rating: 8.5
     	},
     	{
     		name: "Miku Vancouver",
@@ -551,7 +567,10 @@
     		img2: "https://static.skipthedishes.com/hon-sushi-list-image-mobile-1491230537653.jpg",
     		lat: 49.286826,
     		lng: -123.112584,
-    		phone_no: "(604)-568-3900"
+    		phone_no: "(604)-568-3900",
+    		del_time: "35-55 mins",
+    		del_fee: "$4.29 Delivery",
+    		rating: 9.4
     	},
     	{
     		name: "Banh Mi Bar",
@@ -560,7 +579,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-ff0221a21117f2c6780f.jpg",
     		lat: 49.202816,
     		lng: -122.911051,
-    		phone_no: "(604)-553-9966"
+    		phone_no: "(604)-553-9966",
+    		del_time: "27-47 mins",
+    		del_fee: "$4.49 Delivery / Free Over $20",
+    		rating: 8.7
     	},
     	{
     		name: "De Dutch Pannekoek House",
@@ -569,7 +591,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0e0339ecb35a072239ff.png",
     		lat: 49.200451,
     		lng: -122.917861,
-    		phone_no: "(604)-521-2288"
+    		phone_no: "(604)-521-2288",
+    		del_time: "27-47 mins",
+    		del_fee: "$3.49 Delivery",
+    		rating: 9.3
     	},
     	{
     		name: "Pizza Hut",
@@ -578,7 +603,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0c87f8fdef4fefe787d6.png",
     		lat: 49.19805,
     		lng: -122.978744,
-    		phone_no: " (604)-433-8424"
+    		phone_no: "(604)-433-8424",
+    		del_time: "25-45 mins",
+    		del_fee: "$4.50 Delivery",
+    		rating: 8.9
     	},
     	{
     		name: "Donair & Sub House",
@@ -587,7 +615,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a32c6ec3f143ef49b40f.png",
     		lat: 49.222195,
     		lng: -122.931487,
-    		phone_no: "(604)-525-5108"
+    		phone_no: "(604)-525-5108",
+    		del_time: "32-52 mins",
+    		del_fee: "$2.49 Delivery / Free Over $20",
+    		rating: 9.7
     	},
     	{
     		name: "Subway",
@@ -596,7 +627,10 @@
     		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-e7550a65a1ee298b4958.png",
     		lat: 49.218681,
     		lng: -122.95677,
-    		phone_no: "(604)-759-0016"
+    		phone_no: "(604)-759-0016",
+    		del_time: "19-39 mins",
+    		del_fee: "$2.49 Delivery",
+    		rating: 9.7
     	}
     ];
 
@@ -1330,13 +1364,14 @@
     }());
 
     var FirebaseDataService = /** @class */ (function () {
-        function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
+        function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService, _AngularFireAuth) {
             var _a;
             this._AngularFirestore = _AngularFirestore;
             this._AngularFireDatabase = _AngularFireDatabase;
             this._DummyDataService = _DummyDataService;
             this._NotificationService = _NotificationService;
             this._MapService = _MapService;
+            this._AngularFireAuth = _AngularFireAuth;
             this.TABLES = (_a = {},
                 _a[exports.ENUM_TABLES.customer] = {
                     name: exports.ENUM_TABLES.customer,
@@ -1821,14 +1856,36 @@
         FirebaseDataService.prototype.getRealTimeDB = function (name, id) {
             return this._AngularFireDatabase.list(name + "/" + id).valueChanges();
         };
+        /*authentication*/
+        FirebaseDataService.prototype.signUp = function (user) {
+            return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+                .then(function (result) {
+                window.alert("You have been successfully registered!");
+                console.log(result);
+            }).catch(function (error) {
+                window.alert(error.message);
+            });
+        };
+        // Sign in with email/password
+        FirebaseDataService.prototype.signIn = function (user) {
+            return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+                .then(function (result) {
+                console.log(result);
+                // this.router.navigate(['<!-- enter your route name here -->']);
+                return user;
+            }).catch(function (error) {
+                window.alert(error.message);
+            });
+        };
         FirebaseDataService.ctorParameters = function () { return [
             { type: firestore.AngularFirestore },
             { type: database.AngularFireDatabase },
             { type: DummyDataService },
             { type: NotificationService },
-            { type: MapService }
+            { type: MapService },
+            { type: auth.AngularFireAuth }
         ]; };
-        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(database.AngularFireDatabase), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+        FirebaseDataService.ɵprov = core.ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(core.ɵɵinject(firestore.AngularFirestore), core.ɵɵinject(database.AngularFireDatabase), core.ɵɵinject(DummyDataService), core.ɵɵinject(NotificationService), core.ɵɵinject(MapService), core.ɵɵinject(auth.AngularFireAuth)); }, token: FirebaseDataService, providedIn: "root" });
         FirebaseDataService = __decorate([
             core.Injectable({
                 providedIn: 'root'

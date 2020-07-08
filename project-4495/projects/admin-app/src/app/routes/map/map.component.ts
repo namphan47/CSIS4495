@@ -210,6 +210,8 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
 
   }
 
+
+
 }
 
 class DeliveryPolyline {

@@ -5,6 +5,7 @@ import { ɵɵdefineInjectable, Injectable, ɵɵinject, Component, NgModule } fro
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map as map$1, tap, first } from 'rxjs/operators';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 import moment from 'moment';
 import { NguiMapModule } from '@ngui/map';
 
@@ -119,6 +120,7 @@ var Customer = /** @class */ (function (_super) {
         _this.lng = 0;
         _this.phone_no = '';
         _this.email = '';
+        _this.password = '';
         _super.prototype.copyInto.call(_this, data);
         return _this;
     }
@@ -267,6 +269,9 @@ var Restaurant = /** @class */ (function (_super) {
         _this.phone_no = '';
         _this.img1 = '';
         _this.img2 = '';
+        _this.del_time = '';
+        _this.del_fee = '';
+        _this.rating = 0;
         _this.lat = 0;
         _this.lng = 0;
         _this.meal_ids = [];
@@ -303,7 +308,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a415e23b3a4a919bb34e.png",
 		lat: 49.212271,
 		lng: -122.918816,
-		phone_no: "(604)-718-1172"
+		phone_no: "(604)-718-1172",
+		del_time: "44-55 mins",
+		del_fee: "$2.49 Delivery",
+		rating: 9.2
 	},
 	{
 		name: "Indian Bombay Bistro",
@@ -312,7 +320,10 @@ var restaurantData = [
 		img2: "https://static.skipthedishes.com/indian-bombay-bistro-list-image-mobile-1490966940146.png",
 		lat: 49.223155,
 		lng: -122.932605,
-		phone_no: " (604)-553-1719"
+		phone_no: "(604)-553-1719",
+		del_time: "35-55 mins",
+		del_fee: "$3.49 Delivery",
+		rating: 9.4
 	},
 	{
 		name: "Manjal South Indian Kitchen",
@@ -321,7 +332,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-646b00287c87d93df6e6.png",
 		lat: 49.223281,
 		lng: -122.943316,
-		phone_no: " (604)-515-4230"
+		phone_no: "(604)-515-4230",
+		del_time: "40-60 mins",
+		del_fee: "$3.49 Delivery",
+		rating: 9.1
 	},
 	{
 		name: "Bubble World",
@@ -330,7 +344,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-c86295f6aeb01e431414.png",
 		lat: 49.204826,
 		lng: -122.910192,
-		phone_no: "(778)-397-7800"
+		phone_no: "(778)-397-7800",
+		del_time: "15-30 mins",
+		del_fee: "$4.29 Delivery",
+		rating: 8.5
 	},
 	{
 		name: "Miku Vancouver",
@@ -339,7 +356,10 @@ var restaurantData = [
 		img2: "https://static.skipthedishes.com/hon-sushi-list-image-mobile-1491230537653.jpg",
 		lat: 49.286826,
 		lng: -123.112584,
-		phone_no: "(604)-568-3900"
+		phone_no: "(604)-568-3900",
+		del_time: "35-55 mins",
+		del_fee: "$4.29 Delivery",
+		rating: 9.4
 	},
 	{
 		name: "Banh Mi Bar",
@@ -348,7 +368,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-ff0221a21117f2c6780f.jpg",
 		lat: 49.202816,
 		lng: -122.911051,
-		phone_no: "(604)-553-9966"
+		phone_no: "(604)-553-9966",
+		del_time: "27-47 mins",
+		del_fee: "$4.49 Delivery / Free Over $20",
+		rating: 8.7
 	},
 	{
 		name: "De Dutch Pannekoek House",
@@ -357,7 +380,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0e0339ecb35a072239ff.png",
 		lat: 49.200451,
 		lng: -122.917861,
-		phone_no: "(604)-521-2288"
+		phone_no: "(604)-521-2288",
+		del_time: "27-47 mins",
+		del_fee: "$3.49 Delivery",
+		rating: 9.3
 	},
 	{
 		name: "Pizza Hut",
@@ -366,7 +392,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-0c87f8fdef4fefe787d6.png",
 		lat: 49.19805,
 		lng: -122.978744,
-		phone_no: " (604)-433-8424"
+		phone_no: "(604)-433-8424",
+		del_time: "25-45 mins",
+		del_fee: "$4.50 Delivery",
+		rating: 8.9
 	},
 	{
 		name: "Donair & Sub House",
@@ -375,7 +404,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-a32c6ec3f143ef49b40f.png",
 		lat: 49.222195,
 		lng: -122.931487,
-		phone_no: "(604)-525-5108"
+		phone_no: "(604)-525-5108",
+		del_time: "32-52 mins",
+		del_fee: "$2.49 Delivery / Free Over $20",
+		rating: 9.7
 	},
 	{
 		name: "Subway",
@@ -384,7 +416,10 @@ var restaurantData = [
 		img2: "https://restaurants-static.skipthedishes.com/images/resized/mobile-e7550a65a1ee298b4958.png",
 		lat: 49.218681,
 		lng: -122.95677,
-		phone_no: "(604)-759-0016"
+		phone_no: "(604)-759-0016",
+		del_time: "19-39 mins",
+		del_fee: "$2.49 Delivery",
+		rating: 9.7
 	}
 ];
 
@@ -1118,13 +1153,14 @@ var MapService = /** @class */ (function () {
 }());
 
 var FirebaseDataService = /** @class */ (function () {
-    function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService) {
+    function FirebaseDataService(_AngularFirestore, _AngularFireDatabase, _DummyDataService, _NotificationService, _MapService, _AngularFireAuth) {
         var _a;
         this._AngularFirestore = _AngularFirestore;
         this._AngularFireDatabase = _AngularFireDatabase;
         this._DummyDataService = _DummyDataService;
         this._NotificationService = _NotificationService;
         this._MapService = _MapService;
+        this._AngularFireAuth = _AngularFireAuth;
         this.TABLES = (_a = {},
             _a[ENUM_TABLES.customer] = {
                 name: ENUM_TABLES.customer,
@@ -1609,14 +1645,36 @@ var FirebaseDataService = /** @class */ (function () {
     FirebaseDataService.prototype.getRealTimeDB = function (name, id) {
         return this._AngularFireDatabase.list(name + "/" + id).valueChanges();
     };
+    /*authentication*/
+    FirebaseDataService.prototype.signUp = function (user) {
+        return this._AngularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+            .then(function (result) {
+            window.alert("You have been successfully registered!");
+            console.log(result);
+        }).catch(function (error) {
+            window.alert(error.message);
+        });
+    };
+    // Sign in with email/password
+    FirebaseDataService.prototype.signIn = function (user) {
+        return this._AngularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+            .then(function (result) {
+            console.log(result);
+            // this.router.navigate(['<!-- enter your route name here -->']);
+            return user;
+        }).catch(function (error) {
+            window.alert(error.message);
+        });
+    };
     FirebaseDataService.ctorParameters = function () { return [
         { type: AngularFirestore },
         { type: AngularFireDatabase },
         { type: DummyDataService },
         { type: NotificationService },
-        { type: MapService }
+        { type: MapService },
+        { type: AngularFireAuth }
     ]; };
-    FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(AngularFireDatabase), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService)); }, token: FirebaseDataService, providedIn: "root" });
+    FirebaseDataService.ɵprov = ɵɵdefineInjectable({ factory: function FirebaseDataService_Factory() { return new FirebaseDataService(ɵɵinject(AngularFirestore), ɵɵinject(AngularFireDatabase), ɵɵinject(DummyDataService), ɵɵinject(NotificationService), ɵɵinject(MapService), ɵɵinject(AngularFireAuth)); }, token: FirebaseDataService, providedIn: "root" });
     FirebaseDataService = __decorate([
         Injectable({
             providedIn: 'root'

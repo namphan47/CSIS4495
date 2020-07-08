@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {
+  Customer,
   DefaultComponent,
   FirebaseDataService,
   NotificationService,
@@ -8,6 +9,7 @@ import {
 import {HttpClient} from "@angular/common/http";
 import {tap} from "rxjs/operators";
 import {UiControllerService} from "@app/shared/controller/ui-controller.service";
+import {AngularFireAuth} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-nav',
@@ -22,7 +24,8 @@ export class NavComponent extends DefaultComponent implements OnInit {
               private _SimulatorDataService: SimulatorDataService,
               private _NotificationService: NotificationService,
               private _UiControllerService: UiControllerService,
-              private _HttpClient: HttpClient) {
+              private _HttpClient: HttpClient,
+              private _AngularFireAuth: AngularFireAuth) {
     super();
     // this.addSubscribes(
     //   this._NotificationService.getMessageOservable()
@@ -105,5 +108,25 @@ export class NavComponent extends DefaultComponent implements OnInit {
       this._NotificationService.pushMessage('|| Finish delete all orders');
       this._UiControllerService.nextMapController();
     });
+  }
+
+  signUp() {
+    const user = new Customer({
+      email: "a" + new Date().getTime() + "a@gc.com",
+      password: "a" + new Date().getTime(),
+    });
+    this._FirebaseDataService.signUp(user);
+  }
+
+  // Sign in with email/password
+  signIn() {
+    const user = new Customer({
+      email: "dasd@fd.com",
+      password: 'sdfs3333',
+    });
+    this._FirebaseDataService.signIn(user)
+      .then((rs) => {
+        console.log(user);
+      });
   }
 }
