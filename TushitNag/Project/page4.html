@@ -8,7 +8,7 @@
    <!-- CSS only -->
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="/CSS/page4.css">
    <!-- JS, Popper.js, and jQuery -->
    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -103,34 +103,35 @@
          <div class="col-4 mapbox">
             <div class="map position-fixed">
                <div class="container-fluid">
-                  <!-- <div class="row" id="cart">
-                  </div> -->
-                  <!-- <div class="row"> -->
-                     <!-- <div class="col-1"></div> -->
-                     <!-- <div class="col-10"> -->
-                        <form id = "cartForm" >
-                            <label id="cartTitle">Your Order</label>
-                           <div class="form-row">
-                              <div class="form-group col-md-11">
-                                 <input type="number" id="quantity" class="form-control text-center" value="1">
-                                 <label for="itemName">Poutine Special</label>
-                                 <label for="itemPrice">$20</label>
-                                 <br>
-                                 <button type="submit" class="btn btn-primary">Checkout</button>
-                              </div>
-                           
-                           </div>
-                        </form>
+                  <form id = "cartForm" >
+                     <label id="cartTitle">Your Order</label>
+                     <div class="form-row">
+                        <div class="form-group col"> <input type="number" id="quantity" class="form-control text-center" value="1"></div>
+                        <div class="form-group col"><label for="itemName">12 Medium Chicken Caesar</label></div>
+                        <div class="form-group col"><label for="itemName">$10</label></div>
+                        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                      </div>
-                     <div class="col-1"></div>
-                     <iframe src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                        frameborder=0>
-                     </iframe>
-                  <!-- </div> -->
+                     <div class="form-row">
+                        <div class="form-group col"> <input type="number" id="quantity" class="form-control text-center" value="1"></div>
+                        <div class="form-group col"><label for="itemName">12 Medium Chicken Caesar</label></div>
+                        <div class="form-group col"><label for="itemName">$10</label></div>
+                        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     </div>
+                     <div class="form-row">
+                        <div class="form-group col">
+                           <button type="submit" class="btn btn-primary">Checkout</button>
+                        </div>
+                     </div>
+                  </form>
                </div>
+               <iframe src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                  frameborder=0>
+               </iframe>
             </div>
          </div>
       </div>
+   </div>
+   </div>
    </div>
 </body>
 </html>

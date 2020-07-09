@@ -48,7 +48,7 @@ body{
   .mapbox
   {
     width: 40vw;  
-    font-family: Montserrat, Regular 400;
+    font-family: 'Montserrat', sans-serif;
    
   }
 
@@ -65,7 +65,7 @@ body{
       left: 20px;
       right: 20px;
       z-index: 1;
-      background-color: red
+      background-color: white
 
   }
 
@@ -79,4 +79,11 @@ body{
   margin-left: 10px;
   width: 50px;
   height: 40px;
+}
+
+.close{
+  border-style: none;
+  height: 30px;
+  width: 30px;
+  color: black;
 }
