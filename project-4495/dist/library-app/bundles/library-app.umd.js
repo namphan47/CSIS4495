@@ -1814,7 +1814,7 @@
          */
         FirebaseDataService.prototype.updateWithObject = function (object) {
             var collection = this._AngularFirestore.collection(this.getTable(object.constructor.name));
-            collection.doc(object.id).update(object.getData());
+            return collection.doc(object.id).update(object.getData());
         };
         /**
          * get table name from class name
@@ -1929,6 +1929,108 @@
             }).catch(function (error) {
                 window.alert(error.message);
                 return null;
+            });
+        };
+        /**
+         * get random
+         * @param value
+         * @returns {any | null | number}
+         */
+        FirebaseDataService.prototype.getRandom = function (value) {
+            if (!isNaN(Number(value))) {
+                return ___default__default.random(0, value) + 1;
+            }
+            else {
+                value = value;
+                return value[___default__default.random(0, value.length - 1)];
+            }
+            return null;
+        };
+        /**
+         * checkout
+         * @param customer
+         * @param restaurant
+         * @param orderItems
+         * @returns {Promise<void>}
+         */
+        FirebaseDataService.prototype.checkout = function (customer, restaurant, orderItems) {
+            return __awaiter(this, void 0, void 0, function () {
+                var delivery, courier, _a, order_1, deliveryStatusHistory, e_1;
+                var _this = this;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            _b.trys.push([0, 8, , 9]);
+                            _a = this.getRandom;
+                            return [4 /*yield*/, this.getCourier()];
+                        case 1:
+                            courier = _a.apply(this, [_b.sent()]);
+                            order_1 = new Order({
+                                date_time: new Date().getTime(),
+                                restaurant_id: restaurant.id,
+                                customer_id: customer.id
+                            });
+                            return [4 /*yield*/, this.createWithObject(order_1)];
+                        case 2:
+                            _b.sent();
+                            // create order items
+                            ___default__default.map(orderItems, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            x.order_id = order_1.id;
+                                            x.order = order_1;
+                                            return [4 /*yield*/, this.createWithObject(x)];
+                                        case 1:
+                                            _a.sent();
+                                            order_1.total += x.meal.price * x.quantity;
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); });
+                            return [4 /*yield*/, this.updateWithObject(order_1)];
+                        case 3:
+                            _b.sent();
+                            // create delivery
+                            delivery = new Delivery({
+                                points: [],
+                                courier_id: courier.id,
+                                order_id: order_1.id
+                            });
+                            // add paths
+                            return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.lng), new google.maps.LatLng(restaurant.lat, restaurant.lng))
+                                    .then(function (rs) {
+                                    delivery.path_to_restaurant = rs;
+                                })];
+                        case 4:
+                            // add paths
+                            _b.sent();
+                            return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
+                                    .then(function (rs) {
+                                    delivery.path_to_customer = rs;
+                                })];
+                        case 5:
+                            _b.sent();
+                            return [4 /*yield*/, this.createWithObject(delivery)];
+                        case 6:
+                            _b.sent();
+                            deliveryStatusHistory = new DeliveryStatusHistory({
+                                status: exports.Delivery_Status.ORDERED,
+                                delivery_id: delivery.id,
+                                date_time: moment().valueOf()
+                            });
+                            return [4 /*yield*/, this.createWithObject(deliveryStatusHistory)];
+                        case 7:
+                            _b.sent();
+                            return [3 /*break*/, 9];
+                        case 8:
+                            e_1 = _b.sent();
+                            return [2 /*return*/, Promise.resolve()
+                                    .then(function () { return null; })];
+                        case 9: return [2 /*return*/, Promise.resolve()
+                                .then(function () { return delivery; })];
+                    }
+                });
             });
         };
         FirebaseDataService.ctorParameters = function () { return [
@@ -2147,7 +2249,9 @@
                         case 2:
                             _a.sent();
                             order.total += orderItem.meal.price * orderItem.quantity;
-                            this._FirebaseDataService.updateWithObject(order);
+                            return [4 /*yield*/, this._FirebaseDataService.updateWithObject(order)];
+                        case 3:
+                            _a.sent();
                             delivery = new Delivery({
                                 points: [],
                                 courier_id: courier.id,
@@ -2158,19 +2262,19 @@
                                     .then(function (rs) {
                                     delivery.path_to_restaurant = rs;
                                 })];
-                        case 3:
+                        case 4:
                             // add paths
                             _a.sent();
                             return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
                                     .then(function (rs) {
                                     delivery.path_to_customer = rs;
                                 })];
-                        case 4:
+                        case 5:
                             _a.sent();
                             console.log(delivery);
                             console.log(delivery.getData());
                             return [4 /*yield*/, this._FirebaseDataService.createWithObject(delivery)];
-                        case 5:
+                        case 6:
                             _a.sent();
                             deliveryStatusHistory = new DeliveryStatusHistory({
                                 status: exports.Delivery_Status.ORDERED,
@@ -2178,7 +2282,7 @@
                                 date_time: moment().valueOf()
                             });
                             return [4 /*yield*/, this._FirebaseDataService.createWithObject(deliveryStatusHistory)];
-                        case 6:
+                        case 7:
                             _a.sent();
                             return [2 /*return*/];
                     }

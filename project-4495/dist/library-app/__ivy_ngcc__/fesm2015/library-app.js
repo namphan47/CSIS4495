@@ -1464,7 +1464,7 @@ let FirebaseDataService = class FirebaseDataService {
      */
     updateWithObject(object) {
         const collection = this._AngularFirestore.collection(this.getTable(object.constructor.name));
-        collection.doc(object.id).update(object.getData());
+        return collection.doc(object.id).update(object.getData());
     }
     /**
      * get table name from class name
@@ -1552,6 +1552,80 @@ let FirebaseDataService = class FirebaseDataService {
         }).catch((error) => {
             window.alert(error.message);
             return null;
+        });
+    }
+    /**
+     * get random
+     * @param value
+     * @returns {any | null | number}
+     */
+    getRandom(value) {
+        if (!isNaN(Number(value))) {
+            return ___default.random(0, value) + 1;
+        }
+        else {
+            value = value;
+            return value[___default.random(0, value.length - 1)];
+        }
+        return null;
+    }
+    /**
+     * checkout
+     * @param customer
+     * @param restaurant
+     * @param orderItems
+     * @returns {Promise<void>}
+     */
+    checkout(customer, restaurant, orderItems) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let delivery;
+            try {
+                const courier = this.getRandom(yield this.getCourier());
+                // create order
+                const order = new Order({
+                    date_time: new Date().getTime(),
+                    restaurant_id: restaurant.id,
+                    customer_id: customer.id
+                });
+                yield this.createWithObject(order);
+                // create order items
+                ___default.map(orderItems, (x) => __awaiter(this, void 0, void 0, function* () {
+                    x.order_id = order.id;
+                    x.order = order;
+                    yield this.createWithObject(x);
+                    order.total += x.meal.price * x.quantity;
+                }));
+                yield this.updateWithObject(order);
+                // create delivery
+                delivery = new Delivery({
+                    points: [],
+                    courier_id: courier.id,
+                    order_id: order.id
+                });
+                // add paths
+                yield this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.lng), new google.maps.LatLng(restaurant.lat, restaurant.lng))
+                    .then((rs) => {
+                    delivery.path_to_restaurant = rs;
+                });
+                yield this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
+                    .then((rs) => {
+                    delivery.path_to_customer = rs;
+                });
+                yield this.createWithObject(delivery);
+                // create delivery status
+                const deliveryStatusHistory = new DeliveryStatusHistory({
+                    status: Delivery_Status.ORDERED,
+                    delivery_id: delivery.id,
+                    date_time: moment().valueOf()
+                });
+                yield this.createWithObject(deliveryStatusHistory);
+            }
+            catch (e) {
+                return Promise.resolve()
+                    .then(() => null);
+            }
+            return Promise.resolve()
+                .then(() => delivery);
         });
     }
 };
@@ -1711,7 +1785,7 @@ let SimulatorDataService = class SimulatorDataService {
             orderItem.order = order;
             yield this._FirebaseDataService.createWithObject(orderItem);
             order.total += orderItem.meal.price * orderItem.quantity;
-            this._FirebaseDataService.updateWithObject(order);
+            yield this._FirebaseDataService.updateWithObject(order);
             // create delivery
             const delivery = new Delivery({
                 points: [],

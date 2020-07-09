@@ -122,6 +122,7 @@ export class SimulatorDataService {
 
   }
 
+
   /**
    * randomly generate n number of orders
    * @param n
@@ -177,7 +178,7 @@ export class SimulatorDataService {
 
     await this._FirebaseDataService.createWithObject(orderItem);
     order.total += orderItem.meal.price * orderItem.quantity;
-    this._FirebaseDataService.updateWithObject(order);
+    await this._FirebaseDataService.updateWithObject(order);
 
     // create delivery
     const delivery = new Delivery(

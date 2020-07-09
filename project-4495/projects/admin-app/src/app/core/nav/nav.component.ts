@@ -5,11 +5,13 @@ import {
   FirebaseDataService,
   NotificationService,
   SimulatorDataService,
-  MapService
+  MapService, OrderItem
 } from 'library-app';
 import {HttpClient} from "@angular/common/http";
 import {UiControllerService} from "@app/shared/controller/ui-controller.service";
 import {AngularFireAuth} from "@angular/fire/auth";
+
+import _ from 'lodash';
 
 @Component({
   selector: 'app-nav',
@@ -135,5 +137,43 @@ export class NavComponent extends DefaultComponent implements OnInit {
       .then((rs) => {
         console.log(rs);
       });
+  }
+
+  checkout() {
+    return Promise.all([
+      this._FirebaseDataService.getCustomer(),
+      this._FirebaseDataService.getRestaurant(),
+    ])
+      .then(async ([customers, restaurants]) => {
+        const c = this.getRandom(customers);
+        const r = this.getRandom(restaurants);
+        const m = this.getRandom(r.meals);
+        const o = new OrderItem({
+          meal_id: m.id,
+          quantity: this.getRandom(5),
+        });
+        o.meal = m;
+        this._FirebaseDataService.checkout(c, r, [o])
+          .then((rs) => {
+            console.log(rs);
+            this._UiControllerService.nextMapController();
+          });
+      });
+  }
+
+  /**
+   * get random
+   * @param value
+   * @returns {any | null | number}
+   */
+  getRandom(value: any[] | number): any {
+    if (!isNaN(Number(value))) {
+      return _.random(0, value) + 1;
+    } else {
+      value = value as unknown as any[];
+      return value[_.random(0, value.length - 1)];
+    }
+
+    return null;
   }
 }

@@ -13,11 +13,12 @@ import {NotificationService} from '../mics/notification.service';
 import {OrderItem} from '../../constant/models/order_item/order-item';
 import {Order} from '../../constant/models/order/order';
 import {QueryParamModel} from "../../constant/models/query-param-model";
-import {Delivery} from "../../constant/models";
+import {Delivery, Delivery_Status} from "../../constant/models";
 import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
 import {MapService} from "../map/map.service";
 import {AngularFireDatabase} from "@angular/fire/database";
 import {AngularFireAuth} from "@angular/fire/auth";
+import moment from "moment";
 
 @Injectable({
   providedIn: 'root'
@@ -390,7 +391,7 @@ export class FirebaseDataService {
    */
   updateWithObject(object: IDefaultModel) {
     const collection = this._AngularFirestore.collection(this.getTable(object.constructor.name));
-    collection.doc(object.id).update(object.getData());
+    return collection.doc(object.id).update(object.getData());
   }
 
   /**
@@ -493,4 +494,91 @@ export class FirebaseDataService {
         return null;
       });
   }
+
+  /**
+   * get random
+   * @param value
+   * @returns {any | null | number}
+   */
+  getRandom(value: any[] | number): any {
+    if (!isNaN(Number(value))) {
+      return _.random(0, value) + 1;
+    } else {
+      value = value as unknown as any[];
+      return value[_.random(0, value.length - 1)];
+    }
+
+    return null;
+  }
+
+  /**
+   * checkout
+   * @param customer
+   * @param restaurant
+   * @param orderItems
+   * @returns {Promise<void>}
+   */
+  async checkout(customer: Customer, restaurant: Restaurant, orderItems: OrderItem[]) {
+    let delivery;
+    try {
+      const courier: Courier = this.getRandom(await this.getCourier());
+
+      // create order
+      const order = new Order({
+        date_time: new Date().getTime(),
+        restaurant_id: restaurant.id,
+        customer_id: customer.id
+      });
+
+      await this.createWithObject(order);
+
+      // create order items
+      _.map(orderItems, async x => {
+        x.order_id = order.id;
+        x.order = order;
+        await this.createWithObject(x);
+        order.total += x.meal.price * x.quantity;
+      });
+
+      await this.updateWithObject(order);
+
+      // create delivery
+      delivery = new Delivery(
+        {
+          points: [],
+          courier_id: courier.id,
+          order_id: order.id
+        }
+      );
+
+      // add paths
+      await this._MapService.renderDirection(new google.maps.LatLng(courier.lat, courier.lng), new google.maps.LatLng(restaurant.lat, restaurant.lng))
+        .then((rs) => {
+          delivery.path_to_restaurant = rs;
+        });
+
+      await this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
+        .then((rs) => {
+          delivery.path_to_customer = rs;
+        });
+
+      await this.createWithObject(delivery);
+
+      // create delivery status
+      const deliveryStatusHistory = new DeliveryStatusHistory({
+        status: Delivery_Status.ORDERED,
+        delivery_id: delivery.id,
+        date_time: moment().valueOf()
+      });
+
+      await this.createWithObject(deliveryStatusHistory);
+    } catch (e) {
+      return Promise.resolve()
+        .then(() => null);
+    }
+
+    return Promise.resolve()
+      .then(() => delivery);
+  }
+
 }

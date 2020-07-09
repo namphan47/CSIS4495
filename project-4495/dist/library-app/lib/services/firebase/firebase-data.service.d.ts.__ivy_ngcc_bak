@@ -148,7 +148,7 @@ export declare class FirebaseDataService {
      * update document
      * @param object
      */
-    updateWithObject(object: IDefaultModel): void;
+    updateWithObject(object: IDefaultModel): Promise<void>;
     /**
      * get table name from class name
      * @param className
@@ -179,4 +179,18 @@ export declare class FirebaseDataService {
      * @returns {Promise<Customer>}
      */
     signIn(user: Customer): Promise<Customer>;
+    /**
+     * get random
+     * @param value
+     * @returns {any | null | number}
+     */
+    getRandom(value: any[] | number): any;
+    /**
+     * checkout
+     * @param customer
+     * @param restaurant
+     * @param orderItems
+     * @returns {Promise<void>}
+     */
+    checkout(customer: Customer, restaurant: Restaurant, orderItems: OrderItem[]): Promise<any>;
 }
