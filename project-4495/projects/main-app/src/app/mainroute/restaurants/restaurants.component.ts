@@ -8,7 +8,7 @@ import {FirebaseDataService, Meal, Restaurant} from 'library-app';
 })
 export class RestaurantsComponent implements OnInit {
   restaurants: Restaurant[];
-  rest;
+  searchedRestaurant: Restaurant[];
   searchData = {
     RestaurantName: ''
   };
@@ -30,6 +30,7 @@ export class RestaurantsComponent implements OnInit {
     promise
       .then((rs) => {
         this.restaurants = rs;
+        this.searchedRestaurant = this.restaurants;
         // console.log(this.restaurants);
         // console.log(this.restaurants[2].lat);
         // console.log(this.restaurants[2].lng);
@@ -39,17 +40,22 @@ export class RestaurantsComponent implements OnInit {
 
   search() {
 
+    this.searchedRestaurant = [];
     for (let i = 0; i < this.restaurants.length; i++) {
       if (this.restaurants[i].name.toLowerCase().includes(this.searchData.RestaurantName)) {
         console.log('it is true');
-        this.rest = this.restaurants[i];
+       this.searchedRestaurant.push(this.restaurants[i]);
 
 
       }
-      this.restaurants[i] = this.rest;
     }
-  
-    console.log(this.rest);
+    console.log(this.searchedRestaurant);
 
+  }
+
+  onSearchValueChanged($event: any) {
+    if($event.length === 0) {
+      this.searchedRestaurant = this.restaurants;
+    }
   }
 }

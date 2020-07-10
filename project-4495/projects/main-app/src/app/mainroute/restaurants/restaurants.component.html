@@ -19,7 +19,8 @@
         <div class="text-center">
           <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search"
-                   placeholder="Search" aria-label="Search" [(ngModel)]="searchData.RestaurantName">
+                   placeholder="Search" aria-label="Search" [(ngModel)]="searchData.RestaurantName"
+            (ngModelChange)="onSearchValueChanged($event)">
             <button class="btn btn-outline-success btn-group-sm"
                     type="submit" (click)="search()">Search
             </button>
@@ -66,7 +67,7 @@
     <div class="container-fluid">
       <div class="row no-gutters">
         <div class="col-7">
-          <div *ngFor="let rest of restaurants">
+          <div *ngFor="let rest of searchedRestaurant">
             <!-- 2nd Restaraunt -->
             <div class="list1 cursor-pointer">
               <div class="card hoverable" [routerLink]="['../rest-details', rest.id]" style="max-width: 60vw;">
