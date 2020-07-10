@@ -47,7 +47,7 @@
         </nav>
       </div>
 
-      <br><br><br><br><br><br>
+      <br><br><br><br>
 
       <div class="row">
 
@@ -61,7 +61,7 @@
               <p>{{detail.name}}</p>
               <p class="text-danger">9.2</p>
               <p>{{detail.del_time}}</p>
-              <p>$3.49 Delivery</p>
+              <p>{{detail.del_fee}}</p>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
 
           <div *ngFor="let me of meal">
             <div class="list1 cursor-pointer">
-              <div class="card hoverable"[routerLink]="['../meal-name', me.id]" style="max-width: 60vw;">
+              <div class="card hoverable">
                 <div class="row no-gutters">
                   <div class="col-3 restaurant">
                     <img
@@ -80,11 +80,11 @@
                       class="card-img" alt="...">
                   </div>
                   <div class="col-9 justify-content-center">
-                    <h6 class="card-title">{{me.name}}</h6>
-                    <p class="card-text"><small class="text-muted">{{me.description}}</small>
+                    <h6 [(ngModel)]="checkoutData.mealPrice " ngDefaultControl class="card-title">{{me.name}}</h6>
+                    <p class="card-text mealDescription"><small class="text-muted">{{me.description}}</small>
                     </p>
-                    <p class="card-text">${{me.price}}</p>
-                    <div></div>
+                    <p [(ngModel)]="checkoutData.mealPrice" ngDefaultControl  class="card-text">${{me.price}}</p>
+                    <div></div><div></div>
                   </div>
                 </div>
               </div>
@@ -96,17 +96,51 @@
         <div class="col-4 mapbox">
           <div class="map position-fixed">
             <div class="container-fluid">
-              <form id="cartForm">
+              <div id="cartForm">
                 <label id="cartTitle">Your Order</label>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <input type="number" id="quantity" class="form-control text-center" value="1">
-                    <br>
-                    <a role="button" class="btn btn-success" id="checkout" routerLink="../../checkout">Checkout</a>
+                <hr/>
+                <div class="form-row itemsList">
+                  <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
+                                                       value="1"></div>
+                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
+                  <div class="form-group col-2"><label>$10</label></div>
+                  <div class="form-group col-1">
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
                   </div>
-
                 </div>
-              </form>
+                <div class="form-row itemsList">
+                  <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
+                                                       value="1"></div>
+                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
+                  <div class="form-group col-2"><label>$10</label></div>
+                  <div class="form-group col-1">
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-row itemsList">
+                  <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
+                                                       value="1"></div>
+                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
+                  <div class="form-group col-2"><label>$10</label></div>
+                  <div class="form-group col-1">
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+
+                <hr/>
+                <div class="form-row subtotal">
+                  <div class="form-group col-10">Subtotal:</div>
+                  <div class="form-group col-2">$20</div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <button type="submit" class="btn btn-primary submitButton">Checkout</button>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-1"></div>
             <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">

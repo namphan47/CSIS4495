@@ -14,7 +14,10 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   restaurants: Restaurant[];
   detail;
   meal: Meal[];
-
+  checkoutData = {
+    mealName: '',
+    mealPrice: '',
+  };
 
   constructor(private route: ActivatedRoute, private _FirebaseDataService: FirebaseDataService) {
 
@@ -35,9 +38,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
           for (let i = 0, len = this.detail.meals.length; i < len; i++) {
               this.meal = this.detail.meals;
           }
-          console.log('please work baby');
-          console.log(this.meal);
-          console.log(this.meal);
+          // console.log(this.meal);
+          // console.log(this.meal);
         });
 
 
@@ -50,6 +52,11 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+  }
+
+  checkout() {
+
+      console.log(this.checkoutData);
   }
 }
 

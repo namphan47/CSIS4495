@@ -1,7 +1,7 @@
-#body{
+body{
 
   background:#DADDE2;
-  font-family: Montserrat, Bold;
+  font-family: 'Montserrat',sans-serif;
 
 }
 
@@ -19,7 +19,7 @@ div.tile
 div.map
 {
   border: 10px solid white;
-  height: 74vh;
+  height: 82vh;
   width: 30vw;
 }
 
@@ -51,8 +51,8 @@ div.map
 
 }
 
-iframe{
-  height: 56vh;
+#gmap{
+  height: 79vh;
   width: 28.5vw;
   z-index: 2;
 }
@@ -60,30 +60,63 @@ iframe{
 #cartForm{
 
   position: absolute;
-  top: 2px;
-  left: 20px;
-  right: 20px;
+
+  margin-left: 10%;
+  margin-right:20%;
   z-index: 1;
-  background-color: red
+  background-color: yellow;
+  font-size: 12px;
+  justify-content: center;
+
+  width: 20vw;
+
 
 }
 
 #cartTitle{
+  width: 40%;
+  margin-left: 35%;
+  margin-right: 35%;
+  font-size: 14px;
+  margin-top: 5%;
+}
+.quantity{
 
   margin-left: 10px;
-  margin-top: 10px;
+  width: 47px;
+  font-size: 10px;
 }
-#quantity{
 
-  margin-left: 10px;
-  width: 50px;
-  height: 40px;
+.close{
+  border-style: none;
+  height: 30px;
+  width: 30px;
+  color: black;
+  outline: none;
 }
-#checkout{
-  margin-left: 10px;
-}
-#gmap{
-  max-width: 38vw;
-  height: 100%;
 
+.submitButton{
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%
+}
+
+.itemsList{
+  justify-content: center;
+  font-size: 10px;
+}
+
+hr {
+
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.subtotal{
+  margin-left: 3%;
+}
+
+.mealDescription{
+
+  font-size: 10px;
 }
