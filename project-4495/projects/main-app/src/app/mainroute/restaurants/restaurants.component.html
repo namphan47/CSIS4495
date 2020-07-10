@@ -20,8 +20,9 @@
           <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search"
                    placeholder="Search" aria-label="Search" [(ngModel)]="searchData.RestaurantName"
-            (ngModelChange)="onSearchValueChanged($event)">
-            <button class="btn btn-outline-success btn-group-sm"
+                   (ngModelChange)="onSearchValueChanged($event)">
+            <button class="btn btn-outline-success btn-group-sm "
+                    [class.disabled-half]="searchData.RestaurantName==''"
                     type="submit" (click)="search()">Search
             </button>
           </div>
@@ -113,15 +114,15 @@
 
           <div class="map">
             <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
-            <ng-container *ngFor="let rest of restaurants">
+              <ng-container *ngFor="let rest of restaurants">
 
-              <marker  position="{{rest.lat}},{{rest.lng}}" id="{{rest.name}}" class="custom-icon location">
+                <marker position="{{rest.lat}},{{rest.lng}}" id="{{rest.name}}" class="custom-icon location">
 
-                <i class="fas fa-utensils"></i>
+                  <i class="fas fa-utensils"></i>
 
-              </marker>
+                </marker>
 
-            </ng-container>
+              </ng-container>
             </ngui-map>
           </div>
 

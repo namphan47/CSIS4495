@@ -72,7 +72,7 @@
 
           <div *ngFor="let me of meal">
             <div class="list1 cursor-pointer">
-              <div class="card hoverable">
+              <div class="card hoverable" (click)="addToCart(me)">
                 <div class="row no-gutters">
                   <div class="col-3 restaurant">
                     <img
@@ -80,10 +80,10 @@
                       class="card-img" alt="...">
                   </div>
                   <div class="col-9 justify-content-center">
-                    <h6 [(ngModel)]="checkoutData.mealPrice " ngDefaultControl class="card-title">{{me.name}}</h6>
+                    <h6 ngDefaultControl class="card-title">{{me.name}}</h6>
                     <p class="card-text mealDescription"><small class="text-muted">{{me.description}}</small>
                     </p>
-                    <p [(ngModel)]="checkoutData.mealPrice" ngDefaultControl  class="card-text">${{me.price}}</p>
+                    <p ngDefaultControl  class="card-text">${{me.price}}</p>
                     <div></div><div></div>
                   </div>
                 </div>

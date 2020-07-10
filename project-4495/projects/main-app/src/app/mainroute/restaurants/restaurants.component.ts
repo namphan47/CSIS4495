@@ -44,18 +44,19 @@ export class RestaurantsComponent implements OnInit {
     for (let i = 0; i < this.restaurants.length; i++) {
       if (this.restaurants[i].name.toLowerCase().includes(this.searchData.RestaurantName)) {
         console.log('it is true');
-       this.searchedRestaurant.push(this.restaurants[i]);
-
+        this.searchedRestaurant.push(this.restaurants[i]);
 
       }
     }
+
     console.log(this.searchedRestaurant);
 
   }
 
   onSearchValueChanged($event: any) {
-    if($event.length === 0) {
+    if ($event.length === 0) {
       this.searchedRestaurant = this.restaurants;
+
     }
   }
 }

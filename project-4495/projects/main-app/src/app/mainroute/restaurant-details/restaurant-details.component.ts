@@ -54,9 +54,9 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  checkout() {
 
-      console.log(this.checkoutData);
+  addToCart(me: Meal) {
+
   }
 }
 
