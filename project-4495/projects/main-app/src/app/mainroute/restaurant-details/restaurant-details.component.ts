@@ -14,10 +14,8 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   restaurants: Restaurant[];
   detail;
   meal: Meal[];
-  checkoutData = {
-    mealName: '',
-    mealPrice: '',
-  };
+  cartMeal = [];
+
 
   constructor(private route: ActivatedRoute, private _FirebaseDataService: FirebaseDataService) {
 
@@ -28,15 +26,15 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
         .then((rs) => {
           this.restaurants = rs;
 
-          console.log(this.restaurants);
+          // console.log(this.restaurants);
           for (let i = 0; i < this.restaurants.length; i++) {
-            if (this.restaurants[i].id == this.id) {
+            if (this.restaurants[i].id === this.id) {
               this.detail = this.restaurants[i];
             }
           }
-          console.log(this.detail);
+          // console.log(this.detail);
           for (let i = 0, len = this.detail.meals.length; i < len; i++) {
-              this.meal = this.detail.meals;
+            this.meal = this.detail.meals;
           }
           // console.log(this.meal);
           // console.log(this.meal);
@@ -54,9 +52,36 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
+// creating an  json object inside an array
 
   addToCart(me: Meal) {
+    this.cartCheck(me);
+    if (true) {
+      this.cartMeal.push({
+        id: me.id,
+        name: me.name,
+        price: me.price,
+        quantity: 1,
 
+      });
+    }
+    console.log(this.cartMeal);
   }
+
+  cartCheck(me: Meal) {
+    for (let i = 0; i < this.cartMeal.length; i++) {
+
+      console.log('h'+me.id);
+      if (this.cartMeal[i] === me) {
+        console.log('hi there' + this.cartMeal[i]);
+        this.cartMeal[i].quantity += 1;
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+
 }
 

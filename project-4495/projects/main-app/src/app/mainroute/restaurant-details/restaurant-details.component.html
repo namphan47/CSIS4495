@@ -99,31 +99,11 @@
               <div id="cartForm">
                 <label id="cartTitle">Your Order</label>
                 <hr/>
-                <div class="form-row itemsList">
+                <div class="form-row itemsList" *ngFor="let cartItem of cartMeal ">
                   <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
-                                                       value="1"></div>
-                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
-                  <div class="form-group col-2"><label>$10</label></div>
-                  <div class="form-group col-1">
-                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="form-row itemsList">
-                  <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
-                                                       value="1"></div>
-                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
-                  <div class="form-group col-2"><label>$10</label></div>
-                  <div class="form-group col-1">
-                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="form-row itemsList">
-                  <div class="form-group col-3"><input type="number" min="1" class="form-control text-center quantity"
-                                                       value="1"></div>
-                  <div class="form-group col-6"><label>12 Medium Chicken Caesar</label></div>
-                  <div class="form-group col-2"><label>$10</label></div>
+                                                       [(ngModel)]="cartItem.quantity"></div>
+                  <div class="form-group col-6"><label>{{cartItem.name}}</label></div>
+                  <div class="form-group col-2"><label>${{cartItem.price}}</label></div>
                   <div class="form-group col-1">
                     <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
