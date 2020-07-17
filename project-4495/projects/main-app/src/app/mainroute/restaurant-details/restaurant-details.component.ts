@@ -30,13 +30,13 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
 
           console.log(this.restaurants);
           for (let i = 0; i < this.restaurants.length; i++) {
-            if (this.restaurants[i].id == this.id) {
+            if (this.restaurants[i].id === this.id) {
               this.detail = this.restaurants[i];
             }
           }
           console.log(this.detail);
           for (let i = 0, len = this.detail.meals.length; i < len; i++) {
-              this.meal = this.detail.meals;
+            this.meal = this.detail.meals;
           }
           // console.log(this.meal);
           // console.log(this.meal);
