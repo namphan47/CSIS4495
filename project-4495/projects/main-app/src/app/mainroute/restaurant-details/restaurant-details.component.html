@@ -122,14 +122,14 @@
               </div>
             </div>
             <div class="col-1"></div>
-            <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
+            <ngui-map id="gmap" center="{{detail.lat}},{{detail.lng}}" class="map-wrapper">
+              <ng-container>
+                <marker position="{{detail.lat}},{{detail.lng}}"  label="{{detail.name}}"  class="locationIcon">
 
-              <custom-marker position="{{detail.lat}},{{detail.lng}}" class="custom-icon location">
+                  <i class="fas fa-utensils"></i>
 
-                <i class="fa fa-map-marker"></i>
-
-
-              </custom-marker>
+                </marker>
+              </ng-container>
             </ngui-map>
 
           </div>

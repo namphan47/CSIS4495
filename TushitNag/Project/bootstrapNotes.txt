@@ -9,3 +9,6 @@ a display is divided into 12 columns
 in angular we can create a component for our html page layout for every page in our website for example header and footer for every page 
 
  so if we make a change to logo we just need to change the component so that it automatically changes everywhere
+
+
+=> name on the marker of google map is called label

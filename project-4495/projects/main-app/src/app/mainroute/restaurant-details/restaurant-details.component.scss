@@ -1,68 +1,63 @@
-body{
+body {
 
-  background:#DADDE2;
-  font-family: 'Montserrat',sans-serif;
+  background: #DADDE2;
+  font-family: 'Montserrat', sans-serif;
 
 }
 
-a.list1
-{
+a.list1 {
   text-decoration: none;
 
 }
 
-div.tile
-{
+div.tile {
   font-weight: bold;
 }
 
-div.map
-{
+div.map {
   border: 10px solid white;
   height: 82vh;
   width: 30vw;
 }
 
-.hoverable{
+.hoverable {
   border: solid white;
   background-color: #fff;
   color: black;
 }
-.hoverable:hover{
+
+.hoverable:hover {
 
   box-shadow: 30px 30px 30px rgb(128, 126, 126);
-  transform: translate3d(0,-2px,0);
+  transform: translate3d(0, -2px, 0);
 
 }
 
-.restaurant
-{
+.restaurant {
   width: 5vw;
 }
 
-.menulist
-{
+.menulist {
   width: 40vw;
 }
 
-.mapbox
-{
+.mapbox {
   width: 40vw;
 
 }
 
-#gmap{
+#gmap {
   height: 79vh;
   width: 28.5vw;
   z-index: 2;
 }
 
-#cartForm{
+#cartForm {
 
   position: absolute;
 
   margin-left: 10%;
-  margin-right:20%;
+  margin-right: 20%;
   z-index: 1;
   background-color: yellow;
   font-size: 12px;
@@ -73,21 +68,22 @@ div.map
 
 }
 
-#cartTitle{
+#cartTitle {
   width: 40%;
   margin-left: 35%;
   margin-right: 35%;
   font-size: 14px;
   margin-top: 5%;
 }
-.quantity{
+
+.quantity {
 
   margin-left: 10px;
   width: 47px;
   font-size: 10px;
 }
 
-.close{
+.close {
   border-style: none;
   height: 30px;
   width: 30px;
@@ -95,13 +91,13 @@ div.map
   outline: none;
 }
 
-.submitButton{
+.submitButton {
   width: 40%;
   margin-left: 30%;
   margin-right: 30%
 }
 
-.itemsList{
+.itemsList {
   justify-content: center;
   font-size: 10px;
 }
@@ -112,17 +108,18 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.subtotal{
+.subtotal {
   margin-left: 3%;
 }
 
-.mealDescription{
+.mealDescription {
 
   font-size: 14px;
 }
-.mealContent
-{
+
+.mealContent {
   margin-left: 1vw;
   margin-top: 1vh;
   margin-bottom: 1vh;
 }
+
