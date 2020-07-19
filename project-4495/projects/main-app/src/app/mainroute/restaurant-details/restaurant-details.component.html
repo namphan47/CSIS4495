@@ -97,7 +97,7 @@
                 <div *ngFor="let item of cart">
                   <div class="form-row itemsList">
                     <div class="form-group col-2">{{item.quantity}}</div>
-                    <div class="form-group col-6"><label>{{item.name}}</label></div>
+                    <div class="form-group col-5"><label>{{item.name}}</label></div>
                     <div class="form-group col-3"><label>${{item.price}}</label></div>
                     <div class="form-group col-1">
                       <button type="button" class="close" aria-label="Close" (click)="removeItem(item)"><span
@@ -110,8 +110,8 @@
                 </div>
                 <hr/>
                 <div class="form-row subtotal">
-                  <div class="form-group col-10">Subtotal:</div>
-                  <div class="form-group col-2">${{subtotal}}</div>
+                  <div class="form-group col-9">Subtotal:</div>
+                  <div class="form-group col-3">${{subtotal}}</div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col">
