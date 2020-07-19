@@ -51,7 +51,7 @@
 
       <div class="row">
 
-        <div class="col-3 restaurant">
+        <div class="col-3  restaurant">
           <div class="row">
             <div class="col-3">
               <img src="{{detail.img2}}"
@@ -69,25 +69,19 @@
         <!--=============================================================-->
 
         <div class="col-5 menulist">
-
-          <div *ngFor="let me of meal">
-            <div class="list1 cursor-pointer">
-              <div class="card hoverable" (click)="addToCart(me)">
+          <div class="list1 cursor-pointer">
+            <div *ngFor="let meal of meals">
+              <div class="card hoverable" (click)="addToCart(meal)">
                 <div class="row no-gutters">
-                  <div class="col-3 restaurant">
-                    <img
-                      src="{{me.image}}"
-                      class="card-img" alt="...">
-                  </div>
-                  <div class="col-9 justify-content-center">
-                    <h6 ngDefaultControl class="card-title">{{me.name}}</h6>
-                    <p class="card-text mealDescription"><small class="text-muted">{{me.description}}</small>
+                  <div class="col-11  mealContent">
+                    <h6 ngDefaultControl class="card-title">{{meal.name}}</h6>
+                    <p class="card-text mealDescription"><small class="text-muted">{{meal.description}}</small>
                     </p>
-                    <p ngDefaultControl  class="card-text">${{me.price}}</p>
-                    <div></div><div></div>
+                    <p ngDefaultControl class="card-text">${{meal.price}}</p>
                   </div>
                 </div>
               </div>
+              <br>
             </div>
           </div>
         </div>
@@ -101,16 +95,17 @@
                 <hr/>
                 <!--Cart Items-->
                 <div *ngFor="let item of cart">
-                <div class="form-row itemsList">
-                  <div class="form-group col-2">{{item.quantity}}</div>
-                  <div class="form-group col-6"><label>{{item.name}}</label></div>
-                  <div class="form-group col-3"><label>${{item.price}}</label></div>
-                  <div class="form-group col-1">
-                    <button type="button" class="close" aria-label="Close" (click)="removeItem(item)"><span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
+                  <div class="form-row itemsList">
+                    <div class="form-group col-2">{{item.quantity}}</div>
+                    <div class="form-group col-6"><label>{{item.name}}</label></div>
+                    <div class="form-group col-3"><label>${{item.price}}</label></div>
+                    <div class="form-group col-1">
+                      <button type="button" class="close" aria-label="Close" (click)="removeItem(item)"><span
+                        aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
 
-                </div>
+                  </div>
 
                 </div>
                 <hr/>
@@ -120,7 +115,8 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col">
-                    <button type="submit" class="btn btn-primary submitButton" (click)="checkout()">Checkout</button>
+                    <button type="submit" class="btn btn-primary submitButton" (click)="checkout()">Checkout
+                    </button>
                   </div>
                 </div>
               </div>

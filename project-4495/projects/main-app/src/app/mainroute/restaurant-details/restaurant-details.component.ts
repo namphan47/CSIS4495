@@ -13,7 +13,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   id: string;
   restaurants: Restaurant[];
   detail;
-  meal: Meal[];
+  meals: Meal[];
   cart = [];
   subtotal = 0;
 
@@ -35,7 +35,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
           }
           // console.log(this.detail);
           for (let i = 0, len = this.detail.meals.length; i < len; i++) {
-            this.meal = this.detail.meals;
+            this.meals = this.detail.meals;
           }
           // console.log(this.meal);
           // console.log(this.meal);
