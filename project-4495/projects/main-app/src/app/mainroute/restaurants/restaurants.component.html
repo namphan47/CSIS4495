@@ -114,13 +114,16 @@
 
           <div class="map">
             <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
-              <ng-container *ngFor="let rest of restaurants">
+              <ng-container *ngFor="let restaurant of restaurants">
 
-                <marker position="{{rest.lat}},{{rest.lng}}" label="{{rest.name}}" class="custom-icon location">
+                <custom-marker position="{{restaurant.lat}},{{restaurant.lng}}" class="custom-icon location">
 
-                  <i class="fas fa-utensils"></i>
+                  <div class=" text-center icon">
+                    <img class="markerIcon" src="assets/marker_icon.svg" height="20px" width="28px"/>
+                  </div>
+                  <div class="markerName"><div class="nameMarker"><b>{{restaurant.name}}</b></div></div>
 
-                </marker>
+                </custom-marker>
 
               </ng-container>
             </ngui-map>

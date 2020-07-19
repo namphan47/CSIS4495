@@ -124,11 +124,14 @@
             <div class="col-1"></div>
             <ngui-map id="gmap" center="{{detail.lat}},{{detail.lng}}" class="map-wrapper">
               <ng-container>
-                <marker position="{{detail.lat}},{{detail.lng}}"  label="{{detail.name}}"  class="locationIcon">
+                <custom-marker position="{{detail.lat}},{{detail.lng}}"  class="locationIcon">
+                  <div class=" text-center icon">
+                    <img class="markerIcon" src="assets/marker_icon.svg" height="20px" width="28px"/>
+                  </div>
+                  <div class="markerName"><div class="nameMarker"><b>{{detail.name}}</b></div></div>
 
-                  <i class="fas fa-utensils"></i>
 
-                </marker>
+                </custom-marker>
               </ng-container>
             </ngui-map>
 
