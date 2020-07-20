@@ -20,6 +20,8 @@ import {KeyValueOrderPipe} from "../pipes/key-value-order.pipe";
     RouterModule.forRoot([]),
     NguiMapModule,
     FormsModule,
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc'}),
+
   ],
   exports: [
     KeyValueOrderPipe

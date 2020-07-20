@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {Customer} from "library-app";
+import {Customer, FirebaseDataService} from "library-app";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import validate = WebAssembly.validate;
 
@@ -17,11 +17,10 @@ export class SignupComponent implements OnInit {
 
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router,  private _FirebaseDataService: FirebaseDataService) {
   }
 
   ngOnInit(): void {
-    this.customer = new Customer({});
     this.signupFormGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -31,7 +30,6 @@ export class SignupComponent implements OnInit {
       address: new FormControl('', [Validators.required])
     });
   }
-
   // onInputChange($event: any) {
   //   console.log(this.inputData);
   // }
@@ -55,7 +53,25 @@ export class SignupComponent implements OnInit {
     }
     else
     {
-      this.router.navigate(['/main/', 'login']);
+      this.customer = new Customer({});
+      this.customer.email = this.signupFormGroup.get("email").value;
+      this.customer.address = this.signupFormGroup.get("address").value;
+      this.customer.name = this.signupFormGroup.get("fullname").value;
+      this.customer.password = this.signupFormGroup.get("password").value;
+      this.customer.phone_no = this.signupFormGroup.get("phone").value;
+      console.log(this.customer);
+      this._FirebaseDataService.signUp(this.customer)
+        .then((cus) => {
+          console.log("cus = " + cus);
+          if(cus == true) {
+            this.router.navigate(['/main/', 'login'])
+          }
+          else
+          {
+            window.alert("Error occurred");
+          }
+          ;});
+      //this.router.navigate(['/main/', 'login']);
     }
   }
 }
