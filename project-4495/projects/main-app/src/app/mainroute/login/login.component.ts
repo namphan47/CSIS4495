@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer} from "library-app";
+import {Customer, FirebaseDataService} from "library-app";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   customer: Customer;
   loginFormGroup: FormGroup;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private _FirebaseDataService: FirebaseDataService) {
   }
 
   ngOnInit(): void {
@@ -42,7 +42,18 @@ export class LoginComponent implements OnInit {
     }
     else
     {
-      this.router.navigate(['/main/', 'rest']);
+      this.customer = new Customer({});
+      this.customer.email = this.loginFormGroup.get("email").value;
+      this.customer.password = this.loginFormGroup.get("password").value;
+
+      this._FirebaseDataService.signIn(this.customer)
+        .then((customer) => {
+          console.log("cus = " + customer);
+
+          this.router.navigate(['/main/', 'rest']);
+
+          ;});
+
     }
 
   }
