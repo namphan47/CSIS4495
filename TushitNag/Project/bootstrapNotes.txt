@@ -12,3 +12,11 @@ in angular we can create a component for our html page layout for every page in 
 
 
 => name on the marker of google map is called label
+
+we can do this in two ways one is sending in the form id=?/name=? the other way how we send rest id to rest details
+=>when you send the data from one page to another send a unique one as query parameters like delivery id to retrieve delivery information and display the delivery information
+
+
+  {path: 'rest-details/:id', component: RestaurantDetailsComponent}, in router page
+  [routerLink]="['../rest-details', rest.id] html
+  this.id = params['id']; in next page

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {FirebaseDataService, Meal, OrderItem, Restaurant} from 'library-app';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Courier, Customer, Delivery, FirebaseDataService, Meal, OrderItem, Restaurant} from 'library-app';
 
 
 @Component({
@@ -16,9 +16,10 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   meals: Meal[];
   cart = [];
   subtotal = 0;
+  delivery: Delivery;
 
 
-  constructor(private route: ActivatedRoute, private _FirebaseDataService: FirebaseDataService) {
+  constructor(private route: ActivatedRoute, private router: Router, private _FirebaseDataService: FirebaseDataService) {
 
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
@@ -51,6 +52,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
   }
 
 // creating an  json object inside an array
@@ -120,10 +122,33 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
       order.push(new OrderItem({
         meal_id: this.cart[k].id,
         quantity: this.cart[k].quantity,
+        price: this.subtotal,
       }));
     }
-    // this._FirebaseDataService.checkout(, this.detail.name,)
+    const customer = new Customer({
+      address: '6688 Arcola St, Burnaby,BC,V5E 0B4',
+      email: 'hgough@bbb.org',
+      id: '2n71tvAHxG9X5puwx7i3',
+      lat: 49.219039,
+      lng: -122.965729,
+      name: 'Herbie',
+      password: '',
+      phone_no: ''
+
+    });
+
+
+    const promise = this._FirebaseDataService.checkout(customer, this.detail, order);
+
+    promise
+      .then((cr) => {
+        this.delivery = cr;
+        console.log(this.delivery);
+        this.router.navigate(['/main/', 'checkout'], {queryParams: {deliveryID: this.delivery.id}});
+      });
 
   }
+
+
 }
 

@@ -16,6 +16,9 @@ body{
 .nameMarker{
 
   font-size: 12px;
+  text-align: center;
+  text-justify: auto;
+  font-family: 'Montserrat', sans-serif;
 }
 .icon{
   background-color: red;
@@ -28,6 +31,7 @@ body{
 }
 .markerName{
   border: solid 1px;
-  background-color: white;
+  background-color: yellow;
 
 }
+

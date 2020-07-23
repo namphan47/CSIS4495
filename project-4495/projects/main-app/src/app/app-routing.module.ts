@@ -5,7 +5,7 @@ import {LoginComponent} from './mainroute/login/login.component';
 import {SignupComponent} from './mainroute/signup/signup.component';
 import {RestaurantDetailsComponent} from './mainroute/restaurant-details/restaurant-details.component';
 import {CheckoutComponent} from './mainroute/checkout/checkout.component';
-import {DeliveryComponent} from "./mainroute/delivery/delivery.component";
+import {DeliveryComponent} from './mainroute/delivery/delivery.component';
 
 const routes: Routes = [
   {
