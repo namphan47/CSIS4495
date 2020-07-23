@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   customer: Customer;
   loginFormGroup: FormGroup;
+  customerArray: Customer[];
+  customerId : string;
 
   constructor(private router: Router, private _FirebaseDataService: FirebaseDataService) {
   }
@@ -24,6 +26,20 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+
+    const customerPromise = this._FirebaseDataService.getCustomer();
+    customerPromise.then((cr) => {
+      this.customerArray = cr;
+      for (let i=0; i<this.customerArray.length; i++)
+      {
+        if (this.loginFormGroup.get("email").value === this.customerArray[i].email)
+        {
+          this.customerId = this.customerArray[i].id;
+        }
+      }
+
+    });
+
     console.log(this.customer);
     console.log(this.loginFormGroup);
     //
@@ -48,9 +64,12 @@ export class LoginComponent implements OnInit {
 
       this._FirebaseDataService.signIn(this.customer)
         .then((customer) => {
-          console.log("cus = " + customer);
+          console.log("cus = " + this.customerId);
 
-          this.router.navigate(['/main/', 'rest']);
+          this.router.navigate(['/main/', 'rest'], {queryParams: {customer: this.customerId}});
+
+
+
 
           ;});
 
