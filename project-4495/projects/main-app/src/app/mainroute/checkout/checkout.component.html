@@ -59,10 +59,10 @@
         <ngui-map id="gmap" center="{{customer.lat}},{{customer.lng}}" class="map-wrapper map-responsive">
           <ng-container>
 
-            <polyline [editable]="false"
-                      [path]="delivery?.path_to_restaurant"
-                      [strokeColor]="'#4A6170'"
-                      [strokeOpacity]="1"></polyline>
+<!--            <polyline [editable]="false"-->
+<!--                      [path]="delivery?.path_to_restaurant"-->
+<!--                      [strokeColor]="'#4A6170'"-->
+<!--                      [strokeOpacity]="1"></polyline>-->
             <polyline [editable]="false"
                       [path]="delivery?.path_to_customer"
                       [strokeColor]="'#2496C9'"
@@ -82,12 +82,12 @@
 
             </custom-marker>
 
-            <custom-marker position="{{courier.lat}},{{courier.lng}}" class="custom-icon location">
+          <!--  <custom-marker position="{{courier.lat}},{{courier.lng}}" class="custom-icon location">
               <div>
                 <img class="markerIcon" src="assets/car-solid.svg" height="20px" width="28px"/>
               </div>
 
-            </custom-marker>
+            </custom-marker>-->
 
 
 
