@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Customer, FirebaseDataService} from "library-app";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import { Router } from '@angular/router';
+import {Customer, FirebaseDataService} from 'library-app';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   customer: Customer;
   loginFormGroup: FormGroup;
   customerArray: Customer[];
-  customerId : string;
+  customerId: string;
 
   constructor(private router: Router, private _FirebaseDataService: FirebaseDataService) {
   }
@@ -30,10 +30,8 @@ export class LoginComponent implements OnInit {
     const customerPromise = this._FirebaseDataService.getCustomer();
     customerPromise.then((cr) => {
       this.customerArray = cr;
-      for (let i=0; i<this.customerArray.length; i++)
-      {
-        if (this.loginFormGroup.get("email").value === this.customerArray[i].email)
-        {
+      for (let i = 0; i < this.customerArray.length; i++) {
+        if (this.loginFormGroup.get('email').value === this.customerArray[i].email) {
           this.customerId = this.customerArray[i].id;
         }
       }
@@ -55,23 +53,22 @@ export class LoginComponent implements OnInit {
 
     if (!isValid) {
       alert('The form is invalid');
-    }
-    else
-    {
+    } else {
       this.customer = new Customer({});
-      this.customer.email = this.loginFormGroup.get("email").value;
-      this.customer.password = this.loginFormGroup.get("password").value;
+      this.customer.email = this.loginFormGroup.get('email').value;
+      this.customer.password = this.loginFormGroup.get('password').value;
 
       this._FirebaseDataService.signIn(this.customer)
         .then((customer) => {
-          console.log("cus = " + this.customerId);
+          console.log('cus = ' + this.customerId);
 
-          this.router.navigate(['/main/', 'rest'], {queryParams: {customer: this.customerId}});
+          this.router.navigate(['/main/', 'rest']);
 
+          // saving customer in localstorage
 
+          localStorage.setItem('CustomerID', customer.id);
 
-
-          ;});
+        });
 
     }
 
