@@ -188,11 +188,11 @@ var Delivery = /** @class */ (function (_super) {
 
 var Delivery_Status;
 (function (Delivery_Status) {
-    Delivery_Status[Delivery_Status["ORDERED"] = 0] = "ORDERED";
-    Delivery_Status[Delivery_Status["PREPARING"] = 1] = "PREPARING";
-    Delivery_Status[Delivery_Status["WAIT_FOR_PICK_UP"] = 2] = "WAIT_FOR_PICK_UP";
-    Delivery_Status[Delivery_Status["DELIVERING"] = 3] = "DELIVERING";
-    Delivery_Status[Delivery_Status["DELIVERED"] = 4] = "DELIVERED";
+    Delivery_Status["ORDERED"] = "ORDERED";
+    Delivery_Status["PREPARING"] = "PREPARING";
+    Delivery_Status["WAIT_FOR_PICK_UP"] = "WAIT_FOR_PICK_UP";
+    Delivery_Status["DELIVERING"] = "DELIVERING";
+    Delivery_Status["DELIVERED"] = "DELIVERED";
 })(Delivery_Status || (Delivery_Status = {}));
 var DeliveryStatusHistory = /** @class */ (function (_super) {
     __extends(DeliveryStatusHistory, _super);
@@ -1372,6 +1372,24 @@ var FirebaseDataService = /** @class */ (function () {
                 });
                 return rs;
             });
+        })
+            .then(function (rs) {
+            return Promise.all(___default.map(rs, function (d) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.getOrderById(d.order_id)
+                                .then(function (o) {
+                                d.order = o;
+                            })];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/, Promise.resolve()];
+                    }
+                });
+            }); }))
+                .then(function () {
+                return rs;
+            });
         });
     };
     FirebaseDataService.prototype.getDeliveryById = function (id) {
@@ -1505,6 +1523,48 @@ var FirebaseDataService = /** @class */ (function () {
                             return orders;
                         });
                     })];
+            });
+        });
+    };
+    FirebaseDataService.prototype.getOrderById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.getDBWithId(this.TABLES[ENUM_TABLES.order], id)
+                        .then(function (rs) { return rs; })
+                        .then(function (order) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    order = order;
+                                    // get customer of each order
+                                    return [4 /*yield*/, this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
+                                            .then(function (customer) {
+                                            order.customer = customer;
+                                        })];
+                                case 1:
+                                    // get customer of each order
+                                    _a.sent();
+                                    // get item of each order
+                                    return [4 /*yield*/, this.getOrderItems([new QueryParamModel('order_id', QueryParamModel.OPERATIONS.EQUAL, order.id)])
+                                            .then(function (items) {
+                                            order.items = items;
+                                        })];
+                                case 2:
+                                    // get item of each order
+                                    _a.sent();
+                                    // get restaurant for each order
+                                    return [4 /*yield*/, this.getDBWithId(this.TABLES[ENUM_TABLES.restaurant], order.restaurant_id)
+                                            .then(function (restaurant) {
+                                            order.restaurant = restaurant;
+                                        })];
+                                case 3:
+                                    // get restaurant for each order
+                                    _a.sent();
+                                    return [2 /*return*/, order];
+                            }
+                        });
+                    }); })];
             });
         });
     };

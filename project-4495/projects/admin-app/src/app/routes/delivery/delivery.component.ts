@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Delivery, FirebaseDataService} from 'library-app';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-delivery',
@@ -6,10 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./delivery.component.scss']
 })
 export class DeliveryComponent implements OnInit {
+  deliveries: Delivery[] = [];
 
-  constructor() { }
+  constructor(private _FirebaseDataService: FirebaseDataService) {
 
-  ngOnInit(): void {
   }
 
+  ngOnInit(): void {
+    this.onRefresh();
+  }
+
+
+  onRefresh() {
+    this._FirebaseDataService.getDeliveries()
+      .then((rs) => {
+        console.log(rs);
+        this.deliveries = _.orderBy(rs, x => x.order.date_time, 'desc');
+      });
+  }
 }

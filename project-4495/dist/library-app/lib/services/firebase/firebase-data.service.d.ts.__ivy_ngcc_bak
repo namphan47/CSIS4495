@@ -9,12 +9,12 @@ import { ENUM_TABLES } from '../../constant/const-value';
 import { NotificationService } from '../mics/notification.service';
 import { OrderItem } from '../../constant/models/order_item/order-item';
 import { Order } from '../../constant/models/order/order';
-import { QueryParamModel } from "../../constant/models/query-param-model";
-import { Delivery } from "../../constant/models";
-import { DeliveryStatusHistory } from "../../constant/models/delivery/delivery-status-history";
-import { MapService } from "../map/map.service";
-import { AngularFireDatabase } from "@angular/fire/database";
-import { AngularFireAuth } from "@angular/fire/auth";
+import { QueryParamModel } from '../../constant/models/query-param-model';
+import { Delivery } from '../../constant/models';
+import { DeliveryStatusHistory } from '../../constant/models/delivery/delivery-status-history';
+import { MapService } from '../map/map.service';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 export declare class FirebaseDataService {
     private _AngularFirestore;
     private _AngularFireDatabase;
@@ -118,6 +118,7 @@ export declare class FirebaseDataService {
      * @returns {Promise<Order[]>}
      */
     getOrders(): Promise<Order[]>;
+    getOrderById(id: string): Promise<Order>;
     /**
      * get data of collection
      * @param object
