@@ -6,6 +6,7 @@ import {SignupComponent} from './mainroute/signup/signup.component';
 import {RestaurantDetailsComponent} from './mainroute/restaurant-details/restaurant-details.component';
 import {CheckoutComponent} from './mainroute/checkout/checkout.component';
 import {DeliveryComponent} from './mainroute/delivery/delivery.component';
+import {OrderHistoryComponent} from './mainroute/order-history/order-history.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,9 @@ const routes: Routes = [
       {path: 'login', component: LoginComponent},
       {path: 'signup', component: SignupComponent},
       {path: 'checkout', component: CheckoutComponent},
-      {path: 'delivery', component: DeliveryComponent}
+      {path: 'delivery', component: DeliveryComponent},
+      {path: 'orderhistory', component: OrderHistoryComponent},
+
     ]
   },
   {path: '', redirectTo: 'main', pathMatch: 'full'},

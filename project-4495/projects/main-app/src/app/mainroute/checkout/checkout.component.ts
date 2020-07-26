@@ -102,6 +102,9 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
 
-  };
+  }
 
+  gotoDelivery() {
+    this.router.navigate(['/main/', 'delivery'], {queryParams: {deliveryID: this.delivery.id}});
+  }
 }

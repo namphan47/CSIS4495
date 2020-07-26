@@ -56,19 +56,43 @@
   <div class ="row map-row">
 
     <div>
-      <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper map-responsive">
+      <ngui-map id="gmap" center="{{customer.lat}},{{customer.lng}}" zoom="14" class="map-wrapper map-responsive">
+
+        <polyline [editable]="false"
+                  [path]="delivery?.path_to_customer"
+                  [strokeColor]="'#00000'"
+                  [strokeOpacity]="1"></polyline>
+
+        <polyline [editable]="false"
+                  [path]="delivery?.path_to_restaurant"
+                  [strokeColor]="'#000000'"
+                  [strokeOpacity]="1"></polyline>
+
+        <custom-marker position="{{customer.lat}},{{customer.lng}}" class="custom-icon location">
+
+          <img class="markerIcon" src="assets/userIcon.svg" height="30px" width="28px"/>
+
+        </custom-marker>
 
 
-        <!--         <marker  position="{{detail.lat}},{{detail.lng}}" class="custom-icon location">
-                   <i class="fa fa-map-marker"></i>
+        <custom-marker position="{{restaurant.lat}},{{restaurant.lng}}" class="custom-icon location">
+          <div class=" text-center icon">
+            <img class="markerIcon" src="assets/marker_icon.svg" height="20px" width="28px"/>
+          </div>
 
-                 </marker>-->
+        </custom-marker>
+
+        <custom-marker position="{{courier.lat}},{{courier.lng}}" class="custom-icon location">
+
+            <img class="markerIcon" src="assets/car-solid.svg" height="20px" width="28px"/>
+
+
+        </custom-marker>
 
 
       </ngui-map>  </div>
 
     <div class="over-map">
-      <button class="back-btn"> BACK</button>
       <div class="card delivery">
 
         <div>
@@ -92,7 +116,7 @@
           </div>
 
           <div class="col-10 text-left">
-            <span> **** 1*th Avenue</span>
+            <span>{{customer.address}}</span>
           </div>
         </div>
 
@@ -117,10 +141,11 @@
           </div>
 
           <div class="col-6 text-left">
-            <span>Nick ***</span><br>
-            <span>UN3 ***</span><br>
-            <span>(403)-***-****</span>
+            <span>{{courier.name}}</span><br>
+            <span>{{courier.driver_license}}</span><br>
+            <span>{{courier.phone_no}}</span>
           </div>
+
 
 
         </div>
@@ -129,8 +154,10 @@
         <div class="card-footer">Your order will be delivered around 5 mins</div>
       </div>
 
+
     </div>
 
 
 
   </div>
+</div>
