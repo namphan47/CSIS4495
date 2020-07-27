@@ -12,13 +12,13 @@ import {ENUM_TABLES} from '../../constant/const-value';
 import {NotificationService} from '../mics/notification.service';
 import {OrderItem} from '../../constant/models/order_item/order-item';
 import {Order} from '../../constant/models/order/order';
-import {QueryParamModel} from "../../constant/models/query-param-model";
-import {Delivery, Delivery_Status} from "../../constant/models";
-import {DeliveryStatusHistory} from "../../constant/models/delivery/delivery-status-history";
-import {MapService} from "../map/map.service";
-import {AngularFireDatabase} from "@angular/fire/database";
-import {AngularFireAuth} from "@angular/fire/auth";
-import moment from "moment";
+import {QueryParamModel} from '../../constant/models/query-param-model';
+import {Delivery, Delivery_Status} from '../../constant/models';
+import {DeliveryStatusHistory} from '../../constant/models/delivery/delivery-status-history';
+import {MapService} from '../map/map.service';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireAuth} from '@angular/fire/auth';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -114,7 +114,6 @@ export class FirebaseDataService {
       });
   }
 
-
   /**
    * add data of collection
    * @param object
@@ -178,6 +177,18 @@ export class FirebaseDataService {
             _.map(rs, (delivery: Delivery) => {
               delivery.setStatusHistory(_.filter(histories, (x: DeliveryStatusHistory) => x.delivery_id === delivery.id));
             });
+            return rs;
+          });
+      })
+      .then((rs) => {
+        return Promise.all(_.map(rs, async (d: Delivery) => {
+          await this.getOrderById(d.order_id)
+            .then((o) => {
+              d.order = o;
+            });
+          return Promise.resolve();
+        }))
+          .then(() => {
             return rs;
           });
       });
@@ -287,6 +298,35 @@ export class FirebaseDataService {
         });
 
       });
+  }
+
+  async getOrderById(id: string): Promise<Order> {
+    return this.getDBWithId(this.TABLES[ENUM_TABLES.order], id)
+      .then((rs) => rs as unknown as Order)
+      .then(async (order) => {
+        order = order as unknown as Order;
+
+        // get customer of each order
+        await this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
+          .then((customer) => {
+            order.customer = customer as unknown as Customer;
+          });
+
+        // get item of each order
+        await this.getOrderItems([new QueryParamModel('order_id', QueryParamModel.OPERATIONS.EQUAL, order.id)])
+          .then((items) => {
+            order.items = items as unknown as OrderItem[];
+          });
+
+        // get restaurant for each order
+        await this.getDBWithId(this.TABLES[ENUM_TABLES.restaurant], order.restaurant_id)
+          .then((restaurant) => {
+            order.restaurant = restaurant as unknown as Restaurant;
+          });
+
+        return order;
+      });
+
   }
 
   /**

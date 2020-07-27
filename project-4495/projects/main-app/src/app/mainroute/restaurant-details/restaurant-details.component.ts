@@ -17,12 +17,20 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   cart = [];
   subtotal = 0;
   delivery: Delivery;
+  customerID: string;
+  customers: Customer[];
+  customer;
 
 
   constructor(private route: ActivatedRoute, private router: Router, private _FirebaseDataService: FirebaseDataService) {
 
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
+      // getting customerID from local storage
+      this.customerID = localStorage.getItem('CustomerID');
+
+      console.log('CustomerID:' + this.customerID);
+
       const promise = this._FirebaseDataService.getRestaurant();
       promise
         .then((rs) => {
@@ -125,20 +133,25 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
         price: this.subtotal,
       }));
     }
-    const customer = new Customer({
-      address: '6688 Arcola St, Burnaby,BC,V5E 0B4',
-      email: 'hgough@bbb.org',
-      id: '2n71tvAHxG9X5puwx7i3',
-      lat: 49.219039,
-      lng: -122.965729,
-      name: 'Herbie',
-      password: '',
-      phone_no: ''
 
+    // getting customer from api
+
+    const getCustomer = this._FirebaseDataService.getCustomer();
+    getCustomer.then((cx) => {
+
+      this.customers = cx;
+
+      for (let i = 0; i < this.customers.length; i++) {
+
+        if (this.customerID === this.customers[i].id) {
+          this.customer = this.customers[i];
+        }
+      }
+
+      console.log(this.customer );
     });
 
-
-    const promise = this._FirebaseDataService.checkout(customer, this.detail, order);
+    const promise = this._FirebaseDataService.checkout(this.customer, this.detail, order);
 
     promise
       .then((cr) => {

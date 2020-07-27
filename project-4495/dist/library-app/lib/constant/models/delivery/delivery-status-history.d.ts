@@ -1,10 +1,10 @@
-import { DefaultModel } from "../default-model";
+import { DefaultModel } from '../default-model';
 export declare enum Delivery_Status {
-    ORDERED = 0,
-    PREPARING = 1,
-    WAIT_FOR_PICK_UP = 2,
-    DELIVERING = 3,
-    DELIVERED = 4
+    ORDERED = "ORDERED",
+    PREPARING = "PREPARING",
+    WAIT_FOR_PICK_UP = "WAIT_FOR_PICK_UP",
+    DELIVERING = "DELIVERING",
+    DELIVERED = "DELIVERED"
 }
 export declare class DeliveryStatusHistory extends DefaultModel {
     id: string;

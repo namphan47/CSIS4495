@@ -1,1 +1,18 @@
-<p>delivery works!</p>
+<div class="p-5">
+  <div>
+    <button type="button" class="btn btn-outline-primary" (click)="onRefresh()">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+  <div>
+    <div *ngFor="let item of deliveries; let $index = index;">
+      <div># {{$index + 1}}</div>
+      <div class="row">
+        <div class="col">From: {{item.order.restaurant.name}}</div>
+        <div class="col">To: {{item.order.customer.name}}</div>
+      </div>
+      <div>Status: {{item.currentStatus?.status}}</div>
+      <div>Date: {{item.order.date_time | date : 'medium'}}</div>
+    </div>
+  </div>
+</div>

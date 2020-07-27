@@ -170,11 +170,11 @@ class Delivery extends DefaultModel {
 
 var Delivery_Status;
 (function (Delivery_Status) {
-    Delivery_Status[Delivery_Status["ORDERED"] = 0] = "ORDERED";
-    Delivery_Status[Delivery_Status["PREPARING"] = 1] = "PREPARING";
-    Delivery_Status[Delivery_Status["WAIT_FOR_PICK_UP"] = 2] = "WAIT_FOR_PICK_UP";
-    Delivery_Status[Delivery_Status["DELIVERING"] = 3] = "DELIVERING";
-    Delivery_Status[Delivery_Status["DELIVERED"] = 4] = "DELIVERED";
+    Delivery_Status["ORDERED"] = "ORDERED";
+    Delivery_Status["PREPARING"] = "PREPARING";
+    Delivery_Status["WAIT_FOR_PICK_UP"] = "WAIT_FOR_PICK_UP";
+    Delivery_Status["DELIVERING"] = "DELIVERING";
+    Delivery_Status["DELIVERED"] = "DELIVERED";
 })(Delivery_Status || (Delivery_Status = {}));
 class DeliveryStatusHistory extends DefaultModel {
     constructor(data) {
@@ -1274,6 +1274,18 @@ let FirebaseDataService = class FirebaseDataService {
                 });
                 return rs;
             });
+        })
+            .then((rs) => {
+            return Promise.all(___default.map(rs, (d) => __awaiter(this, void 0, void 0, function* () {
+                yield this.getOrderById(d.order_id)
+                    .then((o) => {
+                    d.order = o;
+                });
+                return Promise.resolve();
+            })))
+                .then(() => {
+                return rs;
+            });
         });
     }
     getDeliveryById(id) {
@@ -1375,6 +1387,31 @@ let FirebaseDataService = class FirebaseDataService {
                     return orders;
                 });
             });
+        });
+    }
+    getOrderById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getDBWithId(this.TABLES[ENUM_TABLES.order], id)
+                .then((rs) => rs)
+                .then((order) => __awaiter(this, void 0, void 0, function* () {
+                order = order;
+                // get customer of each order
+                yield this.getDBWithId(this.TABLES[ENUM_TABLES.customer], order.customer_id)
+                    .then((customer) => {
+                    order.customer = customer;
+                });
+                // get item of each order
+                yield this.getOrderItems([new QueryParamModel('order_id', QueryParamModel.OPERATIONS.EQUAL, order.id)])
+                    .then((items) => {
+                    order.items = items;
+                });
+                // get restaurant for each order
+                yield this.getDBWithId(this.TABLES[ENUM_TABLES.restaurant], order.restaurant_id)
+                    .then((restaurant) => {
+                    order.restaurant = restaurant;
+                });
+                return order;
+            }));
         });
     }
     /**

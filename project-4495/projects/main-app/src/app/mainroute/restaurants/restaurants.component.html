@@ -112,7 +112,7 @@
         <div class="col-4">
 
           <div class="map">
-            <ngui-map id="gmap" center="New Westminter, BC, Canada" class="map-wrapper">
+            <ngui-map id="gmap" center="{{customer.lat}},{{customer.lng}}" zoom="13" class="map-wrapper">
               <ng-container *ngFor="let restaurant of restaurants">
 
                 <custom-marker position="{{restaurant.lat}},{{restaurant.lng}}" class="custom-icon location">
@@ -121,6 +121,13 @@
                     <img class="markerIcon" src="assets/marker_icon.svg" height="20px" width="28px"/>
                   </div>
                   <div class="markerName"><div class="nameMarker"><b>{{restaurant.name}}</b></div></div>
+
+                </custom-marker>
+                <custom-marker position="{{customer.lat}},{{customer.lng}}" class="custom-icon location">
+
+                  <img class="markerIcon" src="assets/userIcon.svg" height="30px" width="28px"/>
+
+                  <div class="markerName"><div class="userMarker"><b>{{customer.name}}</b></div></div>
 
                 </custom-marker>
 
