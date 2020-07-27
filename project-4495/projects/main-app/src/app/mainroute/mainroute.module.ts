@@ -10,11 +10,13 @@ import {CheckoutComponent} from './checkout/checkout.component';
 import {DeliveryComponent} from './delivery/delivery.component';
 import {FormsModule} from "@angular/forms";
 import {KeyValueOrderPipe} from "../pipes/key-value-order.pipe";
+import { AccountComponent } from './account/account.component';
 
 
 @NgModule({
   declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent, CheckoutComponent, DeliveryComponent,
-    KeyValueOrderPipe],
+    KeyValueOrderPipe,
+    AccountComponent],
   imports: [
     CommonModule,
     RouterModule.forRoot([]),
