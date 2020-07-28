@@ -10,21 +10,21 @@ import {CheckoutComponent} from './checkout/checkout.component';
 import {DeliveryComponent} from './delivery/delivery.component';
 import {FormsModule} from "@angular/forms";
 import {KeyValueOrderPipe} from "../pipes/key-value-order.pipe";
-<<<<<<< HEAD
+
 import { AccountComponent } from './account/account.component';
-=======
+
 import { OrderHistoryComponent } from './order-history/order-history.component';
->>>>>>> 33778d2d0178ad8181aceb96065dfc98cff12db6
+
 
 
 @NgModule({
   declarations: [RestaurantsComponent, LoginComponent, SignupComponent, RestaurantDetailsComponent, CheckoutComponent, DeliveryComponent,
     KeyValueOrderPipe,
-<<<<<<< HEAD
-    AccountComponent],
-=======
+
+    AccountComponent,
+
     OrderHistoryComponent],
->>>>>>> 33778d2d0178ad8181aceb96065dfc98cff12db6
+
   imports: [
     CommonModule,
     RouterModule.forRoot([]),
