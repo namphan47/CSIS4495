@@ -51,55 +51,47 @@
 
       <div class="row">
 
-<!--        <div class="col-3  restaurant">-->
-<!--          <div class="row">-->
-<!--            <div class="col-3 logo">-->
-<!--              <img src="{{detail.img2}}"-->
-<!--                   class="card-img" alt="...">-->
-<!--            </div>-->
-<!--            <div class="col-6">-->
-<!--              <p>{{detail.name}}</p>-->
-<!--              <p class="text-danger">9.2</p>-->
-<!--              <p>{{detail.del_time}}</p>-->
-<!--              <p>{{detail.del_fee}}</p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-        <!--=============================================================-->
 
         <div class="col-5 menulist">
           <div class="list1 cursor-pointer">
-            <div *ngFor="let order of customerOrders">
+            <div>
               <div class="container">
-              <div class="card hoverable">
-               <div class="row">
-                 <div class="col-2"><img src="{{order.restaurant.img2}}"class="card-img" alt="..."></div>
-                 <div class="col-10"><h6 class="card-title">{{order.restaurant.name}}</h6>
-                   <hr/>
-                   <p class="card-text" *ngFor="let items of order.items"> <small>{{items.meal.name}}</small></p>
-                   <hr/>
-                   <p class="card-text">{{order.date_time | date}}</p>
-                   <hr/>
-                   <p  class="card-text"><b>Order: ${{order.total}}</b></p>
-                 </div>
-               </div>
+                <div class="card hoverable">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Order ID</th>
+                      <th scope="col">Restaurant Name</th>
+                      <th scope="col">Items</th>
+                      <th scope="col">Order Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let order of customerOrders">
+                      <th scope="row">#{{order.id}}</th>
+                      <td>{{order.restaurant.name}}</td>
+                      <td><div *ngFor="let item of order.items">{{item.meal.name}}</div></td>
+                      <td>{{order.total}}</td>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              </div>
-              <br>
             </div>
+            <br>
           </div>
         </div>
-
-        <!--  ======================================================-->
-
       </div>
+
+      <!--  ======================================================-->
+
     </div>
-
-
   </div>
 
+
 </div>
+
 
 
 <router-outlet></router-outlet>
