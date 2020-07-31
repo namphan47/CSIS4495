@@ -31,7 +31,7 @@ export class DeliveryComponent implements OnInit {
 
     this.sub = this.route.queryParamMap.subscribe(queryParams => {
       this.deliveryID = queryParams.get('deliveryID');
-
+      this.deliverySimulator();
       console.log(this.deliveryID);
 
       const promise = this._FirebaseDataService.getDeliveryById(this.deliveryID);
@@ -44,6 +44,7 @@ export class DeliveryComponent implements OnInit {
 
 
         console.log(this.delivery);
+
 
 // order retreival from all orders
         const ordersPromise = this._FirebaseDataService.getOrders();
@@ -103,12 +104,28 @@ export class DeliveryComponent implements OnInit {
 
     });
 
-    this._FirebaseDataService.getPointsRealTime(this.delivery.id)
-      .subscribe((rs) => {
-            console.log(rs);
+  }
+
+  deliverySimulator() {
+    this._FirebaseDataService.getPointsRealTime(this.deliveryID)
+      .subscribe((rs: any) => {
+
+        const rslength = rs.length;
+        if (rs[rslength - 1] === 'WAIT_FOR_PICK_UP' || rs[rslength - 1] === 'DELIVERING') {
+
+          console.log(rs[0]);
+          this.courier.lat = rs[0].lat;
+          this.courier.lng = rs[0].lng;
+
+          console.log('wew....ewew...ewewe..ewew');
+          console.log(rs[0].lat);
+          console.log(rs[0].lng);
+
+          console.log(this.courier.lat );
+          console.log(this.courier.lng );
+
+        }
 
       });
-
-
   }
 }
