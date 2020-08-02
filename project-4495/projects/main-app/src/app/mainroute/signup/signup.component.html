@@ -27,7 +27,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <input type="Name"  class="form-control txtbox2" placeholder="Enter Name"
+          <input type="Name"  class="form-control txtbox1" placeholder="Enter Name"
                  required=""
                  [ngModel] = "signupFormGroup.get('fullname').value"
                  (ngModelChange) = "signupFormGroup.get('fullname').setValue($event)">
@@ -48,7 +48,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <input type="tel"  class="form-control txtbox2" placeholder="Enter Phone No."
+          <input type="tel"  class="form-control txtbox3 " placeholder="Enter Phone No."
                  required="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                  [ngModel] = "signupFormGroup.get('phone').value"
                  (ngModelChange) = "signupFormGroup.get('phone').setValue($event)">

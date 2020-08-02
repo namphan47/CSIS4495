@@ -28,7 +28,8 @@
               "projects/main-app/src/assets"
             ],
             "styles": [
-              "projects/main-app/src/styles.scss"
+              "projects/main-app/src/styles.scss",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": []
           },
