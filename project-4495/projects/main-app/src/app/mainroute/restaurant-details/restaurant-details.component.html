@@ -94,6 +94,7 @@
                 <label id="cartTitle">Your Order</label>
                 <hr/>
                 <!--Cart Items-->
+                <div id="cartScrollbar">
                 <div *ngFor="let item of cart">
                   <div class="form-row itemsList">
                     <div class="form-group col-2">{{item.quantity}}</div>
@@ -106,7 +107,7 @@
                     </div>
 
                   </div>
-
+                </div>
                 </div>
                 <hr/>
                 <div class="form-row subtotal">
@@ -115,7 +116,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col">
-                    <button type="submit" class="btn btn-primary submitButton"  [class.disabled-half]="cart.length== 0" (click)="checkout()">Checkout
+                    <button type="submit" class="btn btn-danger  submitButton"  [class.disabled-half]="cart.length== 0" (click)="checkout()">ORDER
                     </button>
                   </div>
                 </div>
