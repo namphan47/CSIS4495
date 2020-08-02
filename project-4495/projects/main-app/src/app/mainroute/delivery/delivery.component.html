@@ -157,7 +157,42 @@
 
     </div>
 
+    <div class="card checkout">
 
+      <div>
+        <h5 style="text-align:center;">Summary</h5>
+      </div>
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-4">
+          <img src="../../assets/cc-visa-brands.svg">
+        </div>
+        <div class="col-7">
+          <span>Pay by card: 4537 **** **** ****</span>
+        </div>
+
+      </div>
+
+      <div class="mid-checkout">
+        <div id="scrollbar">
+        <div *ngFor ="let item of order.items" class="row">
+          <div class="col-2 text-right">{{item.quantity}}</div>
+          <div class="col-7">{{item.meal.name}}</div>
+          <div class="col-3 text-left">{{item.meal.price}}</div>
+
+        </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-7 text-left"><h4>Total</h4></div>
+        <div class="col-4 text-center"><h4>${{order.total}}</h4></div>
+
+      </div>
+
+    </div>
 
   </div>
 </div>

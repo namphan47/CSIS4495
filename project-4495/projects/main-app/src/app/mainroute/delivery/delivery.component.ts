@@ -61,7 +61,7 @@ export class DeliveryComponent implements OnInit {
 
           }
 
-          // console.log(this.order);
+          console.log(this.order);
 
           // Courier retreival for couriers
           const courierPromise = this._FirebaseDataService.getCourier();

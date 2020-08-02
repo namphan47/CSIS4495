@@ -159,7 +159,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
         .then((cr) => {
           this.delivery = cr;
           console.log(this.delivery);
-          this.router.navigate(['/main/', 'checkout'], {queryParams: {deliveryID: this.delivery.id}});
+          this.router.navigate(['/main/', 'delivery'], {queryParams: {deliveryID: this.delivery.id}});
         });
     });
 
