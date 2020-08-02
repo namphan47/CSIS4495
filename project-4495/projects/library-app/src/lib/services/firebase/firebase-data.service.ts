@@ -573,12 +573,15 @@ export class FirebaseDataService {
       await this.createWithObject(order);
 
       // create order items
-      _.map(orderItems, async x => {
+      await Promise.all(_.map(orderItems, async x => {
         x.order_id = order.id;
         x.order = order;
         await this.createWithObject(x);
         order.total += x.meal.price * x.quantity;
-      });
+        return Promise.resolve();
+      }));
+
+      order.total = Math.round(order.total * 100) / 100.0;
 
       await this.updateWithObject(order);
 
@@ -613,6 +616,7 @@ export class FirebaseDataService {
 
       await this.createWithObject(deliveryStatusHistory);
     } catch (e) {
+      console.log(e);
       return Promise.resolve()
         .then(() => null);
     }

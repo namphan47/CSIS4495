@@ -1809,7 +1809,7 @@ var FirebaseDataService = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 8, , 9]);
+                        _b.trys.push([0, 9, , 10]);
                         _a = this.getRandom;
                         return [4 /*yield*/, this.getCourier()];
                     case 1:
@@ -1823,22 +1823,26 @@ var FirebaseDataService = /** @class */ (function () {
                     case 2:
                         _b.sent();
                         // create order items
-                        ___default.map(orderItems, function (x) { return __awaiter(_this, void 0, void 0, function () {
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        x.order_id = order_1.id;
-                                        x.order = order_1;
-                                        return [4 /*yield*/, this.createWithObject(x)];
-                                    case 1:
-                                        _a.sent();
-                                        order_1.total += x.meal.price * x.quantity;
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        return [4 /*yield*/, this.updateWithObject(order_1)];
+                        return [4 /*yield*/, Promise.all(___default.map(orderItems, function (x) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            x.order_id = order_1.id;
+                                            x.order = order_1;
+                                            return [4 /*yield*/, this.createWithObject(x)];
+                                        case 1:
+                                            _a.sent();
+                                            order_1.total += x.meal.price * x.quantity;
+                                            return [2 /*return*/, Promise.resolve()];
+                                    }
+                                });
+                            }); }))];
                     case 3:
+                        // create order items
+                        _b.sent();
+                        order_1.total = Math.round(order_1.total * 100) / 100.0;
+                        return [4 /*yield*/, this.updateWithObject(order_1)];
+                    case 4:
                         _b.sent();
                         // create delivery
                         delivery = new Delivery({
@@ -1851,17 +1855,17 @@ var FirebaseDataService = /** @class */ (function () {
                                 .then(function (rs) {
                                 delivery.path_to_restaurant = rs;
                             })];
-                    case 4:
+                    case 5:
                         // add paths
                         _b.sent();
                         return [4 /*yield*/, this._MapService.renderDirection(new google.maps.LatLng(restaurant.lat, restaurant.lng), new google.maps.LatLng(customer.lat, customer.lng))
                                 .then(function (rs) {
                                 delivery.path_to_customer = rs;
                             })];
-                    case 5:
+                    case 6:
                         _b.sent();
                         return [4 /*yield*/, this.createWithObject(delivery)];
-                    case 6:
+                    case 7:
                         _b.sent();
                         deliveryStatusHistory = new DeliveryStatusHistory({
                             status: Delivery_Status.ORDERED,
@@ -1869,14 +1873,15 @@ var FirebaseDataService = /** @class */ (function () {
                             date_time: moment().valueOf()
                         });
                         return [4 /*yield*/, this.createWithObject(deliveryStatusHistory)];
-                    case 7:
-                        _b.sent();
-                        return [3 /*break*/, 9];
                     case 8:
+                        _b.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
                         e_1 = _b.sent();
+                        console.log(e_1);
                         return [2 /*return*/, Promise.resolve()
                                 .then(function () { return null; })];
-                    case 9: return [2 /*return*/, Promise.resolve()
+                    case 10: return [2 /*return*/, Promise.resolve()
                             .then(function () { return delivery; })];
                 }
             });

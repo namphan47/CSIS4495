@@ -7,9 +7,9 @@ import {
   SimulatorDataService,
   MapService, OrderItem
 } from 'library-app';
-import {HttpClient} from "@angular/common/http";
-import {UiControllerService} from "@app/shared/controller/ui-controller.service";
-import {AngularFireAuth} from "@angular/fire/auth";
+import {HttpClient} from '@angular/common/http';
+import {UiControllerService} from '@app/shared/controller/ui-controller.service';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 import _ from 'lodash';
 
@@ -116,8 +116,8 @@ export class NavComponent extends DefaultComponent implements OnInit {
   signUp() {
     const time = new Date().getTime();
     const user = new Customer({
-      email: "a" + time + "a@gc.com",
-      password: "a" + time,
+      email: 'a' + time + 'a@gc.com',
+      password: 'a' + time,
       name: 'nam',
       address: '8264 Amberwood Pl, Burnaby, BC V5A 3V2',
       phone_no: '333',
@@ -130,8 +130,8 @@ export class NavComponent extends DefaultComponent implements OnInit {
   // Sign in with email/password
   signIn() {
     const user = new Customer({
-      email: "a1594239014660a@gc.com",
-      password: "a1594f239014660",
+      email: 'a1594239014660a@gc.com',
+      password: 'a1594f239014660',
     });
     this._FirebaseDataService.signIn(user)
       .then((rs) => {
@@ -153,7 +153,12 @@ export class NavComponent extends DefaultComponent implements OnInit {
           quantity: this.getRandom(5),
         });
         o.meal = m;
-        this._FirebaseDataService.checkout(c, r, [o])
+        const o2 = new OrderItem({
+          meal_id: m.id,
+          quantity: this.getRandom(5),
+        });
+        o2.meal = m;
+        this._FirebaseDataService.checkout(c, r, [o, o2])
           .then((rs) => {
             console.log(rs);
             this._UiControllerService.nextMapController();
