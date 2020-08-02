@@ -179,7 +179,7 @@
         <div *ngFor ="let item of order.items" class="row">
           <div class="col-2 text-right">{{item.quantity}}</div>
           <div class="col-7">{{item.meal.name}}</div>
-          <div class="col-3 text-left">{{item.meal.price}}</div>
+          <div class="col-3 text-left">${{item.meal.price}}</div>
 
         </div>
         </div>
