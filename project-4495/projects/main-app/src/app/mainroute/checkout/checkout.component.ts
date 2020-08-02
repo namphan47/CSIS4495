@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
         this.orderID = this.delivery.order_id;
         this.courierID = this.delivery.courier_id;
 
-
+        console.log("dsdsdsd");
         console.log(this.delivery);
 
 // order retreival from all orders

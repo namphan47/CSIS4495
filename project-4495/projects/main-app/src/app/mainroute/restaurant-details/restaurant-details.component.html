@@ -115,7 +115,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col">
-                    <button type="submit" class="btn btn-primary submitButton" (click)="checkout()">Checkout
+                    <button type="submit" class="btn btn-primary submitButton"  [class.disabled-half]="cart.length== 0" (click)="checkout()">Checkout
                     </button>
                   </div>
                 </div>
