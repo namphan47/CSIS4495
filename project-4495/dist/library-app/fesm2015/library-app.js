@@ -1631,12 +1631,14 @@ let FirebaseDataService = class FirebaseDataService {
                 });
                 yield this.createWithObject(order);
                 // create order items
-                ___default.map(orderItems, (x) => __awaiter(this, void 0, void 0, function* () {
+                yield Promise.all(___default.map(orderItems, (x) => __awaiter(this, void 0, void 0, function* () {
                     x.order_id = order.id;
                     x.order = order;
                     yield this.createWithObject(x);
                     order.total += x.meal.price * x.quantity;
-                }));
+                    return Promise.resolve();
+                })));
+                order.total = Math.round(order.total * 100) / 100.0;
                 yield this.updateWithObject(order);
                 // create delivery
                 delivery = new Delivery({
@@ -1663,6 +1665,7 @@ let FirebaseDataService = class FirebaseDataService {
                 yield this.createWithObject(deliveryStatusHistory);
             }
             catch (e) {
+                console.log(e);
                 return Promise.resolve()
                     .then(() => null);
             }
