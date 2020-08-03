@@ -20,3 +20,6 @@ we can do this in two ways one is sending in the form id=?/name=? the other way 
   {path: 'rest-details/:id', component: RestaurantDetailsComponent}, in router page
   [routerLink]="['../rest-details', rest.id] html
   this.id = params['id']; in next page
+
+=> to give some space from the above div we use margin top
+=> when you want to add icons package to your angular project just add npm font package using command given on website and go to angular.json and check for your module go to build array and style add fontawesome link
