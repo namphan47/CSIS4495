@@ -14,6 +14,7 @@ import {KeyValueOrderPipe} from "../pipes/key-value-order.pipe";
 import { AccountComponent } from './account/account.component';
 
 import { OrderHistoryComponent } from './order-history/order-history.component';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -23,7 +24,9 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
 
     AccountComponent,
 
-    OrderHistoryComponent],
+    OrderHistoryComponent,
+
+    HeaderComponent],
 
   imports: [
     CommonModule,

@@ -18,13 +18,13 @@ div.map
 {
   border: 10px solid white;
   width:30vw;
-  height: 89vh;
+  height: calc(100vh - 200px); // this is making it responsive by subtracting top to map so that it will fit any page
   position: fixed;
 
 }
 #gmap{
   max-width: 38vw;
-  height: 87vh;
+  height: 100%;
 
 }
 .hoverable{
@@ -38,7 +38,5 @@ div.map
   transform: translate3d(0,-2px,0);
 
 }
-.search{
-  margin-left: 30vw;
-}
+
 

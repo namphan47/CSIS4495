@@ -43,11 +43,12 @@ div.map {
 
 .mapbox {
   width: 40vw;
+  height: calc(100vh - 200px);
 
 }
 
 #gmap {
-  height: 79vh;
+  height: 100%;
   width: 28.5vw;
   z-index: 2;
 }

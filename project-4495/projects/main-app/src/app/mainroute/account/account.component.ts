@@ -24,7 +24,7 @@ export class AccountComponent implements OnInit {
 
       this.customers = cx;
 
-      //getting authorised customer id from local storage
+      // getting authorised customer id from local storage
 
       this.customerID = localStorage.getItem('CustomerID');
       // getting details of the current customer by comparing customer id with customers array
