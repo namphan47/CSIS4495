@@ -40,6 +40,28 @@
       <li>Click "Stop Simulator" to stop simulator</li>
     </ul>
   </div>
+  <div class="open-order-group p-3 d-flex flex-column">
+    <h3>Opening Orders</h3>
+    <div class="box flex-grow-1">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let item of deliveries">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkbox-{{item?.order?.id}}" [(ngModel)]="item.checked"
+            (ngModelChange)="onOrderCheckChanged($event)">
+            <label for="checkbox-{{item?.order?.id}}">{{item?.order?.id}}</label>
+          </div>
+          <div class="status mb-2">
+            <span class="p-1">{{item?.currentStatus?.status}}</span>
+          </div>
+          <div><b>From:</b> {{item?.restaurant?.name}}
+            <br><small><em>{{item?.restaurant?.address}}</em></small></div>
+          <div><b>To:</b> {{item?.customer?.name}}
+            <br><small><em>{{item?.customer?.address}}</em></small></div>
+          <div><b>Carried by:</b> {{item?.courier?.name}}</div>
+        </li>
+      </ul>
+    </div>
+  </div>
   <ngui-map class="map-wrapper" center="New Westminter, BC, Canada" [options]="options"
             (mapReady$)="ready($event)">
     <!--    <custom-marker position="49.209773, -122.922241" class="custom-icon location">-->
@@ -48,7 +70,7 @@
     <!--    <custom-marker position="49.211773, -122.923016" class="custom-icon car">-->
     <!--      <i class="fas fa-car"></i>-->
     <!--    </custom-marker>-->
-    <ng-container *ngFor="let delivery of deliveries">
+    <ng-container *ngFor="let delivery of displayDeliveries">
       <polyline [editable]="false"
                 [path]="delivery?.path_to_restaurant"
                 [strokeColor]="'#4A6170'"
@@ -59,16 +81,16 @@
                 [strokeOpacity]="1"></polyline>
       <custom-marker *ngIf="delivery.customer" [position]="[delivery.customer.lat,delivery.customer.lng]"
                      class="custom-icon location">
-        <i class="fas fa-map-marker-alt "></i>
+        <i class="fas fa-map-marker-alt d-flex justify-content-center align-items-center"></i>
       </custom-marker>
       <custom-marker *ngIf="delivery.courier" [position]="[delivery.courier.lat,delivery.courier.lng]"
                      #carMarker
-                     class="custom-icon location">
-        <i class="fas fa-car "></i>
+                     class="custom-icon car ">
+        <i class="fas fa-car d-flex justify-content-center align-items-center"></i>
       </custom-marker>
       <custom-marker *ngIf="delivery.restaurant" [position]="[delivery.restaurant.lat,delivery.restaurant.lng]"
-                     class="custom-icon location">
-        <i class="fas fa-utensils"></i>
+                     class="custom-icon restaurant">
+        <i class="fas fa-utensils d-flex justify-content-center align-items-center"></i>
       </custom-marker>
     </ng-container>
     <!--    <ng-container *ngFor="let polygon of polylines">-->

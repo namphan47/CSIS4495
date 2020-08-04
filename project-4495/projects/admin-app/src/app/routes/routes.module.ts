@@ -10,17 +10,19 @@ import {environment} from "@environment/environment";
 import {PipeModule} from "@app/shared/pipe/pipe.module";
 import {NguiMapModule} from "@ngui/map";
 import {DeliveryComponent} from './delivery/delivery.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [RestaurantComponent, MapComponent, CustomerComponent, CourierComponent, OrderComponent, DeliveryComponent],
-  imports: [
-    CommonModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    PipeModule,
-    NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
-    }),
-  ]
+    imports: [
+        CommonModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        PipeModule,
+        NguiMapModule.forRoot({
+            apiUrl: `https://maps.google.com/maps/api/js?libraries=drawing&key=AIzaSyDrnDCTwDNyiqxi-qkY1wMRCpbBMA8LFYc`
+        }),
+        FormsModule,
+    ]
 })
 export class RoutesModule {
 }

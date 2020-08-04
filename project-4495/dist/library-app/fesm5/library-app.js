@@ -147,6 +147,7 @@ var Delivery = /** @class */ (function (_super) {
         if (_this.path_to_restaurant.length) {
             _this.path_to_restaurant = map(_this.path_to_restaurant, function (x) { return JSON.parse(x); });
         }
+        _this.checked = false;
         return _this;
     }
     Delivery.prototype.getData = function () {

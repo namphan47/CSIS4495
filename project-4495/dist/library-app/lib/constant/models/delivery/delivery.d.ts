@@ -1,10 +1,10 @@
-import { DefaultModel } from "../default-model";
-import { Point } from "../point/point";
-import { DeliveryStatusHistory } from "./delivery-status-history";
-import { Order } from "../order/order";
-import { Courier } from "../courier/courier";
-import { Restaurant } from "../restaurant/restaurant";
-import { Customer } from "../customer/customer";
+import { DefaultModel } from '../default-model';
+import { Point } from '../point/point';
+import { DeliveryStatusHistory } from './delivery-status-history';
+import { Order } from '../order/order';
+import { Courier } from '../courier/courier';
+import { Restaurant } from '../restaurant/restaurant';
+import { Customer } from '../customer/customer';
 export declare class Delivery extends DefaultModel {
     id: string;
     points: Point[];
@@ -20,6 +20,7 @@ export declare class Delivery extends DefaultModel {
     path_to_restaurant: any[];
     path_to_customer: any[];
     subscription: any;
+    checked: boolean;
     constructor(data: any);
     getData(): object;
     setStatusHistory(histories: DeliveryStatusHistory[]): void;
