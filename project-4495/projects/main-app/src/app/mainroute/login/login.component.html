@@ -19,50 +19,74 @@
   <div class="container-fluid">
     <div class="form-signin">
 
+
+
       <div class="row">
-        <label for="inputEmail" class="txtlabel">Email</label>
-      </div>
-      <div class="row">
-        <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="        Enter Email" required=""
-               [ngModel]="loginFormGroup.get('email').value"
-               (ngModelChange)="loginFormGroup.get('email').setValue($event)"
-        >
-        <div *ngIf="loginFormGroup.get('email').invalid">
-          <div *ngFor="let error of loginFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
-            <div *ngSwitchCase="'required'">
-              This field is required
-            </div>
-            <div *ngSwitchCase="'email'">
-              This email is invalid
-            </div>
-          </div>
+        <div class="col">
+          <label for="inputEmail" class="txtlabel">Email</label>
         </div>
       </div>
-      <div class="row">
-        <label for="inputPassword" class="txtlabel">Password</label>
+
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="col">
+          <input type="email" id="inputEmail" class="form-control textBox" placeholder="Enter Email" required=""
+                 autofocus=""
+                 [ngModel]="loginFormGroup.get('email').value"
+                 (ngModelChange)="loginFormGroup.get('email').setValue($event)"
+          >
+        </div>
+
       </div>
-      <div class="row">
-        <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="        Enter Password"
-               [ngModel]="loginFormGroup.get('password').value"
-               (ngModelChange)="loginFormGroup.get('password').setValue($event)"
-        >
-      </div>
-      <div class="row">
-        <div *ngIf="loginFormGroup.get('password').invalid">
-          <div *ngFor="let error of loginFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
-            <div *ngSwitchCase="'required'">
-              This field is required
-            </div>
-            <div *ngSwitchCase="'password'">
-              This email is invalid
-            </div>
+      <div class="error" *ngIf="loginFormGroup.get('email').invalid">
+        <div *ngFor="let error of loginFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'email'">
+            This email is invalid
           </div>
         </div>
       </div>
 
-      <div class="row flex-row-reverse">
-        <a class="btn btn-danger btn-red" role="button" (click)="login()">LOGIN </a>
+
+      <div class="row">
+        <div class="col">
+          <label for="inputPassword" class="txtlabel">Password</label>
+        </div>
       </div>
+
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-key"></i>
+        </div>
+        <div class="col">
+          <input type="password" id="inputPassword" class="form-control textBox" placeholder="Enter Password"
+                 name="inputEmail"
+                 [ngModel]="[loginFormGroup.get('password').value]"
+                 (ngModelChange)="[loginFormGroup.get('password').setValue($event)]"
+                 required="">
+        </div>
+      </div>
+      <div class="error" *ngIf="loginFormGroup.get('password').invalid">
+        <div *ngFor="let error of loginFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'pattern'">
+            Password is wrong
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class=col-4><div class="btn btn-danger btn-red" role="button" (click)="login()">SIGN UP</div></div>
+
+       <div class=col-8><div class="btn btn-danger btn-red" role="button" (click)="login()">LOGIN </div></div>
+      </div>
+
     </div>
   </div>
 

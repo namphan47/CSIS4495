@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Customer, FirebaseDataService} from 'library-app';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import validate = WebAssembly.validate;
 
 
 @Component({
