@@ -25,24 +25,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  signup() {
+  gotoSignup() {
 
     this.router.navigate(['/main/', 'signup']);
   }
 
   login() {
-
-    const customerPromise = this._FirebaseDataService.getCustomer();
-    customerPromise.then((cr) => {
-      this.customerArray = cr;
-      for (let i = 0; i < this.customerArray.length; i++) {
-        if (this.loginFormGroup.get('email').value === this.customerArray[i].email) {
-          this.customerId = this.customerArray[i].id;
-        }
-      }
-
-    });
-
     console.log(this.customer);
     console.log(this.loginFormGroup);
     //
@@ -58,6 +46,7 @@ export class LoginComponent implements OnInit {
 
     if (!isValid) {
       alert('The form is invalid');
+      this.router.navigate(['/main/', 'login']);
     } else {
       this.customer = new Customer({});
       this.customer.email = this.loginFormGroup.get('email').value;
@@ -67,11 +56,15 @@ export class LoginComponent implements OnInit {
         .then((customer) => {
           console.log('cus = ' + this.customerId);
 
+          if (customer.id === null) {
+            alert('the entered email or password is invalid');
+          }
           this.router.navigate(['/main/', 'rest']);
 
           // saving customer in localstorage
 
           localStorage.setItem('CustomerID', customer.id);
+          
 
         });
 
