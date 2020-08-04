@@ -25,6 +25,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  signup() {
+
+    this.router.navigate(['/main/', 'signup']);
+  }
+
   login() {
 
     const customerPromise = this._FirebaseDataService.getCustomer();

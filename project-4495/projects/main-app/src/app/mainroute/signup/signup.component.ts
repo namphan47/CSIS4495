@@ -33,6 +33,12 @@ export class SignupComponent implements OnInit {
   //   console.log(this.inputData);
   // }
 
+  back() {
+
+    this.router.navigate(['/main/', 'login']);
+  }
+
+
   signup() {
     console.log(this.customer);
     console.log(this.signupFormGroup);
