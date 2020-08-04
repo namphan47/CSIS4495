@@ -161,11 +161,9 @@
           <div *ngSwitchCase="'required'">
             This field is required
           </div>
-          <div *ngSwitchCase="'pattern'">
-
-          </div>
         </div>
       </div>
+      <div *ngIf= "signupFormGroup.get('password').value != signupFormGroup.get('repassword').value "> Passwords dont match </div>
 
 
       <div class="row">
