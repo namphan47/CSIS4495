@@ -75,6 +75,7 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
         name: me.name,
         price: me.price,
         quantity: 1,
+        meal: me,
 
       });
     }
@@ -123,15 +124,18 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
   }
 
   checkout() {
-    const order = [];
+
+
+    const orders = [];
     for (let k = 0; k < this.cart.length; k++) {
 
-
-      order.push(new OrderItem({
-        meal_id: this.cart[k].id,
-        quantity: this.cart[k].quantity,
-        price: this.subtotal,
-      }));
+      const item =
+        new OrderItem({
+          meal_id: this.cart[k].id,
+          quantity: this.cart[k].quantity,
+        });
+      item.meal = this.cart[k].meal;
+      orders.push(item);
     }
 
     // getting customer from api
@@ -148,17 +152,17 @@ export class RestaurantDetailsComponent implements OnInit, OnDestroy {
         }
       }
 
-      console.log(this.customer );
+      console.log(this.customer);
+      const promise = this._FirebaseDataService.checkout(this.customer, this.detail, orders);
+
+      promise
+        .then((cr) => {
+          this.delivery = cr;
+          console.log(this.delivery);
+          this.router.navigate(['/main/', 'delivery'], {queryParams: {deliveryID: this.delivery.id}});
+        });
     });
 
-    const promise = this._FirebaseDataService.checkout(this.customer, this.detail, order);
-
-    promise
-      .then((cr) => {
-        this.delivery = cr;
-        console.log(this.delivery);
-        this.router.navigate(['/main/', 'checkout'], {queryParams: {deliveryID: this.delivery.id}});
-      });
 
   }
 

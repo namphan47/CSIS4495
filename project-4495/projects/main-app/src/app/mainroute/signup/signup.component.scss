@@ -14,23 +14,30 @@
   width: 100%;
   max-width: 598px;
   padding: 15px;
-  margin: auto;}
+  margin: auto;
+  outline: none;}
 
-.txtbox1, .txtbox2 {
+.txtbox1{
   background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 6px #000029;
+  box-shadow: 0px 3px 6px #00000029;
   opacity: 1;
   background-position-x: 16px;
   background-position-y: center;
-  padding-left: 50px;
-}
-.txtbox1 {
-  background-image: url('../../../assets/user-light.svg');
+  padding-left: 20px;
 }
 
-.txtbox2 {
-  background-image: url('../../../assets/key-light.svg');
+.form-control:focus
+{
+  outline: none;
+  box-shadow: none;
 }
+//.txtbox1 {
+//  background-image: url('../../../assets/user-light.svg');
+//}
+//
+//.txtbox2 {
+//  background-image: url('../../../assets/key-light.svg');
+//}
 
 .txtlabel {
   text-align: left;
@@ -44,10 +51,11 @@
   margin-top: 46px;
   float: right;
   background: #E91431 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 6px #000029;
+  box-shadow: 0px 3px 6px #00000029;
   border: 1px solid #707070;
   opacity: 1;
   width: 168px;
+  color: white;
 }
 
 .btn-back {
@@ -74,4 +82,21 @@
 {
   border: none;
   background: #e3e5e8;
+}
+.textBox{
+
+   border: none;
+   height: 35px;
+
+ }
+
+.icons{
+  top: 1vh;
+
+}
+.error{
+
+  margin-top: 2vh;
+  font-size: 14px;
+  color : red;
 }

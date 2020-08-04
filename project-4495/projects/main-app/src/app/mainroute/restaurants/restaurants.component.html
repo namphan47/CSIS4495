@@ -15,19 +15,7 @@
           </a>
         </div>
       </div>
-      <div class="col-5">
-        <div class="text-center">
-          <div class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search"
-                   placeholder="Search" aria-label="Search" [(ngModel)]="searchData.RestaurantName"
-                   (ngModelChange)="onSearchValueChanged($event)">
-            <button class="btn btn-outline-success btn-group-sm "
-                    [class.disabled-half]="searchData.RestaurantName==''"
-                    type="submit" (click)="search()">Search
-            </button>
-          </div>
-        </div>
-      </div>
+
       <div class="col-3">
         <div class="text-right">
           <div class="dropdown">
@@ -62,9 +50,21 @@
 
     </nav>
     <br><br><br><br>
-
+    <div class="container">
+      <div class="search">
+        <div class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-1" type="search"
+                 placeholder="Search" aria-label="Search" [(ngModel)]="searchData.RestaurantName"
+                 (ngModelChange)="onSearchValueChanged($event)">
+          <button class="btn btn-outline-success btn-group-sm "
+                  [class.disabled-half]="searchData.RestaurantName==''"
+                  type="submit" (click)="search()">Search
+          </button>
+        </div>
+    </div>
+    </div>
     <!-- Restaurants -->
-
+    <br><br>
     <div class="container-fluid">
       <div class="row no-gutters">
         <div class="col-7">

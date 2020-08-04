@@ -25,43 +25,58 @@
           <label class="txtlabel">Full Name</label>
         </div>
       </div>
-      <div class="row">
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-user"></i>
+        </div>
         <div class="col">
-          <input type="Name"  class="form-control txtbox2" placeholder="Enter Name"
+          <input type="Name" class="form-control textBox" placeholder="Enter Name"
                  required=""
-                 [ngModel] = "signupFormGroup.get('fullname').value"
-                 (ngModelChange) = "signupFormGroup.get('fullname').setValue($event)">
+                 [ngModel]="signupFormGroup.get('fullname').value"
+                 (ngModelChange)="signupFormGroup.get('fullname').setValue($event)">
         </div>
       </div>
 
-      <div >
-      <div *ngIf="signupFormGroup.get('fullname').errors?.required">
+      <div class="error" *ngIf="signupFormGroup.get('fullname').invalid">
+        <div *ngFor="let error of signupFormGroup.get('fullname').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
             This field is required
           </div>
+          <div *ngSwitchCase="'pattern'">
+            This name is invalid
+          </div>
+        </div>
       </div>
 
 
       <div class="row">
         <div class="col">
-          <label  class="txtlabel">Phone Number</label>
+          <label class="txtlabel">Phone Number</label>
         </div>
       </div>
-      <div class="row">
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-phone-alt"></i>
+        </div>
         <div class="col">
-          <input type="tel"  class="form-control txtbox2" placeholder="Enter Phone No."
-                 required="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                 [ngModel] = "signupFormGroup.get('phone').value"
-                 (ngModelChange) = "signupFormGroup.get('phone').setValue($event)">
+          <input type="tel" class="form-control textBox " placeholder="Enter Phone No"
+                 required="" pattern="([0-9]{10})"
+                 [ngModel]="signupFormGroup.get('phone').value"
+                 (ngModelChange)="signupFormGroup.get('phone').setValue($event)">
         </div>
       </div>
 
-
-      <div >
-        <div *ngIf="signupFormGroup.get('phone').errors?.required">
-          This field is required
+      <div *ngIf="signupFormGroup.get('phone').invalid">
+        <div class="error" *ngFor="let error of signupFormGroup.get('phone').errors | keyValueOrder"
+             [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'pattern'">
+            This phone number is invalid
+          </div>
         </div>
       </div>
-
 
 
       <div class="row">
@@ -70,26 +85,29 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-envelope"></i>
+        </div>
         <div class="col">
-          <input type="email" id="inputEmail" class="form-control txtbox1" placeholder="Enter Email" required=""
+          <input type="email" id="inputEmail" class="form-control textBox" placeholder="Enter Email" required=""
                  autofocus=""
-                 [ngModel] = "signupFormGroup.get('email').value"
-                 (ngModelChange) = "signupFormGroup.get('email').setValue($event)"
+                 [ngModel]="signupFormGroup.get('email').value"
+                 (ngModelChange)="signupFormGroup.get('email').setValue($event)"
           >
         </div>
 
       </div>
-        <div *ngIf="signupFormGroup.get('email').invalid">
-          <div *ngFor="let error of signupFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
-            <div *ngSwitchCase="'required'">
-              This field is required
-            </div>
-            <div *ngSwitchCase="'email'">
-              This email is invalid
-            </div>
+      <div class="error" *ngIf="signupFormGroup.get('email').invalid">
+        <div *ngFor="let error of signupFormGroup.get('email').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'email'">
+            This email is invalid
           </div>
         </div>
+      </div>
 
       <div class="row">
         <div class="col">
@@ -97,88 +115,94 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-key"></i>
+        </div>
         <div class="col">
-          <input type="password" id="inputPassword" class="form-control txtbox2" placeholder="Enter Password"
+          <input type="password" id="inputPassword" class="form-control textBox" placeholder="Enter Password"
                  name="inputEmail"
-                 [ngModel] = "[signupFormGroup.get('password').value]"
-                 (ngModelChange) = "[signupFormGroup.get('password').setValue($event)]"
+                 [ngModel]="[signupFormGroup.get('password').value]"
+                 (ngModelChange)="[signupFormGroup.get('password').setValue($event)]"
                  required="">
         </div>
       </div>
-      <div *ngIf="signupFormGroup.get('password').invalid">
+      <div class="error" *ngIf="signupFormGroup.get('password').invalid">
         <div *ngFor="let error of signupFormGroup.get('password').errors | keyValueOrder" [ngSwitch]="error.key">
           <div *ngSwitchCase="'required'">
             This field is required
           </div>
-          <div *ngSwitchCase="'password'">
-            This email is invalid
+          <div *ngSwitchCase="'pattern'">
+            This password should contain minimum eight characters, at least one letter and one number
           </div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row ">
         <div class="col">
-          <label  class="txtlabel">Re-Password</label>
+          <label class="txtlabel">Re-Password</label>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons">
+          <i class="fas fa-key"></i>
+        </div>
         <div class="col">
-          <input type="password" class="form-control txtbox2" placeholder="Re-enter Password"
-                 [ngModel] = "signupFormGroup.get('repassword').value"
-                 (ngModelChange) = "signupFormGroup.get('repassword').setValue($event)"
+          <input type="password" class="form-control textBox" placeholder="Re-enter Password"
+                 [ngModel]="signupFormGroup.get('repassword').value"
+                 (ngModelChange)="signupFormGroup.get('repassword').setValue($event)"
                  required="">
         </div>
       </div>
 
-      <div *ngIf="signupFormGroup.get('repassword').invalid">
+      <div class="error" *ngIf="signupFormGroup.get('repassword').invalid">
         <div *ngFor="let error of signupFormGroup.get('repassword').errors | keyValueOrder" [ngSwitch]="error.key">
           <div *ngSwitchCase="'required'">
             This field is required
           </div>
-          <div *ngSwitchCase="'password'">
+        </div>
+      </div>
+      <div *ngIf= "signupFormGroup.get('password').value != signupFormGroup.get('repassword').value "> Passwords dont match </div>
+
+
+      <div class="row">
+        <div class="col">
+          <label class="txtlabel">Address</label>
+        </div>
+      </div>
+      <div class="row no-gutters txtbox1">
+        <div class="col-1 icons ">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="col">
+          <input type="address" class="form-control textBox" placeholder="Enter Address"
+                 required=""
+                 [ngModel]="signupFormGroup.get('address').value"
+                 (ngModelChange)="signupFormGroup.get('address').setValue($event)">
+        </div>
+      </div>
+
+
+      <div class="error" *ngIf="signupFormGroup.get('address').invalid">
+        <div *ngFor="let error of signupFormGroup.get('address').errors | keyValueOrder" [ngSwitch]="error.key">
+          <div *ngSwitchCase="'required'">
+            This field is required
+          </div>
+          <div *ngSwitchCase="'pattern'">
             This email is invalid
           </div>
         </div>
       </div>
 
 
-
       <div class="row">
         <div class="col">
-          <label  class="txtlabel">Address</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <input type="address"  class="form-control txtbox2" placeholder="Enter Address"
-                 required=""
-                 [ngModel] = "signupFormGroup.get('address').value"
-                 (ngModelChange) = "signupFormGroup.get('address').setValue($event)">
-        </div>
-      </div>
-
-
-      <div >
-        <div *ngIf="signupFormGroup.get('address').errors?.required">
-          <div>
-            <div>
-              This field is required
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col">
-          <button class="btn btn-back" type="submit">BACK</button>
+          <button class="btn btn-back" role="button" (click)="back()">BACK</button>
         </div>
 
         <div class="col">
-          <a class="btn btn-red" role="button" (click)="signup()">SIGN UP</a>
+          <a class="btn btn-danger btn-red" role="button" (click)="signup()">SIGN UP</a>
         </div>
       </div>
     </div>

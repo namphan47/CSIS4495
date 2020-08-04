@@ -65,7 +65,6 @@ div.map {
 
   width: 20vw;
 
-
 }
 
 #cartTitle {
@@ -121,4 +120,8 @@ hr {
   margin-left: 1vw;
   margin-top: 1vh;
   margin-bottom: 1vh;
+}
+#cartScrollbar{
+  max-height: 30vh;
+  overflow: auto;
 }
