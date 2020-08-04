@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Courier, Customer, Delivery, FirebaseDataService, Order, Restaurant, SimulatorDataService} from "library-app";
-import {Delivery_Status, DefaultComponent, NotificationService} from "library-app";
+import {Courier, Customer, Delivery, FirebaseDataService, Order, Restaurant, SimulatorDataService} from 'library-app';
+import {Delivery_Status, DefaultComponent, NotificationService} from 'library-app';
 import * as _ from 'lodash';
-import {HttpClient} from "@angular/common/http";
-import {AngularFireDatabase} from "@angular/fire/database";
-import {CustomMarker} from "@ngui/map";
-import {DeliveryStatusHistory} from "../../../../../library-app/src/lib/constant/models";
-import {UiControllerService} from "@app/shared/controller/ui-controller.service";
+import {HttpClient} from '@angular/common/http';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {CustomMarker} from '@ngui/map';
+import {DeliveryStatusHistory} from '../../../../../library-app/src/lib/constant/models';
+import {UiControllerService} from '@app/shared/controller/ui-controller.service';
 
 declare const google: any;
 
@@ -24,6 +24,7 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
   drivers: Courier[] = [];
   customers: Customer[] = [];
   deliveries: Delivery[] = [];
+  displayDeliveries: Delivery[] = [];
   orders: Order[] = [];
 
   orderCounts = {
@@ -41,9 +42,9 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
     fullscreenControl: false,
     styles: [
       {
-        featureType: "poi",
+        featureType: 'poi',
         stylers: [
-          {visibility: "off"}
+          {visibility: 'off'}
         ]
       }
     ]
@@ -124,18 +125,12 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
           d.order = _.find(this.orders, x => x.id === d.order_id);
           d.restaurant = d.order.restaurant;
           d.customer = d.order.customer;
-
-          // this.renderDirection(new google.maps.LatLng(d.courier.lat, d.courier.long), new google.maps.LatLng(d.restaurant.lat, d.restaurant.long))
-          //   .then((rs) => {
-          //     d.path_to_restaurant = rs;
-          //   });
-          // this.renderDirection(new google.maps.LatLng(d.restaurant.lat, d.restaurant.long), new google.maps.LatLng(d.customer.lat, d.customer.long))
-          //   .then((rs) => {
-          //     d.path_to_customer = rs;
-          //   });
+          // default for filter
+          d.checked = true;
         });
         console.log(this.drivers);
         console.log(this.deliveries);
+        this.onOrderCheckChanged();
       })
       .then(() => {
         this.listenPoints();
@@ -175,6 +170,7 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
                   // console.log(delivery);
                 });
               this.getSummary();
+              this.onOrderCheckChanged();
             }
           }
         });
@@ -211,7 +207,10 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
   }
 
 
-
+  onOrderCheckChanged($event?: any) {
+    console.log($event);
+    this.displayDeliveries = _.filter(this.deliveries, x => x.checked);
+  }
 }
 
 class DeliveryPolyline {

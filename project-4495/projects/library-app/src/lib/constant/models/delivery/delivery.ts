@@ -1,11 +1,11 @@
-import {DefaultModel} from "../default-model";
-import {Point} from "../point/point";
-import {DeliveryStatusHistory} from "./delivery-status-history";
+import {DefaultModel} from '../default-model';
+import {Point} from '../point/point';
+import {DeliveryStatusHistory} from './delivery-status-history';
 import * as _ from 'lodash';
-import {Order} from "../order/order";
-import {Courier} from "../courier/courier";
-import {Restaurant} from "../restaurant/restaurant";
-import {Customer} from "../customer/customer";
+import {Order} from '../order/order';
+import {Courier} from '../courier/courier';
+import {Restaurant} from '../restaurant/restaurant';
+import {Customer} from '../customer/customer';
 
 export class Delivery extends DefaultModel {
   id: string = '';
@@ -24,6 +24,7 @@ export class Delivery extends DefaultModel {
   path_to_customer: any[] = [];
 
   subscription;
+  checked: boolean;
 
   constructor(data: any) {
     super(data);
@@ -34,6 +35,8 @@ export class Delivery extends DefaultModel {
     if (this.path_to_restaurant.length) {
       this.path_to_restaurant = _.map(this.path_to_restaurant, x => JSON.parse(x));
     }
+
+    this.checked = false;
   }
 
   getData(): object {

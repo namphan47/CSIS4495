@@ -158,7 +158,7 @@ export class NavComponent extends DefaultComponent implements OnInit {
           quantity: this.getRandom(5),
         });
         o2.meal = m;
-        this._FirebaseDataService.checkout(c, r, [o, o2])
+        this._FirebaseDataService.checkout(c, r, [o])
           .then((rs) => {
             console.log(rs);
             this._UiControllerService.nextMapController();

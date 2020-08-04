@@ -132,6 +132,7 @@ class Delivery extends DefaultModel {
         if (this.path_to_restaurant.length) {
             this.path_to_restaurant = map(this.path_to_restaurant, x => JSON.parse(x));
         }
+        this.checked = false;
     }
     getData() {
         const self = this;
