@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FirebaseDataService, Order} from 'library-app';
+import {Delivery, FirebaseDataService, Order} from 'library-app';
 
 @Component({
   selector: 'app-order-history',
@@ -9,8 +9,8 @@ import {FirebaseDataService, Order} from 'library-app';
 export class OrderHistoryComponent implements OnInit {
 
   customerID: string;
-  orders: Order[];
-  customerOrders: Order[];
+  orders: Delivery[];
+  customerOrders: Delivery[];
   restaurants
 
 
@@ -18,7 +18,8 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const orderPromise = this._FirebaseDataService.getOrders();
+
+    const orderPromise = this._FirebaseDataService.getDeliveries();
     orderPromise.then((or) => {
       this.orders = or;
 
@@ -28,7 +29,7 @@ export class OrderHistoryComponent implements OnInit {
 
       for (let i = 0; i < this.orders.length; i++) {
 
-        if (this.customerID === this.orders[i].customer_id) {
+        if (this.customerID === this.orders[i].order.customer_id) {
 
           this.customerOrders.push(this.orders[i]);
         }
