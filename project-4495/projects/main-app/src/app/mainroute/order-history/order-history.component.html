@@ -25,19 +25,23 @@
 
                     <thead>
                     <tr>
-                      <th scope="col">Order ID</th>
+                      <th>Order ID</th>
+                      <th >Date</th>
                       <th scope="col">Restaurant Name</th>
                       <th scope="col">Items</th>
                       <th scope="col">Order Price</th>
+                      <th scope="col">Order Status</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr *ngFor="let order of customerOrders">
-                      <th scope="row">#{{order.id}}</th>
-                      <td><img src="{{order.restaurant.img2}}" class="card-img" alt="Logo">{{order.restaurant.name}}</td>
-                      <td><div id="scrollbar"><div *ngFor="let item of order.items">{{item.meal.name}}</div></div></td>
-                      <td>${{order.total}}</td>
+                    <tr *ngFor="let delivery of customerOrders" class="orderID" (click)=gotoDelivery()>
+                      <th>#{{delivery.order.id}}</th>
+                      <td>{{delivery.order.date_time | date: 'yyyy-MM-dd h:mm a'}}</td>
+                      <td><img src="{{delivery.order.restaurant.img2}}" class="card-img" alt="Logo">{{delivery.order.restaurant.name}}</td>
+                      <td><div id="scrollbar"><div *ngFor="let item of delivery.order.items">{{item.meal.name}}</div></div></td>
+                      <td>${{delivery.order.total}}</td>
+                      <td>{{delivery.currentStatus.status}}</td>
 
                     </tr>
                     </tbody>

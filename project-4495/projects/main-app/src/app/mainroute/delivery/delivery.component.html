@@ -53,7 +53,7 @@
       <div class="card delivery">
 
         <div>
-          <h5 style="text-align:center;">Delivery</h5>
+          <h5 class="mt-2" style="text-align:center;" >Delivery</h5>
         </div>
 
         <div class="row">
@@ -80,17 +80,8 @@
         <div class="row">
 
           <div class="col-1 text-right"></div>
-          <span class="col-10 text-left">Courier</span>
+          <span class="col-10 text-left">Delivery Details</span>
         </div>
-        <!--
-                     <div class="row">
-                            <div class="col-3">
-                            </div>
-                            <div class="col-6 text-left">
-                                <span>Nick ***</span>
-                            </div>
-                     </div>
-                    -->
         <div class="row">
 
           <div class="col-3 text-center" style="align-self:flex-end;">
@@ -98,17 +89,13 @@
           </div>
 
           <div class="col-6 text-left">
-            <span>{{courier.name}}</span><br>
-            <span>{{courier.driver_license}}</span><br>
-            <span>{{courier.phone_no}}</span>
+            <span>Name: {{courier.name}}</span><br>
+            <span>Phone No: {{courier.phone_no}}</span>
           </div>
 
 
 
         </div>
-
-
-        <div class="card-footer">Your order will be delivered around 5 mins</div>
       </div>
 
 
@@ -117,7 +104,7 @@
     <div class="card checkout">
 
       <div>
-        <h5 style="text-align:center;">Summary</h5>
+        <h5 class="mt-3" style="text-align:center;">Summary</h5>
       </div>
       <div class="row">
         <div class="col-1">
@@ -144,8 +131,8 @@
       </div>
       <div class="row">
         <div class="col-1"></div>
-        <div class="col-7 text-left"><h4>Total</h4></div>
-        <div class="col-4 text-center"><h4>${{order.total}}</h4></div>
+        <div class="col-7 text-left mt-2"><h4>Total</h4></div>
+        <div class="col-4 text-center mt-2"><h4>${{order.total}}</h4></div>
 
       </div>
 

@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
           // saving customer in localstorage
 
           localStorage.setItem('CustomerID', customer.id);
-          
+
 
         });
 
