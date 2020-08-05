@@ -12,3 +12,4 @@ export class TestAppService {
     return 'Hello Test App';
   }
 }
+initializeApp

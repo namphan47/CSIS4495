@@ -495,7 +495,7 @@ export class FirebaseDataService {
   /*authentication*/
 
   /**
-   * Sign in with email/password
+   * Sign up with email/password
    * @param user
    * @returns {Promise<boolean>}
    */

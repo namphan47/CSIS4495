@@ -4,7 +4,6 @@ import {Delivery_Status, DefaultComponent, NotificationService} from 'library-ap
 import * as _ from 'lodash';
 import {HttpClient} from '@angular/common/http';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {CustomMarker} from '@ngui/map';
 import {DeliveryStatusHistory} from '../../../../../library-app/src/lib/constant/models';
 import {UiControllerService} from '@app/shared/controller/ui-controller.service';
 
@@ -84,6 +83,9 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
     //   .subscribe((rs) => {
     //     console.log(rs);
     //   });
+  }
+
+  ngOnInit(): void {
   }
 
   getSummary() {
@@ -200,10 +202,6 @@ export class MapComponent extends DefaultComponent implements OnInit, AfterViewI
   }
 
   ngAfterViewInit() {
-  }
-
-  ngOnInit(): void {
-
   }
 
 

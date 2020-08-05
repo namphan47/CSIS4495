@@ -139,6 +139,7 @@ class Delivery extends DefaultModel {
         if (this.path_to_restaurant.length) {
             this.path_to_restaurant = map(this.path_to_restaurant, x => JSON.parse(x));
         }
+        this.checked = false;
     }
     getData() {
         const self = this;
@@ -1995,6 +1996,5 @@ TestAppService.ɵprov = ɵɵdefineInjectable({ factory: function TestAppService_
  */
 
 export { Courier, Customer, DefaultComponent, DefaultModel, Delivery, DeliveryStatusHistory, Delivery_Status, DummyDataService, ENUM_TABLES, FirebaseDataService, LibraryAppComponent, LibraryAppModule, LibraryAppService, MapService, Meal, NotificationService, Order, OrderItem, Point, QueryParamModel, Restaurant, SimulatorDataService, TestAppService };
-
 
 //# sourceMappingURL=library-app.js.map
