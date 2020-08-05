@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Delivery, FirebaseDataService, Order} from 'library-app';
+import {Delivery, FirebaseDataService,} from 'library-app';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-order-history',
@@ -11,10 +12,11 @@ export class OrderHistoryComponent implements OnInit {
   customerID: string;
   orders: Delivery[];
   customerOrders: Delivery[];
-  restaurants
+  restaurants;
+  deliveryID: String;
 
 
-  constructor(private _FirebaseDataService: FirebaseDataService) {
+  constructor(private _FirebaseDataService: FirebaseDataService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -32,10 +34,18 @@ export class OrderHistoryComponent implements OnInit {
         if (this.customerID === this.orders[i].order.customer_id) {
 
           this.customerOrders.push(this.orders[i]);
+          this.deliveryID = this.orders[i].id;
+          this.customerOrders =  this.customerOrders.slice().sort((a, b) => b.order.date_time - a.order.date_time);
         }
       }
       console.log(this.customerOrders);
     });
+
+  }
+
+  gotoDelivery() {
+
+    this.router.navigate(['/main/', 'delivery'], {queryParams: {deliveryID: this.deliveryID}});
 
   }
 

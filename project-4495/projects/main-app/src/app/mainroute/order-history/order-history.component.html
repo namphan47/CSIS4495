@@ -35,9 +35,9 @@
                     </thead>
 
                     <tbody>
-                    <tr *ngFor="let delivery of customerOrders">
+                    <tr *ngFor="let delivery of customerOrders" class="orderID" (click)=gotoDelivery()>
                       <th>#{{delivery.order.id}}</th>
-                      <td>{{delivery.order.date_time}}</td>
+                      <td>{{delivery.order.date_time | date: 'yyyy-MM-dd h:mm a'}}</td>
                       <td><img src="{{delivery.order.restaurant.img2}}" class="card-img" alt="Logo">{{delivery.order.restaurant.name}}</td>
                       <td><div id="scrollbar"><div *ngFor="let item of delivery.order.items">{{item.meal.name}}</div></div></td>
                       <td>${{delivery.order.total}}</td>
